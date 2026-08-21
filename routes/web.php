@@ -20,6 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::view('/admin/master-data', 'admin.master-data.index')
+    ->name('master-data.index');
+
 Route::get('/admin/ruangan', function () {
     return view('admin.ruangan.index');
 });
