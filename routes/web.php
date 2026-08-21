@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\TahunAjaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,6 @@ Route::put('/admin/ruangan/{id}', [RuanganController::class, 'update'])
 
 Route::delete('/admin/ruangan/{id}', [RuanganController::class, 'destroy'])
     ->name('ruangan.destroy');
+
+
+Route::resource('tahun-ajaran', TahunAjaranController::class);
