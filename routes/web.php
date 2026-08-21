@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\TahunAjaranController;
 
 /*
@@ -21,6 +22,9 @@ Route::get('/', function () {
 
 Route::get('/admin/ruangan', function () {
     return view('admin.ruangan.index');
+});
+Route::get('/admin/mata_pelajaran', function () {
+    return view('admin.mata_pelajaran.index');
 });
 
 
@@ -42,5 +46,23 @@ Route::put('/admin/ruangan/{id}', [RuanganController::class, 'update'])
 Route::delete('/admin/ruangan/{id}', [RuanganController::class, 'destroy'])
     ->name('ruangan.destroy');
 
+
+Route::get('/admin/mata_pelajaran', [MataPelajaranController::class, 'index'])
+    ->name('mata_pelajaran.index');
+
+Route::get('/admin/mata_pelajaran/create', [MataPelajaranController::class, 'create'])
+    ->name('mata_pelajaran.create');
+
+Route::post('/admin/mata_pelajaran', [MataPelajaranController::class, 'store'])
+    ->name('mata_pelajaran.store');
+
+Route::get('/admin/mata_pelajaran/{id}/edit', [MataPelajaranController::class, 'edit'])
+    ->name('mata_pelajaran.edit');
+
+Route::put('/admin/mata_pelajaran/{id}', [MataPelajaranController::class, 'update'])
+    ->name('mata_pelajaran.update');
+
+Route::delete('/admin/mata_pelajaran/{id}', [MataPelajaranController::class, 'destroy'])
+    ->name('mata_pelajaran.destroy');
 
 Route::resource('tahun-ajaran', TahunAjaranController::class);
