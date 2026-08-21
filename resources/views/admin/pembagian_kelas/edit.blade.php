@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Pembagian Kelas</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .info {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .info p {
+            margin: 7px 0;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-simpan {
+            background-color: #198754;
+            color: white;
+        }
+
+        .btn-kembali {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 5px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Edit Pembagian Kelas</h1>
+
+    @if ($errors->any())
+        <div class="error">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- Informasi siswa --}}
+    <div class="info">
+
+        <p>
+            <strong>NIS:</strong>
+            {{ $pembagian->siswa->nis }}
+        </p>
+
+        <p>
+            <strong>Nama:</strong>
+            {{ $pembagian->siswa->nama }}
+        </p>
+
+    </div>
+
+
+    <form
+        action="{{ route('pembagian-kelas.update', $pembagian->id) }}"
+        method="POST"
+    >
+
+        @csrf
+        @method('PUT')
+
+
+        <div class="form-group">
+
+            <label for="kelas_id">
+                Kelas
+            </label>
+
+            <select name="kelas_id" id="kelas_id" required>
+
+                <option value="">
+                    -- Pilih Kelas --
+                </option>
+
+                @foreach ($kelas as $k)
+
+                    <option
+                        value="{{ $k->id }}"
+                        {{ $pembagian->kelas_id == $k->id ? 'selected' : '' }}
+                    >
+
+                        {{ $k->tingkat }} {{ $k->nama_kelas }}
+
+                    </option>
+
+                @endforeach
+
+            </select>
+
+        </div>
+
+
+        <button type="submit" class="btn btn-simpan">
+            Simpan Perubahan
+        </button>
+
+        <a
+            href="{{ route('pembagian-kelas.index') }}"
+            class="btn btn-kembali"
+        >
+            Kembali
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

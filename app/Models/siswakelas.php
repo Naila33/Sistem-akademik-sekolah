@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Kelas;
+use App\Models\Siswa;
 
 class SiswaKelas extends Model
 {
