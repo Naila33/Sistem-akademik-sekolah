@@ -6,6 +6,7 @@ use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\PembagianKelasController;
 use App\Http\Controllers\Admin\SpmbController;
+use App\Http\Controllers\JadwalpelajaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +22,6 @@ use App\Http\Controllers\Admin\SpmbController;
 // ===============================
 // DASHBOARD
 // ===============================
-
-Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
-})->name('home');
-
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -42,6 +34,14 @@ Route::get('/admin/ruangan', function () {
 Route::get('/admin/mata_pelajaran', function () {
     return view('admin.mata_pelajaran.index');
 });
+
+Route::get('/', function () {
+    return redirect()->route('admin.dashboard');
+})->name('home');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
 
 // Admin Routes
 Route::get('/admin/ruangan', [RuanganController::class, 'index'])
@@ -96,6 +96,40 @@ Route::put('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'upda
 
 Route::delete('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'destroy'])
     ->name('pembagian-kelas.destroy');
+
+// jadwal pelajaran routes
+Route::get('/admin/jadwal_pelajaran', [JadwalpelajaranController::class, 'index'])
+    ->name('admin.jadwal_pelajaran.index');
+
+Route::get('/admin/jadwal_pelajaran/create', [JadwalpelajaranController::class, 'create'])
+    ->name('admin.jadwal_pelajaran.create');
+
+Route::post('/admin/jadwal_pelajaran', [JadwalpelajaranController::class, 'store'])
+    ->name('admin.jadwal_pelajaran.store');
+
+Route::get('/admin/jadwal_pelajaran/export/excel', [JadwalpelajaranController::class, 'exportExcel'])
+    ->name('admin.jadwal_pelajaran.export_excel');
+
+Route::get('/admin/jadwal_pelajaran/export/pdf', [JadwalpelajaranController::class, 'exportPdf'])
+    ->name('admin.jadwal_pelajaran.export_pdf');
+
+Route::get('/admin/jadwal_pelajaran/kelas/{kelasId}/hari/{hari}/edit', [JadwalpelajaranController::class, 'editHari'])
+    ->name('admin.jadwal_pelajaran.edit_hari');
+
+Route::put('/admin/jadwal_pelajaran/kelas/{kelasId}/hari/{hari}', [JadwalpelajaranController::class, 'updateHari'])
+    ->name('admin.jadwal_pelajaran.update_hari');
+
+Route::delete('/admin/jadwal_pelajaran/kelas/{kelasId}/hari/{hari}', [JadwalpelajaranController::class, 'destroyHari'])
+    ->name('admin.jadwal_pelajaran.destroy_hari');
+
+Route::get('/admin/jadwal_pelajaran/{id}/edit', [JadwalpelajaranController::class, 'edit'])
+    ->name('admin.jadwal_pelajaran.edit');
+
+Route::put('/admin/jadwal_pelajaran/{id}', [JadwalpelajaranController::class, 'update'])
+    ->name('admin.jadwal_pelajaran.update');
+
+Route::delete('/admin/jadwal_pelajaran/{id}', [JadwalpelajaranController::class, 'destroy'])
+    ->name('admin.jadwal_pelajaran.destroy');
 
 // ===============================
 // SPMB - CALON SISWA

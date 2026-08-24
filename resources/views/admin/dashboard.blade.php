@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,33 +16,58 @@
 
         .sidebar {
             position: fixed;
-            width: 240px;
+            width: 250px;
             height: 100vh;
             background: #1e293b;
             color: white;
-            padding: 20px;
             box-sizing: border-box;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
         }
 
-        .sidebar h2 {
-            margin-top: 0;
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid #334155;
         }
 
-        .sidebar a {
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 5px 0 0;
+        }
+
+        .menu {
+            padding: 15px 0;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #94a3b8;
+            padding: 15px 20px 8px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
             display: block;
-            color: white;
+            color: #cbd5e1;
             text-decoration: none;
-            padding: 12px;
-            margin-top: 5px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 14px;
         }
 
-        .sidebar a:hover {
+        .menu a:hover {
             background: #334155;
+            color: white;
         }
 
         .content {
-            margin-left: 240px;
+            margin-left: 250px;
             padding: 30px;
         }
 
@@ -55,7 +81,7 @@
             background: white;
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
         }
 
         .card h3 {
@@ -66,62 +92,47 @@
 
 <body>
 
-<div class="sidebar">
+    @include('layouts.sidebar')
 
-    <h2>SPMB Admin</h2>
+    <div class="content">
 
-    <a href="{{ route('admin.dashboard') }}">
-        Dashboard
-    </a>
+        <h1>Dashboard</h1>
 
-    <a href="{{ route('admin.spmb.index') }}">
-        Calon Siswa
-    </a>
+        <p>Selamat datang di Sistem Akademik Sekolah.</p>
 
-    <a href="{{ route('ruangan.index') }}">
-        Ruangan
-    </a>
+        <div class="card-container">
 
-</div>
+            <div class="card">
+                <h3>Calon Siswa</h3>
+                <p>Kelola data calon siswa SPMB.</p>
 
-<div class="content">
+                <a href="{{ route('admin.spmb.index') }}">
+                    Kelola
+                </a>
+            </div>
 
-    <h1>Dashboard</h1>
+            <div class="card">
+                <h3>Ruangan</h3>
+                <p>Kelola data ruangan sekolah.</p>
 
-    <p>Selamat datang di Sistem Akademik Sekolah.</p>
+                <a href="{{ route('ruangan.index') }}">
+                    Kelola
+                </a>
+            </div>
 
-    <div class="card-container">
+            <div class="card">
+                <h3>SPMB</h3>
+                <p>Verifikasi pendaftaran dan daftar ulang.</p>
 
-        <div class="card">
-            <h3>Calon Siswa</h3>
-            <p>Kelola data calon siswa SPMB.</p>
+                <a href="{{ route('admin.spmb.index') }}">
+                    Buka SPMB
+                </a>
+            </div>
 
-            <a href="{{ route('admin.spmb.index') }}">
-                Kelola
-            </a>
-        </div>
-
-        <div class="card">
-            <h3>Ruangan</h3>
-            <p>Kelola data ruangan sekolah.</p>
-
-            <a href="{{ route('ruangan.index') }}">
-                Kelola
-            </a>
-        </div>
-
-        <div class="card">
-            <h3>SPMB</h3>
-            <p>Verifikasi pendaftaran dan daftar ulang.</p>
-
-            <a href="{{ route('admin.spmb.index') }}">
-                Buka SPMB
-            </a>
         </div>
 
     </div>
 
-</div>
-
 </body>
+
 </html>

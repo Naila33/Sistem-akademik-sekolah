@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -127,7 +128,7 @@
             background: white;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         /* TABLE */
@@ -228,86 +229,51 @@
 
 <body>
 
-<div class="wrapper">
+    <div class="wrapper">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-
-        <div class="sidebar-header">
-            <h2>Sistem Akademik</h2>
-            <p>Admin Sekolah</p>
-        </div>
-
-        <div class="menu">
-
-            <div class="menu-title">
-                Menu Utama
-            </div>
-
-            <a href="/">
-                Dashboard
-            </a>
-
-            <div class="menu-title">
-                SPMB
-            </div>
-
-            <a href="{{ route('admin.spmb.index') }}">
-                Calon Siswa
-            </a>
-
-            <div class="menu-title">
-                Akademik
-            </div>
-
-            <a href="{{ route('ruangan.index') }}">
-                Ruangan
-            </a>
-
-        </div>
-
-    </aside>
+        @include('layouts.sidebar')
 
 
-    <!-- MAIN -->
-    <main class="main">
+        <!-- MAIN -->
+        <main class="main">
 
-        <nav class="navbar">
+            <nav class="navbar">
 
-            <h3>
-                @yield('title', 'Dashboard')
-            </h3>
+                <h3>
+                    @yield('title', 'Dashboard')
+                </h3>
 
-            <div class="admin-info">
-                Administrator
-            </div>
-
-        </nav>
-
-
-        <section class="content">
-
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
+                <div class="admin-info">
+                    Administrator
                 </div>
-            @endif
 
-            @if(session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
+            </nav>
 
-            @yield('content')
 
-        </section>
+            <section class="content">
 
-    </main>
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-</div>
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-@stack('scripts')
+                @yield('content')
+
+            </section>
+
+        </main>
+
+    </div>
+
+    @stack('scripts')
 
 </body>
+
 </html>
