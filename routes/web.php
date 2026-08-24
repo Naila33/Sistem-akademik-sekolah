@@ -2,9 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RuanganController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\PembagianKelasController;
+=======
+use App\Http\Controllers\Admin\SpmbController;
+>>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +20,18 @@ use App\Http\Controllers\PembagianKelasController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// ===============================
+// DASHBOARD
+// ===============================
+
+Route::get('/', function () {
+    return redirect()->route('admin.dashboard');
+})->name('home');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +65,7 @@ Route::put('/admin/ruangan/{id}', [RuanganController::class, 'update'])
 Route::delete('/admin/ruangan/{id}', [RuanganController::class, 'destroy'])
     ->name('ruangan.destroy');
 
+<<<<<<< Updated upstream
 // Mata Pelajaran Routes
 Route::get('/admin/mata_pelajaran', [MataPelajaranController::class, 'index'])
     ->name('mata_pelajaran.index');
@@ -83,3 +100,66 @@ Route::put('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'upda
 
 Route::delete('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'destroy'])
     ->name('pembagian-kelas.destroy');
+=======
+// ===============================
+// SPMB - CALON SISWA
+// ===============================
+
+Route::prefix('admin')->group(function () {
+
+    // Daftar calon siswa
+    Route::get(
+        '/spmb/calon-siswa',
+        [SpmbController::class, 'index']
+    )->name('admin.spmb.index');
+
+    // Form tambah calon siswa
+    Route::get(
+        '/spmb/calon-siswa/create',
+        [SpmbController::class, 'create']
+    )->name('admin.spmb.create');
+
+    // Simpan calon siswa
+    Route::post(
+        '/spmb/calon-siswa',
+        [SpmbController::class, 'store']
+    )->name('admin.spmb.store');
+
+    // Detail calon siswa
+    Route::get(
+        '/spmb/calon-siswa/{id}',
+        [SpmbController::class, 'show']
+    )->name('admin.spmb.show');
+
+    // Form edit calon siswa
+    Route::get(
+        '/spmb/calon-siswa/{id}/edit',
+        [SpmbController::class, 'edit']
+    )->name('admin.spmb.edit');
+
+    // Update calon siswa
+    Route::put(
+        '/spmb/calon-siswa/{id}',
+        [SpmbController::class, 'update']
+    )->name('admin.spmb.update');
+
+    // Hapus calon siswa
+    Route::delete(
+        '/spmb/calon-siswa/{id}',
+        [SpmbController::class, 'destroy']
+    )->name('admin.spmb.destroy');
+
+    // Verifikasi dokumen
+    Route::put(
+        '/spmb/calon-siswa/{id}/dokumen/{dokumenId}/verifikasi',
+        [SpmbController::class, 'verifikasiDokumen']
+    )->name('admin.spmb.dokumen.verifikasi');
+
+    // Verifikasi daftar ulang
+    Route::put(
+        '/spmb/calon-siswa/{id}/verifikasi-daftar-ulang',
+        [SpmbController::class, 'verifikasiDaftarUlang']
+    )->name('admin.spmb.daftar-ulang.verifikasi');
+
+});
+>>>>>>> Stashed changes
