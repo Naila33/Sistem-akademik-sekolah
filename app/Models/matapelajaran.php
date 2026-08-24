@@ -14,6 +14,6 @@ class MataPelajaran extends Model
     protected $fillable = [
         'nama_mapel',
         'kode_mapel',
-        'warna',
     ];
+
 }

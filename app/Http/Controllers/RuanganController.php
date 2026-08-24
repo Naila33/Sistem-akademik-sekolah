@@ -11,12 +11,12 @@ class RuanganController extends Controller
     {
         $ruangan = Ruangan::paginate(10);
 
-        return view('admin.ruangan.index', compact('ruangan'));
+        return view('admin.master-data.ruangan.index', compact('ruangan'));
     }
 
     public function create()
     {
-        return view('admin.ruangan.create');
+        return view('admin.master-data.ruangan.create');
     }
 
     public function store(Request $request)
@@ -43,7 +43,7 @@ class RuanganController extends Controller
     {
         $ruangan = Ruangan::findOrFail($id);
 
-        return view('admin.ruangan.edit', compact('ruangan'));
+        return view('admin.master-data.ruangan.edit', compact('ruangan'));
     }
 
     public function update(Request $request, $id)

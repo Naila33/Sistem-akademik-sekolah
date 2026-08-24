@@ -10,7 +10,19 @@ class TahunAjaranController extends Controller
     public function index()
     {
         $tahunAjaran = TahunAjaran::all();
-        return view('tahun_ajaran.index', compact('tahunAjaran'));
+        return view('admin.master-data.tahun-ajaran.index', compact('tahunAjaran'));
+    }
+
+    public function create()
+    {
+        return view('admin.master-data.tahun-ajaran.create');
+    }
+
+    public function edit($id)
+    {
+        $tahunAjaran = TahunAjaran::findOrFail($id);
+
+        return view('admin.master-data.tahun-ajaran.edit', compact('tahunAjaran'));
     }
 
     public function store(Request $request)
