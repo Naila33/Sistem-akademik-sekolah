@@ -7,63 +7,13 @@
 
     <title>Dashboard Admin</title>
 
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             background: #f5f6fa;
-        }
-
-        .sidebar {
-            position: fixed;
-            width: 250px;
-            height: 100vh;
-            background: #1e293b;
-            color: white;
-            box-sizing: border-box;
-            top: 0;
-            left: 0;
-            overflow-y: auto;
-        }
-
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid #334155;
-        }
-
-        .sidebar-header h2 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .sidebar-header p {
-            font-size: 12px;
-            color: #94a3b8;
-            margin: 5px 0 0;
-        }
-
-        .menu {
-            padding: 15px 0;
-        }
-
-        .menu-title {
-            font-size: 11px;
-            color: #94a3b8;
-            padding: 15px 20px 8px;
-            text-transform: uppercase;
-        }
-
-        .menu a {
-            display: block;
-            color: #cbd5e1;
-            text-decoration: none;
-            padding: 12px 20px;
-            font-size: 14px;
-        }
-
-        .menu a:hover {
-            background: #334155;
-            color: white;
         }
 
         .content {

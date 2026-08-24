@@ -9,6 +9,8 @@
         @yield('title', 'Sistem Akademik Sekolah')
     </title>
 
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+
     <style>
         * {
             box-sizing: border-box;
@@ -25,58 +27,6 @@
         .wrapper {
             display: flex;
             min-height: 100vh;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 250px;
-            background: #1e293b;
-            color: white;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            overflow-y: auto;
-        }
-
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid #334155;
-        }
-
-        .sidebar-header h2 {
-            font-size: 20px;
-        }
-
-        .sidebar-header p {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 5px;
-        }
-
-        .menu {
-            padding: 15px 0;
-        }
-
-        .menu-title {
-            font-size: 11px;
-            color: #94a3b8;
-            padding: 15px 20px 8px;
-            text-transform: uppercase;
-        }
-
-        .menu a {
-            display: block;
-            padding: 12px 20px;
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            background: #334155;
-            color: white;
         }
 
         /* CONTENT */
@@ -209,10 +159,6 @@
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .sidebar {
-                width: 210px;
-            }
-
             .main {
                 margin-left: 210px;
                 width: calc(100% - 210px);

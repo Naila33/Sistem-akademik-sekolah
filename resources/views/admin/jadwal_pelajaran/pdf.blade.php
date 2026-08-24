@@ -51,6 +51,12 @@
             width: 145px;
         }
 
+        .jp-zero {
+            width: 22px;
+            background: #f4f6f4;
+            font-weight: bold;
+        }
+
         .jp {
             font-weight: normal;
             background: #eef5ed;
@@ -75,12 +81,13 @@
                 <th class="kelas" rowspan="2">Kelas</th>
                 <th class="info" rowspan="2">Info</th>
                 @foreach ($hari as $namaHari)
-                    <th class="day" colspan="11">{{ strtoupper($namaHari) }}</th>
+                    <th class="day" colspan="12">{{ strtoupper($namaHari) }}</th>
                 @endforeach
             </tr>
             <tr>
                 @foreach ($hari as $namaHari)
-                    @for ($jp = 0; $jp <= 10; $jp++)
+                    <th class="jp">0</th>
+                    @for ($jp = 1; $jp <= 10; $jp++)
                         <th class="jp">{{ $jp }}</th>
                     @endfor
                 @endforeach
@@ -106,7 +113,17 @@
                             @php
                                 $jadwalHari = $jadwalKelas->filter(fn($item) => strtolower($item->hari) === strtolower($namaHari))->values();
                                 $jpPosisi = 0;
+                                $kegiatanJpZero = [
+                                    'Senin' => 'Apel/Pembinaan',
+                                    'Selasa' => 'Serasi',
+                                    'Rabu' => 'Rehat',
+                                    'Kamis' => 'Kasihku',
+                                    'Jumat' => 'Keagamaan',
+                                ][$namaHari] ?? '-';
                             @endphp
+                            @if ($jenisBaris === 'mapel')
+                                <td class="jp-zero" rowspan="3">{{ $kegiatanJpZero }}</td>
+                            @endif
                             @foreach ($jadwalHari as $item)
                                 @php
                                     $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), 11 - $jpPosisi);

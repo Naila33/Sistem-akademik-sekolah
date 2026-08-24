@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Pelajaran</title>
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
+            margin-left: 250px;
             padding: 24px;
             color: #212529;
         }
@@ -19,6 +21,7 @@
             border: 1px solid #dfe5e8;
             border-radius: 8px;
             overflow-x: auto;
+            margin-top: 35px;
         }
 
         .header {
@@ -205,7 +208,7 @@
         .schedule-list,
         .schedule-row {
             display: grid;
-            grid-template-columns: repeat(11, minmax(22px, 1fr));
+            grid-template-columns: repeat(10, minmax(22px, 1fr));
             gap: 0;
         }
 
@@ -394,6 +397,7 @@
         @media (max-width: 600px) {
             body {
                 padding: 15px;
+                margin-left: 210px;
             }
 
             .container {
@@ -409,7 +413,7 @@
 </head>
 
 <body>
-    <main class="container">
+     @include('layouts.sidebar')
         <div class="header">
             <div>
                 <h1>Jadwal Pelajaran</h1>
@@ -439,19 +443,7 @@
             </form>
         </div>
 
-        @if (session('success'))
-            <div class="success">{{ session('success') }}</div>
-        @endif
-
-        @if ($mapelLegenda->isNotEmpty())
-            <div class="legend">
-                @foreach ($mapelLegenda as $mapel)
-                    <span class="legend-item"
-                        style="background-color: {{ $mapel->warna ?? '#d3d3d3' }};">{{ $mapel->kode_mapel }}</span>
-                @endforeach
-            </div>
-        @endif
-
+    <main class="container">
         <table>
             <thead>
                 <tr>
@@ -462,7 +454,7 @@
                             <span class="day-header">
                                 {{ $namaHari }}
                                 <span class="jp-numbers">
-                                    @for ($jp = 0; $jp <= 10; $jp++)
+                                    @for ($jp = 1; $jp <= 10; $jp++)
                                         <span class="jp-number">{{ $jp }}</span>
                                     @endfor
                                 </span>

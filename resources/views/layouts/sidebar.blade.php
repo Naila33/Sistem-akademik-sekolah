@@ -11,4 +11,11 @@
         <div class="menu-title">Akademik</div>
         <a href="{{ route('ruangan.index') }}">Ruangan</a>
     </div>
+
+    <div>
+        <div class="jadwal">
+        <div class="jadwal-title">Jadwal Pelajaran</div>
+        <a href="{{ route('admin.jadwal_pelajaran.index') }}">Lihat Jadwal</a>
+        </div>
+    </div>
 </aside>
