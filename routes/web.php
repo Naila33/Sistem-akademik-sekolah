@@ -2,13 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RuanganController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\PembagianKelasController;
-=======
 use App\Http\Controllers\Admin\SpmbController;
->>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
@@ -65,7 +62,6 @@ Route::put('/admin/ruangan/{id}', [RuanganController::class, 'update'])
 Route::delete('/admin/ruangan/{id}', [RuanganController::class, 'destroy'])
     ->name('ruangan.destroy');
 
-<<<<<<< Updated upstream
 // Mata Pelajaran Routes
 Route::get('/admin/mata_pelajaran', [MataPelajaranController::class, 'index'])
     ->name('mata_pelajaran.index');
@@ -100,7 +96,7 @@ Route::put('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'upda
 
 Route::delete('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'destroy'])
     ->name('pembagian-kelas.destroy');
-=======
+
 // ===============================
 // SPMB - CALON SISWA
 // ===============================
@@ -162,4 +158,4 @@ Route::prefix('admin')->group(function () {
     )->name('admin.spmb.daftar-ulang.verifikasi');
 
 });
->>>>>>> Stashed changes
+

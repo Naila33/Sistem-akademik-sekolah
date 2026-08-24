@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,48 +70,45 @@
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Edit Mata Pelajaran</h1>
+        <h1>Edit Mata Pelajaran</h1>
 
-    <form action="{{ route('mata_pelajaran.update', $mata_pelajaran->id) }}" method="POST">
+        <form action="{{ route('mata_pelajaran.update', $mata_pelajaran->id) }}" method="POST">
 
-        @csrf
-        @method('PUT')
+            @csrf
+            @method('PUT')
 
-        <div class="form-group">
-            <label>Kode Mata Pelajaran</label>
+            <div class="form-group">
+                <label>Kode Mata Pelajaran</label>
 
-            <input
-                type="text"
-                name="kode_mapel"
-                value="{{ $mata_pelajaran->kode_mapel }}"
-                required
-            >
-        </div>
+                <input type="text" name="kode_mapel" value="{{ $mata_pelajaran->kode_mapel }}" required>
+            </div>
 
-        <div class="form-group">
-            <label>Nama Mata Pelajaran</label>
+            <div class="form-group">
+                <label>Nama Mata Pelajaran</label>
 
-            <input
-                type="text"
-                name="nama_mapel"
-                value="{{ $mata_pelajaran->nama_mapel }}"
-                required
-            >
-        </div>
+                <input type="text" name="nama_mapel" value="{{ $mata_pelajaran->nama_mapel }}" required>
+            </div>
 
-        <button type="submit" class="btn btn-simpan">
-            Simpan Perubahan
-        </button>
+            <div class="form-group">
+                <label>Warna Jadwal</label>
+                <input type="color" name="warna" value="{{ old('warna', $mata_pelajaran->warna ?? '#d3d3d3') }}"
+                    required>
+            </div>
 
-        <a href="{{ route('mata_pelajaran.index') }}" class="btn btn-kembali">
-            Kembali
-        </a>
+            <button type="submit" class="btn btn-simpan">
+                Simpan Perubahan
+            </button>
 
-    </form>
+            <a href="{{ route('mata_pelajaran.index') }}" class="btn btn-kembali">
+                Kembali
+            </a>
 
-</div>
+        </form>
+
+    </div>
 
 </body>
+
 </html>

@@ -20,6 +20,7 @@ class Guru extends Model
         'kontak',
         'alamat',
         'status',
+        'kode_guru',
     ];
 
     // Tambahkan ini jika tabel kamu TIDAK memiliki kolom created_at dan updated_at

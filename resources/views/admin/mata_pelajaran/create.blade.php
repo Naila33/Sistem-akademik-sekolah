@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,59 +75,54 @@
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Tambah Mata Pelajaran</h1>
+        <h1>Tambah Mata Pelajaran</h1>
 
-    @if ($errors->any())
-        <div class="error">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        @if ($errors->any())
+            <div class="error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    <form action="{{ route('mata_pelajaran.store') }}" method="POST">
+        <form action="{{ route('mata_pelajaran.store') }}" method="POST">
 
-        @csrf
+            @csrf
 
-        <div class="form-group">
-            <label>Kode Mata Pelajaran</label>
+            <div class="form-group">
+                <label>Kode Mata Pelajaran</label>
 
-            <input
-                type="text"
-                name="kode_mapel"
-                value="{{ old('kode_mapel') }}"
-                placeholder="Contoh: MTK"
-                required
-            >
-        </div>
+                <input type="text" name="kode_mapel" value="{{ old('kode_mapel') }}" placeholder="Contoh: MTK" required>
+            </div>
 
-        <div class="form-group">
-            <label>Nama Mata Pelajaran</label>
+            <div class="form-group">
+                <label>Nama Mata Pelajaran</label>
 
-            <input
-                type="text"
-                name="nama_mapel"
-                value="{{ old('nama_mapel') }}"
-                placeholder="Contoh: Matematika"
-                required
-            >
-        </div>
+                <input type="text" name="nama_mapel" value="{{ old('nama_mapel') }}" placeholder="Contoh: Matematika"
+                    required>
+            </div>
 
-        <button type="submit" class="btn btn-simpan">
-            Simpan
-        </button>
+            <div class="form-group">
+                <label>Warna Jadwal</label>
+                <input type="color" name="warna" value="{{ old('warna', '#d3d3d3') }}" required>
+            </div>
 
-        <a href="{{ route('mata_pelajaran.index') }}" class="btn btn-kembali">
-            Kembali
-        </a>
+            <button type="submit" class="btn btn-simpan">
+                Simpan
+            </button>
 
-    </form>
+            <a href="{{ route('mata_pelajaran.index') }}" class="btn btn-kembali">
+                Kembali
+            </a>
 
-</div>
+        </form>
+
+    </div>
 
 </body>
+
 </html>
