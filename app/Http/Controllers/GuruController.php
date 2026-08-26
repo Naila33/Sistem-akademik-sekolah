@@ -7,6 +7,7 @@ use App\Models\MataPelajaran;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class GuruController extends Controller
@@ -38,7 +39,7 @@ class GuruController extends Controller
     {
         $data = $request->validate($this->guruRules());
 
-        DB::transaction(function () use ($data, &$guru, &$passwordAwal) {
+        [$guru, $passwordAwal] = DB::transaction(function () use ($data) {
 
             // Simpan data guru
             $guru = Guru::create($data);
@@ -49,10 +50,12 @@ class GuruController extends Controller
             // Buat akun login guru
             User::create([
                 'username' => $guru->nip,
-                'password' => $passwordAwal,
+                'password' => Hash::make($passwordAwal),
                 'role_id' => 2,
                 'guru_id' => $guru->id,
             ]);
+
+            return [$guru, $passwordAwal];
         });
 
         return redirect()
