@@ -11,12 +11,40 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\JadwalpelajaranController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Guru\PenilaianController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+//login
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.proses');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth')->name('dashboard');
+
+Route::get('/guru/dashboard', function () {
+    return view('guru.dashboard');
+})->middleware('auth')->name('guru.dashboard');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
+
+Route::get('/ganti-password', [AuthController::class, 'showChangePassword'])
+    ->middleware('auth')
+    ->name('password.change');
+
+Route::post('/ganti-password', [AuthController::class, 'changePassword'])
+    ->middleware('auth')
+    ->name('password.update');
 
 // DASHBOARD & HOME
 Route::get('/', function () {
@@ -46,10 +74,13 @@ Route::put('/admin/mata_pelajaran/{id}', [MataPelajaranController::class, 'updat
 Route::delete('/admin/mata_pelajaran/{id}', [MataPelajaranController::class, 'destroy'])->name('mata_pelajaran.destroy');
 
 // PEMBAGIAN KELAS
-Route::get('/admin/pembagian_kelas', [PembagianKelasController::class, 'index'])->name('pembagian-kelas.index');
-Route::get('/admin/pembagian_kelas/{id}/edit',[PembagianKelasController::class, 'edit'])->name('pembagian-kelas.edit');
-Route::put('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'update'])->name('pembagian-kelas.update');
-Route::delete('/admin/pembagian_kelas/{id}',[PembagianKelasController::class, 'destroy'])->name('pembagian-kelas.destroy');
+Route::get('/admin/pembagian_kelas', [PembagianKelasController::class, 'index'])->name('pembagian_kelas.index');
+Route::get('/admin/pembagian_kelas/create', [PembagianKelasController::class, 'create'])->name('pembagian_kelas.create');
+Route::post('/admin/pembagian_kelas', [PembagianKelasController::class, 'store'])->name('pembagian_kelas.store');
+Route::get('/admin/pembagian_kelas/{id}/edit', [PembagianKelasController::class, 'edit'])->name('pembagian_kelas.edit');
+Route::put('/admin/pembagian_kelas/{id}', [PembagianKelasController::class, 'update'])->name('pembagian_kelas.update');
+Route::delete('/admin/pembagian_kelas/{id}', [PembagianKelasController::class, 'destroy'])->name('pembagian_kelas.destroy');
+Route::post('/admin/pembagian_kelas/import',[PembagianKelasController::class, 'import'])->name('pembagian_kelas.import');
 
 // JADWAL PELAJARAN
 Route::get('/admin/jadwal_pelajaran', [JadwalpelajaranController::class, 'index'])->name('admin.jadwal_pelajaran.index');
@@ -68,7 +99,9 @@ Route::delete('/admin/jadwal_pelajaran/{id}', [JadwalpelajaranController::class,
 Route::resource('tahun-ajaran', TahunAjaranController::class)->except(['show']);
 Route::resource('jurusan', JurusanController::class)->except(['show']);
 Route::resource('siswa', SiswaController::class)->except(['show']);
-Route::resource('guru', GuruController::class)->except(['show']);
+Route::resource('admin/master-data/guru', GuruController::class)
+    ->except(['show'])
+    ->names('guru');
 Route::resource('kelas', KelasController::class)->except(['show']);
 
 // SPMB - CALON SISWA
@@ -82,4 +115,21 @@ Route::prefix('admin')->group(function () {
     Route::delete('/spmb/calon-siswa/{id}', [SpmbController::class, 'destroy'])->name('admin.spmb.destroy');
     Route::put('/spmb/calon-siswa/{id}/dokumen/{dokumenId}/verifikasi', [SpmbController::class, 'verifikasiDokumen'])->name('admin.spmb.dokumen.verifikasi');
     Route::put('/spmb/calon-siswa/{id}/verifikasi-daftar-ulang', [SpmbController::class, 'verifikasiDaftarUlang'])->name('admin.spmb.daftar-ulang.verifikasi');
+});
+
+//guru
+Route::middleware('auth')->group(function () {
+
+    Route::get('/guru/penilaian',
+        [PenilaianController::class, 'index']
+    )->name('guru.penilaian.index');
+
+    Route::get('/guru/penilaian/{jadwal}/input',
+        [PenilaianController::class, 'create']
+    )->name('guru.penilaian.create');
+
+    Route::post('/guru/penilaian/{jadwal}',
+        [PenilaianController::class, 'store']
+    )->name('guru.penilaian.store');
+
 });

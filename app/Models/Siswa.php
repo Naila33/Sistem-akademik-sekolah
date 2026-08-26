@@ -17,12 +17,14 @@ class Siswa extends Model
         'nisn',
         'nik',
         'nama',
-        'jenis_kelamin',
+        'jk',
         'alamat',
         'nama_orang_tua',
         'status',
     ];
 
-    // Tambahkan ini jika tabel kamu TIDAK memiliki kolom created_at dan updated_at
-    public $timestamps = false;
+    public function pembagianKelas()
+{
+    return $this->hasMany(PembagianKelas::class);
+}
 }

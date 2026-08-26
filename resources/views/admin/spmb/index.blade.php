@@ -278,13 +278,23 @@
 
                             <td>
 
-                                <span class="badge text-bg-primary">
-                                    {{ $item->jurusan->kode_jurusan }}
-                                </span>
+                                @if($item->jurusan)
 
-                                <div class="small text-muted">
-                                    {{ $item->jurusan->nama_jurusan }}
-                                </div>
+                                    <span class="badge text-bg-primary">
+                                        {{ $item->jurusan->kode_jurusan }}
+                                    </span>
+
+                                    <div class="small text-muted">
+                                        {{ $item->jurusan->nama_jurusan }}
+                                    </div>
+
+                                @else
+
+                                    <span class="text-muted">
+                                        Jurusan tidak tersedia
+                                    </span>
+
+                                @endif
 
                             </td>
 

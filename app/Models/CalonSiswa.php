@@ -65,4 +65,9 @@ class CalonSiswa extends Model
             'calon_siswa_id'
         );
     }
+
+    public function pembagianKelas()
+    {
+        return $this->hasMany(SiswaKelas::class, 'siswa_id');
+    }
 }

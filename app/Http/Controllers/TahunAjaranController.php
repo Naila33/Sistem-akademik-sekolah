@@ -38,7 +38,8 @@ class TahunAjaranController extends Controller
             'status'       => $request->has('status') ? true : false,
         ]);
 
-        return redirect()->back()->with('success', 'Data tahun ajaran berhasil ditambahkan');
+        return redirect()->route('tahun-ajaran.index')
+            ->with('success', 'Data tahun ajaran berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
@@ -55,7 +56,8 @@ class TahunAjaranController extends Controller
             'status'       => $request->has('status') ? true : false,
         ]);
 
-        return redirect()->back()->with('success', 'Data tahun ajaran berhasil diperbarui');
+        return redirect()->route('tahun-ajaran.index')
+            ->with('success', 'Data tahun ajaran berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -63,6 +65,7 @@ class TahunAjaranController extends Controller
         $tahun = TahunAjaran::findOrFail($id);
         $tahun->delete();
 
-        return redirect()->back()->with('success', 'Data tahun ajaran berhasil dihapus');
+        return redirect()->route('tahun-ajaran.index')
+            ->with('success', 'Data tahun ajaran berhasil dihapus');
     }
 }

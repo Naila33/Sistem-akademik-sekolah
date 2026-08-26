@@ -14,9 +14,9 @@
         <p><label>NISN<br><input name="nisn" value="{{ old('nisn', $siswa->nisn) }}" required></label></p>
         <p><label>NIK<br><input name="nik" value="{{ old('nik', $siswa->nik) }}" required></label></p>
         <p><label>Nama<br><input name="nama" value="{{ old('nama', $siswa->nama) }}" required></label></p>
-        <p><label>Jenis Kelamin<br><select name="jenis_kelamin" required>
-                    <option value="Laki-laki" @selected(old('jenis_kelamin', $siswa->jenis_kelamin) === 'Laki-laki')>Laki-laki</option>
-                    <option value="Perempuan" @selected(old('jenis_kelamin', $siswa->jenis_kelamin) === 'Perempuan')>Perempuan</option>
+        <p><label>Jenis Kelamin<br><select name="jk" required>
+                    <option value="Laki-laki" @selected(old('jk', $siswa->jk) === 'Laki-laki')>Laki-laki</option>
+                    <option value="Perempuan" @selected(old('jk', $siswa->jk) === 'Perempuan')>Perempuan</option>
                 </select></label></p>
         <p><label>Alamat<br><textarea name="alamat" required>{{ old('alamat', $siswa->alamat) }}</textarea></label></p>
         <p><label>Nama Orang Tua<br><input name="nama_orang_tua" value="{{ old('nama_orang_tua', $siswa->nama_orang_tua) }}" required></label></p>

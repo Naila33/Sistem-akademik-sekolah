@@ -4,10 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <title>Master Siswa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            margin-left: 250px;
+            padding: 60px;
+            color: #212529;
+        }
+        </style>
 </head>
 
 <body>
+    @include('layouts.sidebar')
     <h1>Master Siswa</h1>
     @if (session('success'))<p>{{ session('success') }}</p>@endif
     <p><a href="{{ route('master-data.index') }}">Kembali ke Master Data</a> | <a href="{{ route('siswa.create') }}">Tambah Siswa</a></p>
@@ -31,7 +42,7 @@
                 <td>{{ $siswa->nisn }}</td>
                 <td>{{ $siswa->nik }}</td>
                 <td>{{ $siswa->nama }}</td>
-                <td>{{ $siswa->jenis_kelamin }}</td>
+                <td>{{ $siswa->jk }}</td>
                 <td>{{ $siswa->alamat }}</td>
                 <td>{{ $siswa->nama_orang_tua }}</td>
                 <td>{{ $siswa->status }}</td>

@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             margin-left: 250px;
-            padding: 24px;
+            padding: 60px;
             color: #212529;
         }
 

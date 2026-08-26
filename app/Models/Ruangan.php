@@ -17,4 +17,8 @@ class Ruangan extends Model
         'kapasitas',
         'status',
     ];
+
+    protected $casts = [
+        'status' => 'boolean',
+    ];
 }

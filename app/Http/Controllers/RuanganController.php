@@ -25,7 +25,7 @@ class RuanganController extends Controller
             'kode_ruang' => 'required',
             'nama_ruang' => 'required',
             'kapasitas' => 'required|integer',
-            'status' => 'required',
+            'status' => 'required|boolean',
         ]);
 
         Ruangan::create([
@@ -52,7 +52,7 @@ class RuanganController extends Controller
             'kode_ruang' => 'required',
             'nama_ruang' => 'required',
             'kapasitas' => 'required|integer',
-            'status' => 'required',
+            'status' => 'required|boolean',
         ]);
 
         $ruangan = Ruangan::findOrFail($id);

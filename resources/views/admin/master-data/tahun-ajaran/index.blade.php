@@ -4,10 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <title>Master Tahun Ajaran</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            margin-left: 250px;
+            padding: 60px;
+            color: #212529;
+        }
+        </style>
 </head>
 
 <body>
+    @include('layouts.sidebar')
     <h1>Master Tahun Ajaran</h1>@if(session('success'))<p>{{ session('success') }}</p>@endif
     <p><a href="{{ route('master-data.index') }}">Kembali ke Master Data</a> | <a href="{{ route('tahun-ajaran.create') }}">Tambah Tahun Ajaran</a></p>
     <table border="1" cellpadding="8" cellspacing="0">

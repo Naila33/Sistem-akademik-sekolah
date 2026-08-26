@@ -176,7 +176,9 @@
 
                             <div>
                                 {{ $calonSiswa->tempat_lahir }},
-                                {{ $calonSiswa->tanggal_lahir->format('d-m-Y') }}
+                                {{ $calonSiswa->tanggal_lahir
+                                    ? $calonSiswa->tanggal_lahir->format('d-m-Y')
+                                    : '-' }}
                             </div>
 
                         </div>
@@ -290,11 +292,21 @@
 
                             <div class="fw-semibold">
 
-                                {{ $calonSiswa->jurusan->nama_jurusan }}
+                                @if($calonSiswa->jurusan)
 
-                                <span class="badge text-bg-primary">
-                                    {{ $calonSiswa->jurusan->kode_jurusan }}
-                                </span>
+                                    {{ $calonSiswa->jurusan->nama_jurusan }}
+
+                                    <span class="badge text-bg-primary">
+                                        {{ $calonSiswa->jurusan->kode_jurusan }}
+                                    </span>
+
+                                @else
+
+                                    <span class="text-muted">
+                                        Jurusan tidak tersedia
+                                    </span>
+
+                                @endif
 
                             </div>
 

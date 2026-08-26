@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\Guru;
+use App\Models\Jurusan;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 
@@ -25,9 +26,10 @@ class KelasController extends Controller
     public function create()
     {
         $gurus = Guru::all();
+        $jurusans = Jurusan::orderBy('nama_jurusan')->get();
         $tahunAjarans = TahunAjaran::all();
 
-        return view('admin.master-data.kelas.create', compact('gurus', 'tahunAjarans'));
+        return view('admin.master-data.kelas.create', compact('gurus', 'jurusans', 'tahunAjarans'));
     }
 
     /**
@@ -36,9 +38,9 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'tingkat' => 'required|max:20',
-            'jurusan' => 'required|max:100',
-            'nama_kelas' => 'required|max:100',
+            'tingkat' => 'required|in:X,XI,XII',
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'nama_kelas' => 'required|in:A,B,C,D,E,F,G,H',
             'wali_kelas_id' => 'nullable|integer',
             'tahun_ajaran_id' => 'nullable|integer',
         ]);
@@ -63,9 +65,10 @@ class KelasController extends Controller
     {
         $kelas = Kelas::findOrFail($id);
         $gurus = Guru::all();
+        $jurusans = Jurusan::orderBy('nama_jurusan')->get();
         $tahunAjarans = TahunAjaran::all();
 
-        return view('admin.master-data.kelas.edit', compact('kelas', 'gurus', 'tahunAjarans'));
+        return view('admin.master-data.kelas.edit', compact('kelas', 'gurus', 'jurusans', 'tahunAjarans'));
     }
 
     /**
@@ -74,9 +77,9 @@ class KelasController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            'tingkat' => 'required|max:20',
-            'jurusan' => 'required|max:100',
-            'nama_kelas' => 'required|max:100',
+            'tingkat' => 'required|in:X,XI,XII',
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'nama_kelas' => 'required|in:A,B,C,D,E,F,G,H',
             'wali_kelas_id' => 'nullable|integer',
             'tahun_ajaran_id' => 'nullable|integer',
         ]);

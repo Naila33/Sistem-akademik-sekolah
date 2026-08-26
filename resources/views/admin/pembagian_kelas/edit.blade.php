@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,89 +85,82 @@
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Edit Pembagian Kelas</h1>
+        <h1>Edit Pembagian Kelas</h1>
 
-    @if ($errors->any())
-        <div class="error">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        @if ($errors->any())
+            <div class="error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        {{-- Informasi siswa --}}
+        <div class="info">
+
+            <p>
+                <strong>NIS:</strong>
+                {{ $pembagian->siswa?->nisn ?? '-' }}
+            </p>
+
+            <p>
+                <strong>Nama:</strong>
+                {{ $pembagian->siswa?->nama_lengkap ?? 'Data siswa tidak tersedia' }}
+            </p>
+
         </div>
-    @endif
 
-    {{-- Informasi siswa --}}
-    <div class="info">
 
-        <p>
-            <strong>NIS:</strong>
-            {{ $pembagian->siswa->nis }}
-        </p>
+        <form action="{{ route('pembagian-kelas.update', $pembagian->id) }}" method="POST">
 
-        <p>
-            <strong>Nama:</strong>
-            {{ $pembagian->siswa->nama }}
-        </p>
+            @csrf
+            @method('PUT')
+
+
+            <div class="form-group">
+
+                <label for="kelas_id">
+                    Kelas
+                </label>
+
+                <select name="kelas_id" id="kelas_id" required>
+
+                    <option value="">
+                        -- Pilih Kelas --
+                    </option>
+
+                    @foreach ($kelas as $k)
+
+                        <option value="{{ $k->id }}" {{ $pembagian->kelas_id == $k->id ? 'selected' : '' }}>
+
+                            {{ $k->tingkat }} {{ $k->nama_kelas }}
+                            - {{ $k->jurusan?->nama_jurusan ?? 'Jurusan belum dipilih' }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+
+            <button type="submit" class="btn btn-simpan">
+                Simpan Perubahan
+            </button>
+
+            <a href="{{ route('pembagian-kelas.index') }}" class="btn btn-kembali">
+                Kembali
+            </a>
+
+        </form>
 
     </div>
 
-
-    <form
-        action="{{ route('pembagian-kelas.update', $pembagian->id) }}"
-        method="POST"
-    >
-
-        @csrf
-        @method('PUT')
-
-
-        <div class="form-group">
-
-            <label for="kelas_id">
-                Kelas
-            </label>
-
-            <select name="kelas_id" id="kelas_id" required>
-
-                <option value="">
-                    -- Pilih Kelas --
-                </option>
-
-                @foreach ($kelas as $k)
-
-                    <option
-                        value="{{ $k->id }}"
-                        {{ $pembagian->kelas_id == $k->id ? 'selected' : '' }}
-                    >
-
-                        {{ $k->tingkat }} {{ $k->nama_kelas }}
-
-                    </option>
-
-                @endforeach
-
-            </select>
-
-        </div>
-
-
-        <button type="submit" class="btn btn-simpan">
-            Simpan Perubahan
-        </button>
-
-        <a
-            href="{{ route('pembagian-kelas.index') }}"
-            class="btn btn-kembali"
-        >
-            Kembali
-        </a>
-
-    </form>
-
-</div>
-
 </body>
+
 </html>

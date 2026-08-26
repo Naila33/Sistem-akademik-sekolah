@@ -16,11 +16,21 @@ class Guru extends Model
     protected $fillable = [
         'nip',
         'nama',
-        'jenis_kelamin',
-        'kontak',
+        'jk',
+        'tgl_lahir',
+        'agama',
         'alamat',
-        'status',
-        'kode_guru',
+        'no_hp',
+        'email',
+        'status_kepegawaian',
+        'jabatan',
+        'tmt',
+        'mata_pelajaran_id',
+    ];
+
+    protected $casts = [
+        'tgl_lahir' => 'date:Y-m-d',
+        'tmt' => 'date:Y-m-d',
     ];
 
     // Tambahkan ini jika tabel kamu TIDAK memiliki kolom created_at dan updated_at

@@ -14,7 +14,7 @@
         <p><label>NISN<br><input name="nisn" value="{{ old('nisn') }}" required></label></p>
         <p><label>NIK<br><input name="nik" value="{{ old('nik') }}" required></label></p>
         <p><label>Nama<br><input name="nama" value="{{ old('nama') }}" required></label></p>
-        <p><label>Jenis Kelamin<br><select name="jenis_kelamin" required>
+        <p><label>Jenis Kelamin<br><select name="jk" required>
                     <option value="">Pilih</option>
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
