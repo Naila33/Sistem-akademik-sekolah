@@ -14,14 +14,25 @@ class Siswa extends Model
 
     // Sesuaikan kolom ini dengan nama kolom di tabel datasiswa kamu
     protected $fillable = [
+        'nis',
         'nisn',
-        'nik',
         'nama',
         'jk',
+        'tempat_lahir',
+        'tgl_lahir',
+        'agama',
+        'nik',
+        'no_kk',
         'alamat',
-        'nama_orang_tua',
-        'status',
+        'no_hp',
+        'email',
     ];
+
+    protected $casts = [
+        'tgl_lahir' => 'date:Y-m-d',
+    ];
+
+    public $timestamps = false;
 
     public function pembagianKelas()
 {

@@ -1,69 +1,38 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <title>Master Mata Pelajaran</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            margin-left: 250px;
-            padding: 60px;
-            color: #212529;
-        }
-        </style>
-</head>
-<body>
-    @include('layouts.sidebar')
+@extends('layouts.app')
+
+@section('title', 'Master Mata Pelajaran')
+@section('content')
+<div class="card">
     <h1>Master Mata Pelajaran</h1>
-
-    @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
-    @endif
-
-    <p>
-        <a href="{{ route('master-data.index') }}">Kembali ke Master Data</a> | 
-        <a href="{{ route('mata_pelajaran.create') }}">Tambah Mata Pelajaran</a>
-    </p>
-
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Kode Mapel</th>
-                <th>Nama Mapel</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($mata_pelajaran as $mapel)
+    @if(session('success'))<p>{{ session('success') }}</p>@endif
+    <p><a href="{{ route('mata_pelajaran.create') }}">Tambah Mata Pelajaran</a></p>
+    <div class="table-wrapper">
+        <table>
+            <thead>
                 <tr>
+                    <th>No</th>
+                    <th>Kode Mapel</th>
+                    <th>Nama Mapel</th>
+                    <th>Kode Warna</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($mata_pelajaran as $mapel)<tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $mapel->kode_mapel }}</td>
                     <td>{{ $mapel->nama_mapel }}</td>
                     <td>
-                        <a href="{{ route('mata_pelajaran.edit', $mapel->id) }}">Edit</a>
-                        
-                        <form action="{{ route('mata_pelajaran.destroy', $mapel->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Hapus mata pelajaran?')">Hapus</button>
-                        </form>
+                        {{ $mapel->warna ?? '#d3d3d3' }}
                     </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" align="center">Belum ada data mata pelajaran.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-
-    <div style="margin-top: 10px;">
-        {{ $mata_pelajaran->links() }}
-    </div>
-
-</body>
-</html>
+                    <td><a href="{{ route('mata_pelajaran.edit', $mapel->id) }}">Edit</a>
+                        <form action="{{ route('mata_pelajaran.destroy', $mapel->id) }}" method="POST">@csrf @method('DELETE')<button type="submit" onclick="return confirm('Hapus mata pelajaran?')">Hapus</button></form>
+                    </td>
+                </tr>@empty<tr>
+                    <td colspan="5">Belum ada data mata pelajaran.</td>
+                </tr>@endforelse
+            </tbody>
+        </table>
+    </div>{{ $mata_pelajaran->links() }}
+</div>
+@endsection

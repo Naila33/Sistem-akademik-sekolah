@@ -24,11 +24,13 @@ class MataPelajaranController extends Controller
         $request->validate([
             'kode_mapel' => 'required',
             'nama_mapel' => 'required',
+            'warna' => 'required|string|size:7',
         ]);
 
         MataPelajaran::create([
             'kode_mapel' => $request->kode_mapel,
             'nama_mapel' => $request->nama_mapel,
+            'warna' => $request->warna,
         ]);
 
         return redirect('/admin/mata_pelajaran')
@@ -47,6 +49,7 @@ class MataPelajaranController extends Controller
         $request->validate([
             'kode_mapel' => 'required',
             'nama_mapel' => 'required',
+            'warna' => 'required|string|size:7',
         ]);
 
         $mata_pelajaran = MataPelajaran::findOrFail($id);
@@ -54,6 +57,7 @@ class MataPelajaranController extends Controller
         $mata_pelajaran->update([
             'kode_mapel' => $request->kode_mapel,
             'nama_mapel' => $request->nama_mapel,
+            'warna' => $request->warna,
         ]);
 
         return redirect('/admin/mata_pelajaran')

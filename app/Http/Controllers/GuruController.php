@@ -17,7 +17,7 @@ class GuruController extends Controller
      */
     public function index()
     {
-        $gurus = Guru::all();
+        $gurus = Guru::with('mataPelajaran')->get();
 
         return view('admin.master-data.guru.index', compact('gurus'));
     }

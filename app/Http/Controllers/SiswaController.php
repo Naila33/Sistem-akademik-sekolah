@@ -31,13 +31,18 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nisn' => 'required|max:20',
-            'nik' => 'required|max:20',
+            'nis' => 'required|max:20',
+            'nisn' => 'nullable|max:20',
             'nama' => 'required|max:255',
-            'jk' => 'required|max:20',
+            'jk' => 'required|in:Perempuan,Laki-laki',
+            'tempat_lahir' => 'required|max:100',
+            'tgl_lahir' => 'required|date',
+            'agama' => 'required|in:Islam,Kristen,Katolik,Budha,Hindu,Konghucu',
+            'nik' => 'nullable|max:20',
+            'no_kk' => 'nullable|max:20',
             'alamat' => 'required',
-            'nama_orang_tua' => 'required|max:255',
-            'status' => 'required|max:30',
+            'no_hp' => 'nullable|max:20',
+            'email' => 'nullable|email|max:255',
         ]);
 
         Siswa::create($data);
@@ -69,13 +74,18 @@ class SiswaController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            'nisn' => 'required|max:20',
-            'nik' => 'required|max:20',
+            'nis' => 'required|max:20',
+            'nisn' => 'nullable|max:20',
             'nama' => 'required|max:255',
-            'jk' => 'required|max:20',
+            'jk' => 'required|in:Perempuan,Laki-laki',
+            'tempat_lahir' => 'required|max:100',
+            'tgl_lahir' => 'required|date',
+            'agama' => 'required|in:Islam,Kristen,Katolik,Budha,Hindu,Konghucu',
+            'nik' => 'nullable|max:20',
+            'no_kk' => 'nullable|max:20',
             'alamat' => 'required',
-            'nama_orang_tua' => 'required|max:255',
-            'status' => 'required|max:30',
+            'no_hp' => 'nullable|max:20',
+            'email' => 'nullable|email|max:255',
         ]);
 
         Siswa::findOrFail($id)->update($data);

@@ -16,6 +16,8 @@ class Kelas extends Model
         'tahun_ajaran_id',
     ];
 
+    public $timestamps = false;
+
     public function siswaKelas()
     {
         return $this->hasMany(SiswaKelas::class, 'kelas_id');

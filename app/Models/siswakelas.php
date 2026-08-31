@@ -14,6 +14,7 @@ class SiswaKelas extends Model
         'siswa_id',
         'kelas_id',
     ];
+    public $timestamps = false;
 
     public function siswa()
     {

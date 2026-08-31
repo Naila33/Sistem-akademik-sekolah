@@ -15,7 +15,7 @@ class KelasController extends Controller
      */
     public function index()
     {
-        $kelases = Kelas::with(['waliKelas', 'tahunAjaran'])->get();
+        $kelases = Kelas::with(['jurusan', 'waliKelas', 'tahunAjaran'])->get();
 
         return view('admin.master-data.kelas.index', compact('kelases'));
     }
@@ -41,8 +41,8 @@ class KelasController extends Controller
             'tingkat' => 'required|in:X,XI,XII',
             'jurusan_id' => 'required|exists:jurusan,id',
             'nama_kelas' => 'required|in:A,B,C,D,E,F,G,H',
-            'wali_kelas_id' => 'nullable|integer',
-            'tahun_ajaran_id' => 'nullable|integer',
+            'wali_kelas_id' => 'required|exists:dataguru,id',
+            'tahun_ajaran_id' => 'required|exists:tahun_ajaran,id',
         ]);
 
         Kelas::create($data);
@@ -80,8 +80,8 @@ class KelasController extends Controller
             'tingkat' => 'required|in:X,XI,XII',
             'jurusan_id' => 'required|exists:jurusan,id',
             'nama_kelas' => 'required|in:A,B,C,D,E,F,G,H',
-            'wali_kelas_id' => 'nullable|integer',
-            'tahun_ajaran_id' => 'nullable|integer',
+            'wali_kelas_id' => 'required|exists:dataguru,id',
+            'tahun_ajaran_id' => 'required|exists:tahun_ajaran,id',
         ]);
 
         Kelas::findOrFail($id)->update($data);

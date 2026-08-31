@@ -32,7 +32,7 @@ class RuanganController extends Controller
             'kode_ruang' => $request->kode_ruang,
             'nama_ruang' => $request->nama_ruang,
             'kapasitas' => $request->kapasitas,
-            'status' => $request->status,
+            'status' => $request->boolean('status'),
         ]);
 
         return redirect('/admin/ruangan')
@@ -61,7 +61,7 @@ class RuanganController extends Controller
             'kode_ruang' => $request->kode_ruang,
             'nama_ruang' => $request->nama_ruang,
             'kapasitas' => $request->kapasitas,
-            'status' => $request->status,
+            'status' => $request->boolean('status'),
         ]);
 
         return redirect('/admin/ruangan')

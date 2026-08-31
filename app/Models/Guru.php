@@ -33,6 +33,11 @@ class Guru extends Model
         'tmt' => 'date:Y-m-d',
     ];
 
+    public function mataPelajaran()
+    {
+        return $this->belongsTo(MataPelajaran::class, 'mata_pelajaran_id');
+    }
+
     // Tambahkan ini jika tabel kamu TIDAK memiliki kolom created_at dan updated_at
     public $timestamps = false;
 }

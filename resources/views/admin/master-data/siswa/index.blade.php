@@ -1,59 +1,45 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <title>Master Siswa</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            margin-left: 250px;
-            padding: 60px;
-            color: #212529;
-        }
-        </style>
-</head>
-
-<body>
-    @include('layouts.sidebar')
+@section('title', 'Master Siswa')
+@section('content')
+<div class="card">
     <h1>Master Siswa</h1>
-    @if (session('success'))<p>{{ session('success') }}</p>@endif
-    <p><a href="{{ route('master-data.index') }}">Kembali ke Master Data</a> | <a href="{{ route('siswa.create') }}">Tambah Siswa</a></p>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>NISN</th>
-                <th>NIK</th>
-                <th>Nama</th>
-                <th>Jenis Kelamin</th>
-                <th>Alamat</th>
-                <th>Orang Tua</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($siswas as $siswa)<tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $siswa->nisn }}</td>
-                <td>{{ $siswa->nik }}</td>
-                <td>{{ $siswa->nama }}</td>
-                <td>{{ $siswa->jk }}</td>
-                <td>{{ $siswa->alamat }}</td>
-                <td>{{ $siswa->nama_orang_tua }}</td>
-                <td>{{ $siswa->status }}</td>
-                <td><a href="{{ route('siswa.edit', $siswa->id) }}">Edit</a>
-                    <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST">@csrf @method('DELETE')<button type="submit" onclick="return confirm('Hapus data siswa?')">Hapus</button></form>
-                </td>
-            </tr>@empty<tr>
-                <td colspan="9">Belum ada data siswa.</td>
-            </tr>@endforelse
-        </tbody>
-    </table>
-</body>
-
-</html>
+    @if(session('success'))<p>{{ session('success') }}</p>@endif
+    <p><a href="{{ route('siswa.create') }}">Tambah Siswa</a></p>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th><th>NIS</th><th>NISN</th><th>Nama</th><th>JK</th>
+                    <th>Tempat Lahir</th><th>Tanggal Lahir</th><th>Agama</th><th>NIK</th>
+                    <th>No. KK</th><th>Alamat</th><th>No. HP</th><th>Email</th><th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($siswas as $siswa)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $siswa->nis }}</td>
+                        <td>{{ $siswa->nisn ?? '-' }}</td>
+                        <td>{{ $siswa->nama }}</td>
+                        <td>{{ $siswa->jk }}</td>
+                        <td>{{ $siswa->tempat_lahir }}</td>
+                        <td>{{ optional($siswa->tgl_lahir)->format('d-m-Y') }}</td>
+                        <td>{{ $siswa->agama }}</td>
+                        <td>{{ $siswa->nik ?? '-' }}</td>
+                        <td>{{ $siswa->no_kk ?? '-' }}</td>
+                        <td>{{ $siswa->alamat }}</td>
+                        <td>{{ $siswa->no_hp ?? '-' }}</td>
+                        <td>{{ $siswa->email ?? '-' }}</td>
+                        <td><a href="{{ route('siswa.edit', $siswa->id) }}">Edit</a>
+                            <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST">@csrf @method('DELETE')<button type="submit" onclick="return confirm('Hapus data siswa?')">Hapus</button></form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="14">Belum ada data siswa.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+@endsection

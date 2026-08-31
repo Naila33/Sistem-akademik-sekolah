@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\JadwalpelajaranController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\PenilaianController;
-
+use App\Http\Controllers\WaliKelasController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -103,6 +103,14 @@ Route::resource('admin/master-data/guru', GuruController::class)
     ->except(['show'])
     ->names('guru');
 Route::resource('kelas', KelasController::class)->except(['show']);
+
+// WALI KELAS
+Route::prefix('wali-kelas')->name('wali-kelas.')->group(function () {
+    Route::get('/', [WaliKelasController::class, 'index'])->name('index');
+    Route::get('/siswa/{kelas}', [WaliKelasController::class, 'siswa'])->name('siswa');
+    Route::get('/nilai/{siswa}', [WaliKelasController::class, 'nilai'])->name('nilai');
+    Route::get('/rapor/{siswa}', [WaliKelasController::class, 'rapor'])->name('rapor');
+});
 
 // SPMB - CALON SISWA
 Route::prefix('admin')->group(function () {

@@ -16,6 +16,8 @@ class Jurusan extends Model
         'kode_jurusan',
     ];
 
+    public $timestamps = false;
+
     public function calonSiswa()
     {
         return $this->hasMany(

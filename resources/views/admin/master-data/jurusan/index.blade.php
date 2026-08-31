@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <title>Master Jurusan</title>
-     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            margin-left: 250px;
-            padding: 60px;
-            color: #212529;
-        }
-        </style>
-</head>
+@section('title', 'Master Jurusan')
 
-<body>
-    @include('layouts.sidebar')
+@section('content')
+
+<div class="card">
     <h1>Master Jurusan</h1>
     <p>Kelola data jurusan sekolah.</p>
 
@@ -26,7 +12,6 @@
     <p>{{ session('success') }}</p>
     @endif
 
-    <p><a href="{{ route('master-data.index') }}">Kembali ke Master Data</a></p>
     <p><a href="{{ route('jurusan.create') }}">Tambah Jurusan</a></p>
 
     <table border="1" cellpadding="8" cellspacing="0">
@@ -60,6 +45,6 @@
             @endforelse
         </tbody>
     </table>
-</body>
+</div>
 
-</html>
+@endsection

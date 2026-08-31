@@ -1,31 +1,24 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Siswa</title>
-</head>
-
-<body>
+@section('title', 'Edit Siswa')
+@section('content')
+<div class="card">
     <h1>Edit Siswa</h1>
-    @if ($errors->any())<ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>@endif
+    @include('admin.master-data.partials.errors')
     <form action="{{ route('siswa.update', $siswa->id) }}" method="POST">@csrf @method('PUT')
-        <p><label>NISN<br><input name="nisn" value="{{ old('nisn', $siswa->nisn) }}" required></label></p>
-        <p><label>NIK<br><input name="nik" value="{{ old('nik', $siswa->nik) }}" required></label></p>
+        <p><label>NIS<br><input name="nis" value="{{ old('nis', $siswa->nis) }}" required></label></p>
+        <p><label>NISN<br><input name="nisn" value="{{ old('nisn', $siswa->nisn) }}"></label></p>
         <p><label>Nama<br><input name="nama" value="{{ old('nama', $siswa->nama) }}" required></label></p>
-        <p><label>Jenis Kelamin<br><select name="jk" required>
-                    <option value="Laki-laki" @selected(old('jk', $siswa->jk) === 'Laki-laki')>Laki-laki</option>
-                    <option value="Perempuan" @selected(old('jk', $siswa->jk) === 'Perempuan')>Perempuan</option>
-                </select></label></p>
+        <p><label>Jenis Kelamin<br><select name="jk" required>@foreach(['Perempuan','Laki-laki'] as $jk)<option value="{{ $jk }}" @selected(old('jk', $siswa->jk) === $jk)>{{ $jk }}</option>@endforeach</select></label></p>
+        <p><label>Tempat Lahir<br><input name="tempat_lahir" value="{{ old('tempat_lahir', $siswa->tempat_lahir) }}" required></label></p>
+        <p><label>Tanggal Lahir<br><input type="date" name="tgl_lahir" value="{{ old('tgl_lahir', optional($siswa->tgl_lahir)->format('Y-m-d')) }}" required></label></p>
+        <p><label>Agama<br><select name="agama" required>@foreach(['Islam','Kristen','Katolik','Budha','Hindu','Konghucu'] as $agama)<option value="{{ $agama }}" @selected(old('agama', $siswa->agama) === $agama)>{{ $agama }}</option>@endforeach</select></label></p>
+        <p><label>NIK<br><input name="nik" value="{{ old('nik', $siswa->nik) }}"></label></p>
+        <p><label>No. KK<br><input name="no_kk" value="{{ old('no_kk', $siswa->no_kk) }}"></label></p>
         <p><label>Alamat<br><textarea name="alamat" required>{{ old('alamat', $siswa->alamat) }}</textarea></label></p>
-        <p><label>Nama Orang Tua<br><input name="nama_orang_tua" value="{{ old('nama_orang_tua', $siswa->nama_orang_tua) }}" required></label></p>
-        <p><label>Status<br><select name="status" required>
-                    <option value="Aktif" @selected(old('status', $siswa->status) === 'Aktif')>Aktif</option>
-                    <option value="Tidak Aktif" @selected(old('status', $siswa->status) === 'Tidak Aktif')>Tidak Aktif</option>
-                </select></label></p>
+        <p><label>No. HP<br><input name="no_hp" value="{{ old('no_hp', $siswa->no_hp) }}"></label></p>
+        <p><label>Email<br><input type="email" name="email" value="{{ old('email', $siswa->email) }}"></label></p>
         <button type="submit">Simpan Perubahan</button> <a href="{{ route('siswa.index') }}">Kembali</a>
     </form>
-</body>
-
-</html>
+</div>
+@endsection
