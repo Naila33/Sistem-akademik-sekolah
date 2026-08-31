@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Kelas;
-use App\Models\CalonSiswa;
+use App\Models\Siswa;
 
 class SiswaKelas extends Model
 {
@@ -18,7 +18,7 @@ class SiswaKelas extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(CalonSiswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class, 'siswa_id');
     }
 
     public function kelas()

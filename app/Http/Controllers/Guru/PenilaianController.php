@@ -5,13 +5,25 @@ namespace App\Http\Controllers\Guru;
 use App\Http\Controllers\Controller;
 use App\Models\Jadwal_pelajaran;
 use App\Models\Penilaian;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class PenilaianController extends Controller
 {
+    private function guruOrFail()
+    {
+        $guru = auth()->user()?->guru;
+
+        if (!$guru) {
+            abort(403, 'Akun Anda belum terhubung dengan data guru.');
+        }
+
+        return $guru;
+    }
+
     public function index()
     {
-        $guru = auth()->user()->guru;
+        $guru = $this->guruOrFail();
 
         $jadwal = Jadwal_pelajaran::with([
             'mapel',
@@ -19,14 +31,18 @@ class PenilaianController extends Controller
             'kelas.siswaKelas.siswa'
         ])
             ->where('guru_id', $guru->id)
-            ->get();
+            ->get()
+            ->unique(function ($item) {
+                return $item->kelas_id . '-' . $item->mata_pelajaran_id;
+            })
+            ->values();
 
         return view('guru.penilaian.index', compact('jadwal'));
     }
 
     public function create($jadwalId)
     {
-        $guru = auth()->user()->guru;
+        $guru = $this->guruOrFail();
 
         $jadwal = Jadwal_pelajaran::with([
             'mapel',
@@ -50,7 +66,7 @@ class PenilaianController extends Controller
 
     public function store(Request $request, $jadwalId)
     {
-        $guru = auth()->user()->guru;
+        $guru = $this->guruOrFail();
 
         $jadwal = Jadwal_pelajaran::where('id', $jadwalId)
             ->where('guru_id', $guru->id)
@@ -60,6 +76,7 @@ class PenilaianController extends Controller
             'jenis_nilai' => 'required|in:harian,ujian',
             'nilai' => 'required|array',
             'nilai.*' => 'nullable|numeric|min:0|max:100',
+            'tanggal_penilaian' => 'required|date',
         ]);
 
         foreach ($request->nilai as $siswaId => $nilai) {
@@ -68,20 +85,152 @@ class PenilaianController extends Controller
                 continue;
             }
 
-            Penilaian::updateOrCreate(
-                [
-                    'jadwal_pelajaran_id' => $jadwal->id,
-                    'siswa_id' => $siswaId,
-                    'jenis_nilai' => $request->jenis_nilai,
-                ],
-                [
-                    'nilai' => $nilai,
-                ]
-            );
+            Penilaian::create([
+                'jadwal_pelajaran_id' => $jadwal->id,
+                'siswa_id' => $siswaId,
+                'jenis_nilai' => $request->jenis_nilai,
+                'tanggal_penilaian' => $request->tanggal_penilaian,
+                'nilai' => $nilai,
+            ]);
         }
 
         return redirect()
             ->route('guru.penilaian.create', $jadwal->id)
             ->with('success', 'Nilai berhasil disimpan.');
+    }
+
+    public function detail(Request $request, $jadwalId)
+    {
+        $guru = $this->guruOrFail();
+        $jenisNilai = $request->input('jenis_nilai');
+
+        abort_if($jenisNilai !== null && !in_array($jenisNilai, ['harian', 'ujian'], true), 422);
+
+        $jadwal = Jadwal_pelajaran::with([
+            'mapel',
+            'kelas.jurusan',
+            'kelas.siswaKelas.siswa'
+        ])
+            ->where('id', $jadwalId)
+            ->where('guru_id', $guru->id)
+            ->firstOrFail();
+
+        // Ambil semua jadwal yang kelas + mapelnya sama
+        $jadwalIds = Jadwal_pelajaran::where('guru_id', $guru->id)
+            ->where('kelas_id', $jadwal->kelas_id)
+            ->where('mata_pelajaran_id', $jadwal->mata_pelajaran_id)
+            ->pluck('id');
+
+        $penilaianQuery = Penilaian::with('siswa')
+            ->whereIn('jadwal_pelajaran_id', $jadwalIds)
+            ->orderBy('tanggal_penilaian');
+
+        if ($jenisNilai) {
+            $penilaianQuery->where('jenis_nilai', $jenisNilai);
+        }
+
+        $penilaian = $penilaianQuery->get();
+
+        $siswa = $jadwal->kelas?->siswaKelas()
+            ->with('siswa')
+            ->paginate(10)
+            ->appends(request()->query());
+
+        if ($siswa) {
+            $siswa->setCollection(
+                $siswa->getCollection()
+                    ->pluck('siswa')
+                    ->filter()
+                    ->values()
+            );
+        }
+
+        $jenisPenilaian = $penilaian
+            ->unique(fn($item) => $item->jenis_nilai . '|' . $item->tanggal_penilaian)
+            ->map(function ($item, $index) {
+                return (object) [
+                    'id' => $index,
+                    'jenis_nilai' => $item->jenis_nilai,
+                    'tanggal_penilaian' => $item->tanggal_penilaian,
+                    'nama_penilaian' => ucfirst($item->jenis_nilai) . ' - ' . $item->tanggal_penilaian,
+                ];
+            })
+            ->values();
+
+        $nilaiSiswa = $penilaian;
+        $semester = $jadwal->kelas->tahunAjaran;
+
+        return view('guru.penilaian.detail', compact(
+            'jadwal',
+            'penilaian',
+            'siswa',
+            'jenisPenilaian',
+            'nilaiSiswa',
+            'semester',
+            'jenisNilai'
+        ));
+    }
+
+    public function editSiswa($jadwalId, $siswaId)
+    {
+        $guru = $this->guruOrFail();
+
+        $jadwal = Jadwal_pelajaran::with([
+            'mapel',
+            'kelas.jurusan',
+            'kelas.siswaKelas.siswa'
+        ])
+            ->where('id', $jadwalId)
+            ->where('guru_id', $guru->id)
+            ->firstOrFail();
+
+        $siswa = Siswa::findOrFail($siswaId);
+
+        $nilai = Penilaian::where('jadwal_pelajaran_id', $jadwal->id)
+            ->where('siswa_id', $siswa->id)
+            ->orderBy('tanggal_penilaian')
+            ->orderBy('jenis_nilai')
+            ->get();
+
+        return view('guru.penilaian.edit', compact(
+            'jadwal',
+            'siswa',
+            'nilai'
+        ));
+    }
+
+    public function updateSiswa(Request $request, $jadwalId, $siswaId)
+    {
+        $guru = $this->guruOrFail();
+
+        $jadwal = Jadwal_pelajaran::where('id', $jadwalId)
+            ->where('guru_id', $guru->id)
+            ->firstOrFail();
+
+        $siswa = Siswa::findOrFail($siswaId);
+
+        $request->validate([
+            'nilai' => 'required|array',
+            'nilai.*' => 'nullable|numeric|min:0|max:100',
+        ]);
+
+        foreach ($request->input('nilai', []) as $penilaianId => $nilai) {
+            $penilaian = Penilaian::where('id', $penilaianId)
+                ->where('jadwal_pelajaran_id', $jadwal->id)
+                ->where('siswa_id', $siswa->id)
+                ->first();
+
+            if (!$penilaian) {
+                continue;
+            }
+
+            $penilaian->update([
+                'nilai' => $nilai === '' || $nilai === null ? null : $nilai,
+            ]);
+        }
+
+        return redirect()
+            ->route('guru.penilaian.detail', $jadwal->id)
+            ->with('success', 'Nilai siswa berhasil diperbarui.');
     }
 }

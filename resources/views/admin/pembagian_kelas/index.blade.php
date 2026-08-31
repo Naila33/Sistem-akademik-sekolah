@@ -232,7 +232,7 @@
 
             <p>
                 Upload file Excel dengan format:
-                <strong>NIS</strong> dan <strong>Kelas</strong>.
+                <strong>NISN</strong> dan <strong>Kelas</strong>.
             </p>
 
             <form action="{{ route('pembagian_kelas.import') }}" method="POST" enctype="multipart/form-data"
@@ -261,7 +261,7 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>NIS</th>
+                    <th>NISN</th>
                     <th>Nama Siswa</th>
                     <th>Tingkat</th>
                     <th>Kelas</th>
@@ -285,7 +285,7 @@
                         </td>
 
                         <td>
-                            {{ $item->siswa?->nama_lengkap ?? 'Data siswa tidak tersedia' }}
+                            {{ $item->siswa?->nama ?? 'Data siswa tidak tersedia' }}
                         </td>
 
                         <td>

@@ -80,7 +80,7 @@ Route::post('/admin/pembagian_kelas', [PembagianKelasController::class, 'store']
 Route::get('/admin/pembagian_kelas/{id}/edit', [PembagianKelasController::class, 'edit'])->name('pembagian_kelas.edit');
 Route::put('/admin/pembagian_kelas/{id}', [PembagianKelasController::class, 'update'])->name('pembagian_kelas.update');
 Route::delete('/admin/pembagian_kelas/{id}', [PembagianKelasController::class, 'destroy'])->name('pembagian_kelas.destroy');
-Route::post('/admin/pembagian_kelas/import',[PembagianKelasController::class, 'import'])->name('pembagian_kelas.import');
+Route::post('/admin/pembagian_kelas/import', [PembagianKelasController::class, 'import'])->name('pembagian_kelas.import');
 
 // JADWAL PELAJARAN
 Route::get('/admin/jadwal_pelajaran', [JadwalpelajaranController::class, 'index'])->name('admin.jadwal_pelajaran.index');
@@ -128,16 +128,33 @@ Route::prefix('admin')->group(function () {
 //guru
 Route::middleware('auth')->group(function () {
 
-    Route::get('/guru/penilaian',
+    Route::get(
+        '/guru/penilaian',
         [PenilaianController::class, 'index']
     )->name('guru.penilaian.index');
 
-    Route::get('/guru/penilaian/{jadwal}/input',
+    Route::get(
+        '/guru/penilaian/{jadwal}/input',
         [PenilaianController::class, 'create']
     )->name('guru.penilaian.create');
 
-    Route::post('/guru/penilaian/{jadwal}',
+    Route::post(
+        '/guru/penilaian/{jadwal}',
         [PenilaianController::class, 'store']
     )->name('guru.penilaian.store');
 
+    Route::get(
+        '/guru/penilaian/{jadwalId}/detail_penilaian',
+        [PenilaianController::class, 'detail']
+    )->name('guru.penilaian.detail');
+
+    Route::get(
+        '/guru/penilaian/{jadwal}/siswa/{siswa}/edit',
+        [PenilaianController::class, 'editSiswa']
+    )->name('guru.penilaian.editSiswa');
+
+    Route::put(
+        '/guru/penilaian/{jadwal}/siswa/{siswa}/update',
+        [PenilaianController::class, 'updateSiswa']
+    )->name('guru.penilaian.updateSiswa');
 });

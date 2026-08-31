@@ -34,7 +34,7 @@ class Jadwal_pelajaran extends Model
 
     public function mapel()
     {
-        return $this->belongsTo(matapelajaran::class, 'mata_pelajaran_id');
+        return $this->belongsTo(Matapelajaran::class, 'mata_pelajaran_id');
     }
     public function ruangan()
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\CalonSiswa;
+use App\Models\Siswa;
 use App\Models\SiswaKelas;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -35,8 +36,7 @@ class PembagianKelasController extends Controller
          * Hanya mengambil siswa yang belum
          * mempunyai pembagian kelas.
          */
-        $siswa = CalonSiswa::where('status_daftar_ulang', 'terverifikasi')
-            ->whereDoesntHave('pembagianKelas')
+        $siswa = CalonSiswa::whereDoesntHave('pembagianKelas')
             ->orderBy('nama_lengkap')
             ->get();
 
@@ -62,9 +62,8 @@ class PembagianKelasController extends Controller
             'kelas_id' => 'required|exists:kelas,id',
         ]);
 
-        /*
-         * Cek apakah siswa sudah mempunyai kelas.
-         */
+        $calonSiswa = CalonSiswa::findOrFail($request->siswa_id);
+       
         $sudahAda = SiswaKelas::where(
             'siswa_id',
             $request->siswa_id
@@ -76,14 +75,29 @@ class PembagianKelasController extends Controller
                 ->with('error', 'Siswa tersebut sudah memiliki kelas.');
         }
 
+        $siswa = Siswa::firstOrCreate(
+            ['nisn' => $calonSiswa->nisn],
+            [
+                'nis' => Siswa::generateNis(),
+                'nik' => $calonSiswa->nik,
+                'nama' => $calonSiswa->nama_lengkap,
+                'tempat_lahir' => $calonSiswa->tempat_lahir,
+                'tanggal_lahir' => $calonSiswa->tanggal_lahir,
+                'jk' => $calonSiswa->jenis_kelamin,
+                'alamat' => $calonSiswa->alamat,
+                'nama_orang_tua' => $calonSiswa->nama_ayah,
+                
+            ]
+        );
+
         SiswaKelas::create([
-            'siswa_id' => $request->siswa_id,
+            'siswa_id' => $siswa->id,
             'kelas_id' => $request->kelas_id,
         ]);
 
         return redirect()
             ->route('pembagian_kelas.index')
-            ->with('success', 'Siswa berhasil dimasukkan ke kelas.');
+            ->with('success', 'Siswa berhasil dimasukkan ke kelas dan data siswa telah dibuat.');
     }
 
 

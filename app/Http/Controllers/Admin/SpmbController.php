@@ -58,7 +58,7 @@ class SpmbController extends Controller
         $calonSiswa = $query
             ->latest()
             ->paginate(10)
-            ->withQueryString();
+            ->appends(request()->query());
 
         $jurusan = Jurusan::orderBy('nama_jurusan')->get();
 
@@ -97,7 +97,7 @@ class SpmbController extends Controller
             'nisn' => 'nullable|digits:10|unique:calon_siswa,nisn',
 
             'nama_lengkap' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:L,P',
+            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
 
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
@@ -148,8 +148,8 @@ class SpmbController extends Controller
 
             $validated['status_daftar_ulang'] =
                 $request->filled('tanggal_daftar_ulang')
-                    ? 'menunggu_verifikasi'
-                    : 'belum_daftar_ulang';
+                ? 'menunggu_verifikasi'
+                : 'belum_daftar_ulang';
 
             $calonSiswa = CalonSiswa::create(
                 collect($validated)
@@ -174,17 +174,17 @@ class SpmbController extends Controller
                     );
 
                     DokumenCalonSiswa::create([
-    'calon_siswa_id' => $calonSiswa->id,
-    'jenis_dokumen' => $jenis,
-    'nama_file' => $file->getClientOriginalName(),
-    'path_file' => $path,
-    'mime_type' => $file->getMimeType(),
-    'ukuran_file' => $file->getSize(),
-    'status' => 'Belum Diverifikasi',
-    'catatan' => null,
-    'verifikator_id' => null,
-    'tanggal_verifikasi' => null,
-]);
+                        'calon_siswa_id' => $calonSiswa->id,
+                        'jenis_dokumen' => $jenis,
+                        'nama_file' => $file->getClientOriginalName(),
+                        'path_file' => $path,
+                        'mime_type' => $file->getMimeType(),
+                        'ukuran_file' => $file->getSize(),
+                        'status' => 'Belum Diverifikasi',
+                        'catatan' => null,
+                        'verifikator_id' => null,
+                        'tanggal_verifikasi' => null,
+                    ]);
                 }
             }
         });
@@ -223,18 +223,18 @@ class SpmbController extends Controller
     */
 
     public function edit($id)
-{
-    $calonSiswa = CalonSiswa::with('jurusan')
-        ->findOrFail($id);
+    {
+        $calonSiswa = CalonSiswa::with('jurusan')
+            ->findOrFail($id);
 
-    $jurusan = Jurusan::orderBy('nama_jurusan')
-        ->get();
+        $jurusan = Jurusan::orderBy('nama_jurusan')
+            ->get();
 
-    return view('admin.spmb.edit', compact(
-        'calonSiswa',
-        'jurusan'
-    ));
-}
+        return view('admin.spmb.edit', compact(
+            'calonSiswa',
+            'jurusan'
+        ));
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -251,7 +251,7 @@ class SpmbController extends Controller
             'nisn' => 'nullable|digits:10|unique:calon_siswa,nisn,' . $id,
 
             'nama_lengkap' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:L,P',
+            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
 
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
@@ -338,17 +338,17 @@ class SpmbController extends Controller
                     );
 
                     DokumenCalonSiswa::create([
-    'calon_siswa_id' => $calonSiswa->id,
-    'jenis_dokumen' => $jenis,
-    'nama_file' => $file->getClientOriginalName(),
-    'path_file' => $path,
-    'mime_type' => $file->getMimeType(),
-    'ukuran_file' => $file->getSize(),
-    'status' => 'Belum Diverifikasi',
-    'catatan' => null,
-    'verifikator_id' => null,
-    'tanggal_verifikasi' => null,
-]);
+                        'calon_siswa_id' => $calonSiswa->id,
+                        'jenis_dokumen' => $jenis,
+                        'nama_file' => $file->getClientOriginalName(),
+                        'path_file' => $path,
+                        'mime_type' => $file->getMimeType(),
+                        'ukuran_file' => $file->getSize(),
+                        'status' => 'Belum Diverifikasi',
+                        'catatan' => null,
+                        'verifikator_id' => null,
+                        'tanggal_verifikasi' => null,
+                    ]);
                 }
             }
         });
@@ -407,36 +407,36 @@ class SpmbController extends Controller
     */
 
     public function verifikasiDokumen(
-    Request $request,
-    $id,
-    $dokumenId
-) {
-    $request->validate([
-        'status_verifikasi' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
-        'catatan' => 'nullable|string|max:1000',
-    ]);
+        Request $request,
+        $id,
+        $dokumenId
+    ) {
+        $request->validate([
+            'status_verifikasi' => 'required|in:Belum Diverifikasi,Valid,Tidak Valid',
+            'catatan' => 'nullable|string|max:1000',
+        ]);
 
-    $calonSiswa = CalonSiswa::findOrFail($id);
+        $calonSiswa = CalonSiswa::findOrFail($id);
 
-    $dokumen = DokumenCalonSiswa::where(
-        'calon_siswa_id',
-        $calonSiswa->id
-    )->findOrFail($dokumenId);
+        $dokumen = DokumenCalonSiswa::where(
+            'calon_siswa_id',
+            $calonSiswa->id
+        )->findOrFail($dokumenId);
 
-    $dokumen->update([
-        'status' => $request->status_verifikasi,
-        'catatan' => $request->catatan,
-        'verifikator_id' => auth()->id(),
-        'tanggal_verifikasi' => now(),
-    ]);
+        $dokumen->update([
+            'status' => $request->status_verifikasi,
+            'catatan' => $request->catatan,
+            'verifikator_id' => auth()->id(),
+            'tanggal_verifikasi' => now(),
+        ]);
 
-    $this->updateStatusDaftarUlang($calonSiswa);
+        $this->updateStatusDaftarUlang($calonSiswa);
 
-    return back()->with(
-        'success',
-        'Status dokumen berhasil diperbarui.'
-    );
-}
+        return back()->with(
+            'success',
+            'Status dokumen berhasil diperbarui.'
+        );
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -445,41 +445,41 @@ class SpmbController extends Controller
     */
 
     public function verifikasiDaftarUlang($id)
-{
-    $calonSiswa = CalonSiswa::with('dokumen')
-        ->findOrFail($id);
+    {
+        $calonSiswa = CalonSiswa::with('dokumen')
+            ->findOrFail($id);
 
-    if ($calonSiswa->status_penerimaan !== 'diterima') {
+        if ($calonSiswa->status_penerimaan !== 'diterima') {
+            return back()->with(
+                'error',
+                'Calon siswa belum berstatus diterima.'
+            );
+        }
+
+        $jumlahDokumenWajib = 7;
+
+        $dokumenValid = $calonSiswa
+            ->dokumen
+            ->where('status', 'Valid')
+            ->count();
+
+        if ($dokumenValid < $jumlahDokumenWajib) {
+            return back()->with(
+                'error',
+                'Semua dokumen wajib harus berstatus Valid terlebih dahulu.'
+            );
+        }
+
+        $calonSiswa->update([
+            'status_daftar_ulang' => 'terverifikasi',
+            'catatan_revisi' => null,
+        ]);
+
         return back()->with(
-            'error',
-            'Calon siswa belum berstatus diterima.'
+            'success',
+            'Daftar ulang berhasil diverifikasi.'
         );
     }
-
-    $jumlahDokumenWajib = 7;
-
-    $dokumenValid = $calonSiswa
-        ->dokumen
-        ->where('status', 'Valid')
-        ->count();
-
-    if ($dokumenValid < $jumlahDokumenWajib) {
-        return back()->with(
-            'error',
-            'Semua dokumen wajib harus berstatus Valid terlebih dahulu.'
-        );
-    }
-
-    $calonSiswa->update([
-        'status_daftar_ulang' => 'terverifikasi',
-        'catatan_revisi' => null,
-    ]);
-
-    return back()->with(
-        'success',
-        'Daftar ulang berhasil diverifikasi.'
-    );
-}
 
     /*
     |--------------------------------------------------------------------------
@@ -488,46 +488,46 @@ class SpmbController extends Controller
     */
 
     private function updateStatusDaftarUlang(
-    CalonSiswa $calonSiswa
-) {
-    $dokumen = $calonSiswa->dokumen()->get();
+        CalonSiswa $calonSiswa
+    ) {
+        $dokumen = $calonSiswa->dokumen()->get();
 
-    if ($dokumen->isEmpty()) {
-        $calonSiswa->update([
-            'status_daftar_ulang' => 'menunggu_verifikasi',
-        ]);
+        if ($dokumen->isEmpty()) {
+            $calonSiswa->update([
+                'status_daftar_ulang' => 'menunggu_verifikasi',
+            ]);
 
-        return;
-    }
+            return;
+        }
 
-    $adaTidakValid = $dokumen
-        ->where('status', 'Tidak Valid')
-        ->count();
+        $adaTidakValid = $dokumen
+            ->where('status', 'Tidak Valid')
+            ->count();
 
-    if ($adaTidakValid > 0) {
-        $calonSiswa->update([
-            'status_daftar_ulang' => 'revisi',
-        ]);
+        if ($adaTidakValid > 0) {
+            $calonSiswa->update([
+                'status_daftar_ulang' => 'revisi',
+            ]);
 
-        return;
-    }
+            return;
+        }
 
-    $semuaValid =
-        $dokumen->count() === 7 &&
-        $dokumen
+        $semuaValid =
+            $dokumen->count() === 7 &&
+            $dokumen
             ->where('status', 'Valid')
             ->count() === 7;
 
-    if ($semuaValid) {
+        if ($semuaValid) {
+            $calonSiswa->update([
+                'status_daftar_ulang' => 'terverifikasi',
+            ]);
+
+            return;
+        }
+
         $calonSiswa->update([
-            'status_daftar_ulang' => 'terverifikasi',
+            'status_daftar_ulang' => 'menunggu_verifikasi',
         ]);
-
-        return;
     }
-
-    $calonSiswa->update([
-        'status_daftar_ulang' => 'menunggu_verifikasi',
-    ]);
-}
 }

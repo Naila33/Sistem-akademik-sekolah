@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Kelas;
 use App\Models\CalonSiswa;
+use App\Models\Siswa;
 use App\Models\SiswaKelas;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -66,14 +67,12 @@ class PembagianKelasImport implements ToCollection
                 continue;
             }
 
-            // Cari calon siswa yang daftar ulangnya sudah terverifikasi
-            $siswa = CalonSiswa::where('nisn', $nis)
-                ->where('status_daftar_ulang', 'terverifikasi')
-                ->first();
+            // Cari calon siswa berdasarkan NISN
+            $calonSiswa = CalonSiswa::where('nisn', $nis)->first();
 
-            if (!$siswa) {
+            if (!$calonSiswa) {
                 $this->gagal[] =
-                    "NIS {$nis}: siswa tidak ditemukan.";
+                    "NIS {$nis}: siswa tidak ditemukan di calon_siswa.";
                 continue;
             }
 
@@ -94,6 +93,24 @@ class PembagianKelasImport implements ToCollection
                     "NIS {$nis}: kelas '{$namaKelas}' tidak ditemukan.";
                 continue;
             }
+
+            /*
+             * Otomatis membuat record siswa di tabel datasiswa
+             * jika belum ada
+             */
+            $siswa = Siswa::firstOrCreate(
+                ['nisn' => $calonSiswa->nisn],
+                [
+                    'nis' => Siswa::generateNis(),
+                    'nik' => $calonSiswa->nik,
+                    'nama' => $calonSiswa->nama_lengkap,
+                    'tempat_lahir' => $calonSiswa->tempat_lahir,
+                    'tanggal_lahir' => $calonSiswa->tanggal_lahir,
+                    'jk' => $calonSiswa->jenis_kelamin,
+                    'alamat' => $calonSiswa->alamat,
+                    'nama_orang_tua' => $calonSiswa->nama_ayah,
+                ]
+            );
 
             // Cek apakah siswa sudah punya kelas
             $sudahAda = SiswaKelas::where(
