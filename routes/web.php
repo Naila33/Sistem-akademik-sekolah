@@ -13,7 +13,11 @@ use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\JadwalpelajaranController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\PenilaianController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\WaliKelasController;
+=======
+use App\Http\Controllers\Admin\PenilaianPjblController;
+>>>>>>> Stashed changes
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -140,4 +144,43 @@ Route::middleware('auth')->group(function () {
         [PenilaianController::class, 'store']
     )->name('guru.penilaian.store');
 
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/penilaian/mapel', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'index'])
+        ->name('penilaian.mapel.index');
+
+    Route::get('/penilaian/mapel/create', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'create'])
+        ->name('penilaian.mapel.create');
+
+    Route::post('/penilaian/mapel', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'store'])
+        ->name('penilaian.mapel.store');
+
+    Route::get('/penilaian/mapel/{id}/edit', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'edit'])
+        ->name('penilaian.mapel.edit');
+
+    Route::put('/penilaian/mapel/{id}', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'update'])
+        ->name('penilaian.mapel.update');
+
+    Route::delete('/penilaian/mapel/{id}', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'destroy'])
+        ->name('penilaian.mapel.destroy');
+
+    Route::get('/penilaian/pjbl', [PenilaianPjblController::class, 'index'])
+    ->name('penilaian.pjbl.index');
+
+Route::get('/penilaian/pjbl/create', [PenilaianPjblController::class, 'create'])
+    ->name('penilaian.pjbl.create');
+
+Route::post('/penilaian/pjbl', [PenilaianPjblController::class, 'store'])
+    ->name('penilaian.pjbl.store');
+
+Route::get('/penilaian/pjbl/{id}/edit', [PenilaianPjblController::class, 'edit'])
+    ->name('penilaian.pjbl.edit');
+
+Route::put('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'update'])
+    ->name('penilaian.pjbl.update');
+
+Route::delete('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'destroy'])
+    ->name('penilaian.pjbl.destroy');
 });

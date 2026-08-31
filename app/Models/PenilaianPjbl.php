@@ -20,16 +20,24 @@ class PenilaianPjbl extends Model
 
     public function pjbl()
     {
-        return $this->belongsTo(Pjbl::class);
+        return $this->belongsTo(Pjbl::class, 'pjbl_id');
     }
 
-    public function penguji()
+    public function pjblPenguji()
     {
-        return $this->belongsTo(PjblPenguji::class, 'pjbl_penguji_id');
+        return $this->belongsTo(
+            PjblPenguji::class,
+            'pjbl_penguji_id',
+            'id'
+        );
     }
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class);
+        return $this->belongsTo(
+            Siswa::class,
+            'siswa_id',
+            'id'
+        );
     }
 }

@@ -14,21 +14,21 @@ class PjblPenguji extends Model
     protected $fillable = [
         'pjbl_id',
         'guru_id',
-        'jenis_penguji',
     ];
 
+    /**
+     * Relasi ke PJBL
+     */
     public function pjbl()
     {
-        return $this->belongsTo(Pjbl::class);
+        return $this->belongsTo(Pjbl::class, 'pjbl_id');
     }
 
+    /**
+     * Relasi ke Guru
+     */
     public function guru()
     {
-        return $this->belongsTo(Guru::class);
-    }
-
-    public function penilaian()
-    {
-        return $this->hasMany(PenilaianPjbl::class);
+        return $this->belongsTo(Guru::class, 'guru_id');
     }
 }

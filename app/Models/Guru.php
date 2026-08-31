@@ -40,4 +40,12 @@ class Guru extends Model
 
     // Tambahkan ini jika tabel kamu TIDAK memiliki kolom created_at dan updated_at
     public $timestamps = false;
+
+    public function pjblPenguji()
+{
+    return $this->hasMany(
+        PjblPenguji::class,
+        'guru_id'
+    );
+}
 }

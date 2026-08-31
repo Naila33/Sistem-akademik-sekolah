@@ -14,31 +14,29 @@ class Pjbl extends Model
     protected $fillable = [
         'kelas_id',
         'tahun_ajaran_id',
-        'periode',
         'tanggal',
-    ];
-
-    protected $casts = [
-        'tanggal' => 'date',
+        'periode',
     ];
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class);
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     public function tahunAjaran()
-    {
-        return $this->belongsTo(TahunAjaran::class);
-    }
+{
+    return $this->belongsTo(
+        TahunAjaran::class,
+        'tahun_ajaran_id',
+        'id'
+    );
+}
 
+    /**
+     * Penguji PJBL
+     */
     public function penguji()
     {
-        return $this->hasMany(PjblPenguji::class);
-    }
-
-    public function penilaian()
-    {
-        return $this->hasMany(PenilaianPjbl::class);
+        return $this->hasMany(PjblPenguji::class, 'pjbl_id');
     }
 }

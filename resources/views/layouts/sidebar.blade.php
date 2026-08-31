@@ -6,8 +6,10 @@
     <div class="menu">
         <div class="menu-title">Menu Utama</div>
         <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+
         <div class="menu-title">SPMB</div>
         <a href="{{ route('admin.spmb.index') }}">Calon Siswa</a>
+
         <div class="menu-title">Master Data</div>
         <a href="{{ route('jurusan.index') }}">Jurusan</a>
         <a href="{{ route('ruangan.index') }}">Ruangan</a>
@@ -16,13 +18,26 @@
         <a href="{{ route('siswa.index') }}">Siswa</a>
         <a href="{{ route('guru.index') }}">Guru</a>
         <a href="{{ route('kelas.index') }}">Kelas</a>
+
         <div class="menu-title">Pembagian Kelas</div>
         <a href="{{ route('pembagian_kelas.index') }}">Pembagian Kelas</a>
+
         <div class="menu-title">Jadwal</div>
         <a href="{{ route('admin.jadwal_pelajaran.index') }}">Lihat Jadwal</a>
+
+        <div class="menu-title">Penilaian</div>
+        <a href="{{ route('admin.penilaian.mapel.index') }}">
+            <i class="bi bi-journal-check"></i>
+            <span>Penilaian Mata Pelajaran</span>
+        </a>
+        <a href="{{ route('admin.penilaian.pjbl.index') }}">
+            <i class="bi bi-clipboard-check"></i>
+            <span>Penilaian PJBL</span>
+        </a>
     </div>
+
     <form action="{{ route('logout') }}" method="POST" class="logout-form">
-            @csrf
-            <button type="submit">Logout</button>
-        </form>
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
 </aside>

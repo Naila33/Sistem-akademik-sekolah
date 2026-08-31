@@ -38,17 +38,43 @@
 }
 
 .menu a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 12px 20px;
     color: #cbd5e1;
     text-decoration: none;
     font-size: 14px;
 }
 
+.menu a i {
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+}
+
 .menu a:hover,
 .menu a.active {
     background: #334155;
     color: white;
+}
+
+.logout-form {
+    padding: 15px 20px 20px;
+}
+
+.logout-form button {
+    width: 100%;
+    border: none;
+    background: #ef4444;
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.logout-form button:hover {
+    background: #dc2626;
 }
 
 .jadwal {

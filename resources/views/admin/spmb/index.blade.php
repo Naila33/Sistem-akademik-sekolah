@@ -57,7 +57,8 @@
         <div class="card-body">
 
             <form method="GET"
-                  action="{{ route('admin.spmb.index') }}">
+                  action="{{ route('admin.spmb.index') }}"
+                  class="live-search-form">
 
                 <div class="row g-3">
 
@@ -70,7 +71,7 @@
                         <input
                             type="text"
                             name="search"
-                            class="form-control"
+                            class="form-control live-search-input"
                             placeholder="Nama, NISN, NIK, No. Pendaftaran"
                             value="{{ request('search') }}"
                         >
@@ -202,9 +203,64 @@
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.live-search-form').forEach(function (form) {
+                const input = form.querySelector('.live-search-input');
+                if (!input) return;
+
+                let timeout;
+
+                function submitLiveSearch() {
+                    const formData = new FormData(form);
+                    const params = new URLSearchParams(formData).toString();
+                    const action = form.getAttribute('action') || window.location.href;
+                    const url = params ? action + '?' + params : action;
+
+                    fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html'
+                        }
+                    })
+                    .then(function (response) {
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newResults = doc.querySelector('#spmb-search-results');
+                        const currentResults = document.querySelector('#spmb-search-results');
+
+                        if (newResults && currentResults) {
+                            currentResults.innerHTML = newResults.innerHTML;
+                        }
+
+                        history.replaceState(null, '', url);
+                    })
+                    .catch(function () {
+                        form.submit();
+                    });
+                }
+
+                input.addEventListener('input', function () {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        submitLiveSearch();
+                    }, 400);
+                });
+
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    submitLiveSearch();
+                });
+            });
+        });
+    </script>
+
 
     {{-- TABLE --}}
-    <div class="card shadow-sm border-0">
+    <div class="card shadow-sm border-0" id="spmb-search-results">
 
         <div class="card-body p-0">
 
