@@ -16,6 +16,7 @@ class Penilaian extends Model
         'siswa_id',
         'jenis_nilai',
         'nilai',
+        'tanggal_penilaian',
     ];
 
     public function jadwalPelajaran()
@@ -25,6 +26,6 @@ class Penilaian extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(CalonSiswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class, 'siswa_id');
     }
 }

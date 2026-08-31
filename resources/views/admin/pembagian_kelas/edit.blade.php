@@ -109,7 +109,7 @@
 
             <p>
                 <strong>Nama:</strong>
-                {{ $pembagian->siswa?->nama_lengkap ?? 'Data siswa tidak tersedia' }}
+                {{ $pembagian->siswa?->nama ?? 'Data siswa tidak tersedia' }}
             </p>
 
         </div>

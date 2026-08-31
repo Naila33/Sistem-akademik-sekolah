@@ -160,9 +160,11 @@
                             </small>
 
                             <div>
-                                {{ $calonSiswa->jenis_kelamin === 'L'
+                                {{ in_array($calonSiswa->jenis_kelamin, ['laki-laki', 'Laki-laki', 'L'], true)
                                     ? 'Laki-laki'
-                                    : 'Perempuan' }}
+                                    : (in_array($calonSiswa->jenis_kelamin, ['perempuan', 'Perempuan', 'P'], true)
+                                        ? 'Perempuan'
+                                        : ucfirst((string) $calonSiswa->jenis_kelamin)) }}
                             </div>
 
                         </div>
