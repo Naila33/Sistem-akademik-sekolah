@@ -12,16 +12,16 @@
         <a href="{{ route('wali-kelas.index') }}">Kelas Saya</a>
 
         @isset($kelas)
-            @if($kelas instanceof \App\Models\Kelas)
-                <a href="{{ route('wali-kelas.siswa', $kelas->id) }}">Data Siswa</a>
-            @endif
+        @if($kelas instanceof \App\Models\Kelas)
+        <a href="{{ route('wali-kelas.siswa', $kelas->id) }}">Data Siswa</a>
+        @endif
         @endisset
 
         @isset($siswa)
-            @if($siswa instanceof \App\Models\Siswa)
-                <a href="{{ route('wali-kelas.nilai', $siswa->id) }}">Nilai Siswa</a>
-                <a href="{{ route('wali-kelas.rapor', $siswa->id) }}">Rapor Siswa</a>
-            @endif
+        @if($siswa instanceof \App\Models\Siswa)
+        <a href="{{ route('wali-kelas.nilai', $siswa->id) }}">Nilai Siswa</a>
+        <a href="{{ route('wali-kelas.rapor', $siswa->id) }}">Rapor Siswa</a>
+        @endif
         @endisset
     </div>
 

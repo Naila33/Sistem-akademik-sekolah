@@ -537,14 +537,8 @@
 
                         {{ session('error') }}
 
-                    </div>
 
                 @endif
-
-
-                @yield('content')
-
-
             </section>
 
 
