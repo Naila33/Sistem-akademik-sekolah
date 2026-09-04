@@ -7,113 +7,73 @@
 <div class="container-fluid py-4">
 
     {{-- HEADER --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4">
 
-        <div>
+        <h3 class="fw-bold mb-1">
+            Penilaian Mata Pelajaran
+        </h3>
 
-            <h3 class="fw-bold mb-1">
-                Penilaian Mata Pelajaran
-            </h3>
-
-            <p class="text-muted mb-0">
-                Data nilai harian dan ujian siswa
-            </p>
-
-        </div>
-
-
-        <a href="{{ route('admin.penilaian.mapel.create') }}"
-           class="btn btn-success">
-
-            <i class="bi bi-plus-lg"></i>
-            Tambah Penilaian
-
-        </a>
+        <p class="text-muted mb-0">
+            Pilih kelas untuk melihat mata pelajaran dan data penilaian.
+        </p>
 
     </div>
 
 
-    {{-- SUCCESS --}}
-    @if(session('success'))
-
-        <div class="alert alert-success alert-dismissible fade show">
-
-            {{ session('success') }}
-
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-            </button>
-
-        </div>
-
-    @endif
-
-
-    {{-- ================================================= --}}
-    {{-- SEARCH & FILTER --}}
-    {{-- ================================================= --}}
-
+    {{-- FILTER --}}
     <div class="card border-0 shadow-sm mb-4">
 
         <div class="card-body">
 
             <form method="GET"
-                  action="{{ route('admin.penilaian.mapel.index') }}"
-                  class="live-search-form">
+                  action="{{ route('admin.penilaian.mapel.index') }}">
 
                 <div class="row g-3">
 
                     {{-- SEARCH --}}
-                    <div class="col-md-6">
+                    <div class="col-md-5">
 
                         <label class="form-label fw-semibold">
-                            Cari
+                            Cari Kelas
                         </label>
 
                         <div class="input-group">
 
                             <span class="input-group-text">
-
                                 <i class="bi bi-search"></i>
-
                             </span>
 
                             <input type="text"
                                    name="search"
-                                   class="form-control live-search-input"
-                                   placeholder="Cari nama siswa atau tanggal (contoh: 31/08/2026 atau 2026-08-31)"
-                                   value="{{ request('search') }}">
+                                   class="form-control"
+                                   value="{{ request('search') }}"
+                                   placeholder="Contoh: X RPL A">
 
                         </div>
 
-                        <small class="text-muted">
-                            Bisa mencari berdasarkan nama siswa atau tanggal.
-                        </small>
-
                     </div>
 
 
-                    {{-- SISWA --}}
-                    <div class="col-md-6">
+                    {{-- JENJANG --}}
+                    <div class="col-md-3">
 
                         <label class="form-label fw-semibold">
-                            Nama Siswa
+                            Jenjang
                         </label>
 
-                        <select name="siswa_id"
+                        <select name="tingkat"
                                 class="form-select">
 
                             <option value="">
-                                -- Semua Siswa --
+                                Semua Jenjang
                             </option>
 
-                            @foreach($siswa as $s)
+                            @foreach($tingkat as $t)
 
-                                <option value="{{ $s->id }}"
-                                    {{ request('siswa_id') == $s->id ? 'selected' : '' }}>
+                                <option value="{{ $t }}"
+                                    {{ request('tingkat') == $t ? 'selected' : '' }}>
 
-                                    {{ $s->nama }}
+                                    {{ $t }}
 
                                 </option>
 
@@ -124,94 +84,30 @@
                     </div>
 
 
-                    {{-- MAPEL --}}
-                    <div class="col-md-4">
+                    {{-- JURUSAN --}}
+                    <div class="col-md-3">
 
                         <label class="form-label fw-semibold">
-                            Mata Pelajaran
+                            Jurusan
                         </label>
 
-                        <select name="mata_pelajaran_id"
+                        <select name="jurusan_id"
                                 class="form-select">
 
                             <option value="">
-                                -- Semua Mata Pelajaran --
+                                Semua Jurusan
                             </option>
 
-                            @foreach($mataPelajaran as $mapel)
+                            @foreach($jurusan as $j)
 
-                                <option value="{{ $mapel->id }}"
-                                    {{ request('mata_pelajaran_id') == $mapel->id ? 'selected' : '' }}>
+                                <option value="{{ $j->id }}"
+                                    {{ request('jurusan_id') == $j->id ? 'selected' : '' }}>
 
-                                    {{ $mapel->nama_mapel }}
+                                    {{ $j->nama_jurusan }}
 
                                 </option>
 
                             @endforeach
-
-                        </select>
-
-                    </div>
-
-
-                    {{-- KELAS --}}
-                    <div class="col-md-4">
-
-                        <label class="form-label fw-semibold">
-                            Kelas
-                        </label>
-
-                        <select name="kelas_id"
-                                class="form-select">
-
-                            <option value="">
-                                -- Semua Kelas --
-                            </option>
-
-                            @foreach($kelas as $k)
-
-                                <option value="{{ $k->id }}"
-                                    {{ request('kelas_id') == $k->id ? 'selected' : '' }}>
-
-                                    {{ $k->tingkat }}
-                                    {{ $k->nama_kelas }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
-
-
-                    {{-- JENIS NILAI --}}
-                    <div class="col-md-4">
-
-                        <label class="form-label fw-semibold">
-                            Jenis Nilai
-                        </label>
-
-                        <select name="jenis_nilai"
-                                class="form-select">
-
-                            <option value="">
-                                -- Semua Jenis --
-                            </option>
-
-                            <option value="harian"
-                                {{ request('jenis_nilai') == 'harian' ? 'selected' : '' }}>
-
-                                Harian
-
-                            </option>
-
-                            <option value="ujian"
-                                {{ request('jenis_nilai') == 'ujian' ? 'selected' : '' }}>
-
-                                Ujian
-
-                            </option>
 
                         </select>
 
@@ -219,28 +115,14 @@
 
 
                     {{-- BUTTON --}}
-                    <div class="col-12">
+                    <div class="col-md-1 d-flex align-items-end">
 
-                        <div class="d-flex gap-2">
+                        <button type="submit"
+                                class="btn btn-success w-100">
 
-                            <button type="submit"
-                                    class="btn btn-success">
+                            <i class="bi bi-funnel"></i>
 
-                                <i class="bi bi-funnel"></i>
-                                Terapkan Filter
-
-                            </button>
-
-
-                            <a href="{{ route('admin.penilaian.mapel.index') }}"
-                               class="btn btn-secondary">
-
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                                Reset
-
-                            </a>
-
-                        </div>
+                        </button>
 
                     </div>
 
@@ -252,278 +134,138 @@
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.live-search-form').forEach(function (form) {
-                const input = form.querySelector('.live-search-input');
-                if (!input) return;
 
-                let timeout;
+    {{-- CARD KELAS --}}
+    <div class="row g-4">
 
-                function submitLiveSearch() {
-                    const formData = new FormData(form);
-                    const params = new URLSearchParams(formData).toString();
-                    const action = form.getAttribute('action') || window.location.href;
-                    const url = params ? action + '?' + params : action;
+        @forelse($kelas as $k)
 
-                    fetch(url, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'text/html'
-                        }
-                    })
-                    .then(function (response) {
-                        return response.text();
-                    })
-                    .then(function (html) {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newResults = doc.querySelector('#mapel-search-results');
-                        const currentResults = document.querySelector('#mapel-search-results');
+            <div class="col-xl-3 col-lg-4 col-md-6">
 
-                        if (newResults && currentResults) {
-                            currentResults.innerHTML = newResults.innerHTML;
-                        }
+                <a href="{{ route(
+                    'admin.penilaian.mapel.kelas',
+                    $k->id
+                ) }}"
+                   class="text-decoration-none">
 
-                        history.replaceState(null, '', url);
-                    })
-                    .catch(function () {
-                        form.submit();
-                    });
-                }
+                    <div class="card border-0 shadow-sm h-100 kelas-card">
 
-                input.addEventListener('input', function () {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(function () {
-                        submitLiveSearch();
-                    }, 400);
-                });
+                        <div class="card-body">
 
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    submitLiveSearch();
-                });
-            });
-        });
-    </script>
+                            <div class="d-flex justify-content-between align-items-start">
 
+                                <div>
 
-    {{-- ================================================= --}}
-    {{-- TABLE --}}
-    {{-- ================================================= --}}
+                                    <div class="text-muted small mb-1">
+                                        Kelas
+                                    </div>
 
-    <div class="card border-0 shadow-sm" id="mapel-search-results">
+                                    <h4 class="fw-bold text-dark mb-1">
 
-        <div class="card-body">
+                                        {{ $k->tingkat }}
+                                        {{ $k->nama_kelas }}
 
-            <div class="table-responsive">
+                                    </h4>
 
-                <table class="table table-hover align-middle">
+                                    <div class="text-muted">
 
-                    <thead>
+                                        {{ $k->jurusan?->nama_jurusan ?? 'Umum' }}
 
-                        <tr>
-
-                            <th width="60">
-                                No
-                            </th>
-
-                            <th>
-                                Siswa
-                            </th>
-
-                            <th>
-                                Mata Pelajaran
-                            </th>
-
-                            <th>
-                                Kelas
-                            </th>
-
-                            <th>
-                                Jenis Nilai
-                            </th>
-
-                            <th>
-                                Nilai
-                            </th>
-
-                            <th>
-                                Tanggal
-                            </th>
-
-                            <th width="160">
-                                Aksi
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                    @forelse($penilaian as $item)
-
-                        <tr>
-
-                            {{-- NO --}}
-                            <td>
-                                {{ $loop->iteration }}
-                            </td>
-
-
-                            {{-- SISWA --}}
-                            <td>
-
-                                <div class="fw-semibold">
-
-                                    {{ $item->siswa?->nama ?? '-' }}
+                                    </div>
 
                                 </div>
 
-                            </td>
+
+                                <div class="rounded-circle bg-success bg-opacity-10
+                                            p-3 text-success">
+
+                                    <i class="bi bi-mortarboard-fill fs-4"></i>
+
+                                </div>
+
+                            </div>
 
 
-                            {{-- MAPEL --}}
-                            <td>
-
-                                {{ $item->jadwal?->mataPelajaran?->nama_mapel ?? '-' }}
-
-                            </td>
+                            <hr>
 
 
-                            {{-- KELAS --}}
-                            <td>
+                            <div class="d-flex justify-content-between">
 
-                                @if($item->jadwal?->kelas)
-
-                                    {{ $item->jadwal->kelas->tingkat }}
-                                    {{ $item->jadwal->kelas->nama_kelas }}
-
-                                @else
-
-                                    -
-
-                                @endif
-
-                            </td>
-
-
-                            {{-- JENIS NILAI --}}
-                            <td>
-
-                                @if($item->jenis_nilai === 'harian')
-
-                                    <span class="badge bg-info">
-
-                                        Harian
-
-                                    </span>
-
-                                @elseif($item->jenis_nilai === 'ujian')
-
-                                    <span class="badge bg-warning text-dark">
-
-                                        Ujian
-
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-
-                            {{-- NILAI --}}
-                            <td>
+                                <span class="text-muted">
+                                    <i class="bi bi-people me-1"></i>
+                                    Siswa
+                                </span>
 
                                 <strong>
-
-                                    {{ $item->nilai }}
-
+                                    {{ $k->siswa_kelas_count }}
                                 </strong>
 
-                            </td>
+                            </div>
 
 
-                            {{-- TANGGAL --}}
-                            <td>
-
-                                {{ $item->created_at?->format('d/m/Y') ?? '-' }}
-
-                            </td>
+                        </div>
 
 
-                            {{-- AKSI --}}
-                            <td>
+                        <div class="card-footer bg-white border-0 pt-0">
 
-                                <div class="d-flex gap-1">
+                            <div class="text-success fw-semibold">
 
-                                    <a href="{{ route('admin.penilaian.mapel.edit', $item->id) }}"
-                                       class="btn btn-sm btn-warning">
+                                Lihat Mata Pelajaran
 
-                                        <i class="bi bi-pencil"></i>
-                                        Edit
+                                <i class="bi bi-arrow-right ms-1"></i>
 
-                                    </a>
+                            </div>
 
+                        </div>
 
-                                    <form action="{{ route('admin.penilaian.mapel.destroy', $item->id) }}"
-                                          method="POST"
-                                          class="d-inline">
+                    </div>
 
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit"
-                                                class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Yakin ingin menghapus nilai ini?')">
-
-                                            <i class="bi bi-trash"></i>
-                                            Hapus
-
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="8"
-                                class="text-center py-5">
-
-                                <div class="text-muted">
-
-                                    <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
-
-                                    Belum ada data penilaian.
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    @endforelse
-
-                    </tbody>
-
-                </table>
+                </a>
 
             </div>
 
-        </div>
+        @empty
+
+            <div class="col-12">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body text-center py-5">
+
+                        <i class="bi bi-mortarboard fs-1 text-muted"></i>
+
+                        <h5 class="mt-3">
+                            Kelas tidak ditemukan
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Belum ada kelas yang sesuai dengan filter.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        @endforelse
 
     </div>
 
 </div>
+
+
+<style>
+
+.kelas-card {
+    transition: all .2s ease;
+}
+
+.kelas-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,.10) !important;
+}
+
+</style>
 
 @endsection

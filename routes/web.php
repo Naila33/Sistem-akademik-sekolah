@@ -13,11 +13,8 @@ use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\JadwalpelajaranController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\PenilaianController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\WaliKelasController;
-=======
 use App\Http\Controllers\Admin\PenilaianPjblController;
->>>>>>> Stashed changes
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -165,23 +162,88 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/penilaian/mapel', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'index'])
-        ->name('penilaian.mapel.index');
+    /*
+|--------------------------------------------------------------------------
+| PENILAIAN MATA PELAJARAN
+|--------------------------------------------------------------------------
+*/
 
-    Route::get('/penilaian/mapel/create', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'create'])
-        ->name('penilaian.mapel.create');
+Route::get(
+    '/penilaian/mapel',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'index']
+)->name('penilaian.mapel.index');
 
-    Route::post('/penilaian/mapel', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'store'])
-        ->name('penilaian.mapel.store');
 
-    Route::get('/penilaian/mapel/{id}/edit', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'edit'])
-        ->name('penilaian.mapel.edit');
+/*
+|--------------------------------------------------------------------------
+| PILIH MAPEL BERDASARKAN KELAS
+|--------------------------------------------------------------------------
+*/
 
-    Route::put('/penilaian/mapel/{id}', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'update'])
-        ->name('penilaian.mapel.update');
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'kelas']
+)->name('penilaian.mapel.kelas');
 
-    Route::delete('/penilaian/mapel/{id}', ['App\\Http\\Controllers\\Admin\\PenilaianMapelController', 'destroy'])
-        ->name('penilaian.mapel.destroy');
+
+/*
+|--------------------------------------------------------------------------
+| DATA PENILAIAN BERDASARKAN KELAS + MAPEL
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'mapel']
+)->name('penilaian.mapel.mapel');
+
+
+/*
+|--------------------------------------------------------------------------
+| TAMBAH PENILAIAN
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/create',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'create']
+)->name('penilaian.mapel.create');
+
+
+Route::post(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'store']
+)->name('penilaian.mapel.store');
+
+
+/*
+|--------------------------------------------------------------------------
+| EDIT
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}/edit',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'edit']
+)->name('penilaian.mapel.edit');
+
+
+Route::put(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'update']
+)->name('penilaian.mapel.update');
+
+
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
+Route::delete(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'destroy']
+)->name('penilaian.mapel.destroy');
 
     Route::get('/penilaian/pjbl', [PenilaianPjblController::class, 'index'])
     ->name('penilaian.pjbl.index');

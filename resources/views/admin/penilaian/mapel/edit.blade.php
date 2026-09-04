@@ -1,28 +1,98 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Penilaian Mata Pelajaran')
+@section('title', 'Edit Penilaian')
 
 @section('content')
 
 <div class="container-fluid py-4">
 
     <div class="mb-4">
-        <h3 class="fw-bold">Edit Penilaian</h3>
-        <p class="text-muted">
-            Perbarui nilai mata pelajaran siswa
-        </p>
+
+        <a href="{{ route(
+            'admin.penilaian.mapel.mapel',
+            [
+                'kelasId' => $kelas->id,
+                'mapelId' => $mataPelajaran->id
+            ]
+        ) }}"
+           class="text-decoration-none text-muted">
+
+            <i class="bi bi-arrow-left"></i>
+            Kembali
+
+        </a>
+
     </div>
 
+
+    <div class="mb-4">
+
+        <h3 class="fw-bold mb-1">
+            Edit Penilaian
+        </h3>
+
+        <p class="text-muted">
+            {{ $kelas->tingkat }}
+            {{ $kelas->nama_kelas }}
+            —
+            {{ $mataPelajaran->nama_mapel }}
+        </p>
+
+    </div>
+
+
     <div class="card border-0 shadow-sm">
+
         <div class="card-body">
 
-            <form action="{{ route('admin.penilaian.mapel.update', $penilaian->id) }}"
-                  method="POST">
+            <form method="POST"
+                  action="{{ route(
+                      'admin.penilaian.mapel.update',
+                      [
+                          'kelasId' => $kelas->id,
+                          'mapelId' => $mataPelajaran->id,
+                          'id' => $penilaian->id
+                      ]
+                  ) }}">
 
                 @csrf
                 @method('PUT')
 
 
+                {{-- GURU / JADWAL --}}
+                <div class="mb-3">
+
+                    <label class="form-label fw-semibold">
+                        Guru / Jadwal
+                    </label>
+
+                    <select name="jadwal_pelajaran_id"
+                            class="form-select"
+                            required>
+
+                        @foreach($jadwal as $j)
+
+                            <option value="{{ $j->id }}"
+                                {{ $penilaian->jadwal_pelajaran_id == $j->id
+                                    ? 'selected'
+                                    : '' }}>
+
+                                {{ $j->guru?->nama ?? '-' }}
+
+                                @if($j->hari)
+                                    — {{ $j->hari }}
+                                @endif
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                </div>
+
+
+                {{-- SISWA --}}
                 <div class="mb-3">
 
                     <label class="form-label fw-semibold">
@@ -33,42 +103,16 @@
                             class="form-select"
                             required>
 
-                        @foreach($siswa as $item)
+                        @foreach($siswa as $s)
 
-                            <option value="{{ $item->id }}"
-                                {{ $penilaian->siswa_id == $item->id ? 'selected' : '' }}>
+                            <option value="{{ $s->id }}"
+                                {{ $penilaian->siswa_id == $s->id
+                                    ? 'selected'
+                                    : '' }}>
 
-                                {{ $item->nama }}
-                                ({{ $item->nis }})
-
-                            </option>
-
-                        @endforeach
-
-                    </select>
-
-                </div>
-
-
-                <div class="mb-3">
-
-                    <label class="form-label fw-semibold">
-                        Jadwal / Mata Pelajaran
-                    </label>
-
-                    <select name="jadwal_pelajaran_id"
-                            class="form-select"
-                            required>
-
-                        @foreach($jadwal as $item)
-
-                            <option value="{{ $item->id }}"
-                                {{ $penilaian->jadwal_pelajaran_id == $item->id ? 'selected' : '' }}>
-
-                                {{ $item->mataPelajaran->nama_mapel ?? '-' }}
-                                -
-                                {{ $item->kelas->tingkat ?? '' }}
-                                {{ $item->kelas->nama_kelas ?? '' }}
+                                {{ $s->nis }}
+                                —
+                                {{ $s->nama }}
 
                             </option>
 
@@ -79,6 +123,7 @@
                 </div>
 
 
+                {{-- JENIS --}}
                 <div class="mb-3">
 
                     <label class="form-label fw-semibold">
@@ -90,13 +135,21 @@
                             required>
 
                         <option value="harian"
-                            {{ $penilaian->jenis_nilai == 'harian' ? 'selected' : '' }}>
+                            {{ $penilaian->jenis_nilai == 'harian'
+                                ? 'selected'
+                                : '' }}>
+
                             Harian
+
                         </option>
 
                         <option value="ujian"
-                            {{ $penilaian->jenis_nilai == 'ujian' ? 'selected' : '' }}>
+                            {{ $penilaian->jenis_nilai == 'ujian'
+                                ? 'selected'
+                                : '' }}>
+
                             Ujian
+
                         </option>
 
                     </select>
@@ -104,6 +157,7 @@
                 </div>
 
 
+                {{-- NILAI --}}
                 <div class="mb-4">
 
                     <label class="form-label fw-semibold">
@@ -124,14 +178,26 @@
 
                 <div class="d-flex gap-2">
 
-                    <a href="{{ route('admin.penilaian.mapel.index') }}"
+                    <a href="{{ route(
+                        'admin.penilaian.mapel.mapel',
+                        [
+                            'kelasId' => $kelas->id,
+                            'mapelId' => $mataPelajaran->id
+                        ]
+                    ) }}"
                        class="btn btn-secondary">
-                        Kembali
+
+                        Batal
+
                     </a>
+
 
                     <button type="submit"
                             class="btn btn-success">
-                        Update
+
+                        <i class="bi bi-save me-1"></i>
+                        Simpan Perubahan
+
                     </button>
 
                 </div>
@@ -139,6 +205,7 @@
             </form>
 
         </div>
+
     </div>
 
 </div>

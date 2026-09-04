@@ -14,8 +14,7 @@ class MataPelajaran extends Model
         'kode_mapel',
         'warna',
     ];
-<<<<<<< Updated upstream
-=======
+
 
     public function jadwal()
     {
@@ -25,5 +24,4 @@ class MataPelajaran extends Model
             'id'
         );
     }
->>>>>>> Stashed changes
 }
