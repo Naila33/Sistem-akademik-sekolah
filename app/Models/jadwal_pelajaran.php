@@ -20,8 +20,12 @@ class Jadwal_pelajaran extends Model
         'jumlah_jp',
         'mata_pelajaran_id',
         'ruangan_id',
+        'is_published',
     ];
 
+    protected $casts = [
+    'is_published' => 'boolean',
+];
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
@@ -40,8 +44,21 @@ class Jadwal_pelajaran extends Model
             'id'
         );
     }
+    public function mapel()
+    {
+        return $this->belongsTo(
+            MataPelajaran::class,
+            'mata_pelajaran_id',
+            'id'
+        );
+    }
     public function ruangan()
     {
         return $this->belongsTo(Ruangan::class, 'ruangan_id');
     }
+
+    public function jamPelajaran()
+{
+    return $this->belongsTo(JamPelajaran::class, 'jam_pelajaran_id');
+}
 }

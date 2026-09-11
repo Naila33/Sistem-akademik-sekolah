@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Pelajaran</title>
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">       
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -422,8 +422,17 @@
             <a href="{{ route('admin.jadwal_pelajaran.create') }}" class="btn-tambah">
                 + Tambah Jadwal
             </a>
-        </div>
 
+             <form action="{{ route('admin.jadwal_pelajaran.publish') }}" method="POST" style="display:inline;">
+            @csrf
+            @method('PATCH')
+
+            <button type="submit">
+                Publikasikan Semua
+            </button>
+        </form>
+
+        </div>
         <div class="toolbar">
             <form action="{{ route('admin.jadwal_pelajaran.index') }}" method="GET" class="filter">
                 <label for="jurusan_id">Tampilkan jurusan</label>
@@ -453,8 +462,8 @@
                         <th class="day">
                             <span class="day-header">
                                 {{ $namaHari }}
-                                <span class="jp-numbers">
-                                    @for ($jp = 1; $jp <= 10; $jp++)
+                                <span class="jp-numbers" style="grid-template-columns: repeat({{ $jumlahJpPerHari[$namaHari] ?? 10 }}, minmax(22px, 1fr));">
+                                    @for ($jp = 1; $jp <= ($jumlahJpPerHari[$namaHari] ?? 10); $jp++)
                                         <span class="jp-number">{{ $jp }}</span>
                                     @endfor
                                 </span>
@@ -488,24 +497,25 @@
                                     $jadwalHari = $jadwalKelas
                                         ->filter(fn($item) => strtolower($item->hari) === strtolower($namaHari))
                                         ->values();
+                                    $jumlahJpHari = $jumlahJpPerHari[$namaHari] ?? 10;
                                     $jpPosisi = 1;
                                 @endphp
                                 <div class="schedule-list">
                                     @foreach (['mapel', 'guru', 'ruang'] as $jenisBaris)
-                                        <div class="schedule-row">
+                                        <div class="schedule-row" style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                             @forelse ($jadwalHari as $item)
                                                 @php
-                                                    $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), 10);
-                                                    $jumlahJpTampil = min($jumlahJp, 12 - $jpPosisi);
+                                                    $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), $jumlahJpHari);
+                                                    $jumlahJpTampil = min($jumlahJp, $jumlahJpHari + 1 - $jpPosisi);
                                                     $nilaiBaris = match ($jenisBaris) {
                                                         'mapel' => optional($item->mapel)->kode_mapel ?? ($item->mata_pelajaran_id ?? '-'),
-                                                        'guru' => optional($item->guru)->kode_guru ?? $item->guru_id,
+                                                        'guru' => optional($item->guru)->kode_guru ?? ($item->guru_id ?? '-'),
                                                         default => optional($item->ruangan)->kode_ruang ?? ($item->ruangan_id ?? '-'),
                                                     };
                                                 @endphp
                                                 <div class="schedule-value {{ $jenisBaris === 'mapel' ? 'mapel' : '' }}"
                                                     style="background-color: {{ $jenisBaris === 'mapel' ? optional($item->mapel)->warna ?? '#d3d3d3' : '#ffffff' }}; grid-column: {{ $jpPosisi }} / span {{ $jumlahJpTampil }};"
-                                                    title="{{ optional($item->guru)->nama ?? $item->guru_id }} | {{ optional($item->ruangan)->nama_ruang ?? ($item->ruangan_id ?? '-') }}">
+                                                    title="{{ optional($item->guru)->kode_guru ?? ($item->guru_id ?? '-') }} | {{ optional($item->ruangan)->kode_ruang ?? ($item->ruangan_id ?? '-') }}">
                                                     {{ $nilaiBaris }}
                                                 </div>
                                                 @php $jpPosisi += $jumlahJpTampil; @endphp

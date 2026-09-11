@@ -67,7 +67,7 @@
                 </select>
             </label>
             <label>Hari
-                <select name="hari" required>
+                <select name="hari" id="hari" required>
                     @foreach (['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] as $namaHari)
                         <option value="{{ $namaHari }}">{{ $namaHari }}</option>
                     @endforeach
@@ -95,9 +95,10 @@
                             <option value="{{ $item->id }}">{{ $item->kode_ruang }} - {{ $item->nama_ruang }}</option>
                         @endforeach
                     </select>
-                    <select name="jumlah_jp[]" required>
-                        @for ($jp = 1; $jp <= 10; $jp++)
-                        <option value="{{ $jp }}">{{ $jp }} JP</option> @endfor
+                    <select name="jumlah_jp[]" class="jumlah-jp" required>
+                        @for ($jp = 1; $jp <= ($jumlahJpPerHari['Senin'] ?? 10); $jp++)
+                            <option value="{{ $jp }}">{{ $jp }} JP</option>
+                        @endfor
                     </select>
                     <button type="button" class="hapus-baris" onclick="this.parentElement.remove()">Hapus</button>
                 </div>
@@ -108,10 +109,28 @@
         </form>
     </main>
     <script>
+        const jumlahJpPerHari = @json($jumlahJpPerHari);
+
+        function perbaruiPilihanJp() {
+            const jumlahMaksimal = jumlahJpPerHari[document.getElementById('hari').value] || 10;
+            document.querySelectorAll('.jumlah-jp').forEach((select) => {
+                const nilaiLama = Math.min(Number(select.value) || 1, jumlahMaksimal);
+                select.innerHTML = '';
+                for (let jp = 1; jp <= jumlahMaksimal; jp += 1) {
+                    const option = new Option(`${jp} JP`, jp);
+                    option.selected = jp === nilaiLama;
+                    select.add(option);
+                }
+            });
+        }
+
+        document.getElementById('hari').addEventListener('change', perbaruiPilihanJp);
+
         function tambahMapel() {
             const baris = document.querySelector('.mapel-row').cloneNode(true);
             baris.querySelectorAll('select').forEach((select) => select.selectedIndex = 0);
             document.getElementById('mapel-list').appendChild(baris);
+            perbaruiPilihanJp();
         }
     </script>
 </body>

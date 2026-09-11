@@ -14,6 +14,7 @@ class PjblPenguji extends Model
     protected $fillable = [
         'pjbl_id',
         'guru_id',
+        'jenis_penguji',
     ];
 
     /**

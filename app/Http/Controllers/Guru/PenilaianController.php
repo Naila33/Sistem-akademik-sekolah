@@ -145,14 +145,23 @@ class PenilaianController extends Controller
             );
         }
 
+        $counterJenis = [];
+
         $jenisPenilaian = $penilaian
+            ->sortBy([
+                ['jenis_nilai', 'asc'],
+                ['tanggal_penilaian', 'asc'],
+            ])
             ->unique(fn($item) => $item->jenis_nilai . '|' . $item->tanggal_penilaian)
-            ->map(function ($item, $index) {
+            ->map(function ($item) use (&$counterJenis) {
+                $counterJenis[$item->jenis_nilai] = ($counterJenis[$item->jenis_nilai] ?? 0) + 1;
+
                 return (object) [
-                    'id' => $index,
+                    'id' => $item->id,
                     'jenis_nilai' => $item->jenis_nilai,
                     'tanggal_penilaian' => $item->tanggal_penilaian,
-                    'nama_penilaian' => ucfirst($item->jenis_nilai) . ' - ' . $item->tanggal_penilaian,
+                    'penilaian_ke' => $counterJenis[$item->jenis_nilai],
+                    'nama_penilaian' => ucfirst($item->jenis_nilai) . ' ' . $counterJenis[$item->jenis_nilai],
                 ];
             })
             ->values();

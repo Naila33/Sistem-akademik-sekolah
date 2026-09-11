@@ -15,7 +15,6 @@ class MataPelajaran extends Model
         'warna',
     ];
 
-
     public function jadwal()
     {
         return $this->hasMany(

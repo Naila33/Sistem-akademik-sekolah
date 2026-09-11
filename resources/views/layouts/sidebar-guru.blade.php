@@ -13,6 +13,13 @@
 
         <div class="menu-title">Penilaian</div>
         <a href="{{ route('guru.penilaian.index') }}">Input Nilai</a>
+        <a href="{{ route('guru.penilaian-pjbl.index') }}">Penilaian PjBL</a>
+
+        <div class="menu-title">Jadwal pelajaran</div>
+        <a href="{{ route('guru.jadwal.index') }}">Lihat Jadwal</a>
+
+        <div class="menu-title">Absensi</div>
+        <a href="{{ route('absensi.index') }}">Lihat Absensi</a>
 
         <form action="{{ route('logout') }}" method="POST" class="logout-form">
             @csrf

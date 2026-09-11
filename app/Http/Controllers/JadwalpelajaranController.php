@@ -18,6 +18,7 @@ class JadwalPelajaranController extends Controller
         $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
         $jurusanList = Jurusan::orderBy('nama_jurusan')->get();
         $selectedJurusan = $request->input('jurusan_id');
+        $jumlahJpPerHari = $this->jumlahJpPerHari();
 
         $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mapel', 'ruangan']);
 
@@ -56,7 +57,8 @@ class JadwalPelajaranController extends Controller
             'jadwalPerKelas',
             'jurusanList',
             'mapelLegenda',
-            'selectedJurusan'
+            'selectedJurusan',
+            'jumlahJpPerHari'
         ));
     }
 
@@ -77,9 +79,10 @@ class JadwalPelajaranController extends Controller
         $jadwal = $jadwalQuery->get();
 
         $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+        $jumlahJpPerHari = $this->jumlahJpPerHari();
         $jadwalPerKelas = $jadwal->groupBy('kelas_id');
 
-        return response()->streamDownload(function () use ($hari, $jadwalPerKelas) {
+        return response()->streamDownload(function () use ($hari, $jadwalPerKelas, $jumlahJpPerHari) {
             $escape = static fn($value) => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
             $warnaMapel = static fn($item) => $escape(optional($item->mapel)->warna ?? '#d3d3d3');
 
@@ -94,11 +97,11 @@ class JadwalPelajaranController extends Controller
             echo '</style></head><body><table>';
             echo '<tr><th class="kelas" rowspan="2">Kelas</th><th class="info" rowspan="2">Info</th>';
             foreach ($hari as $namaHari) {
-                echo '<th class="hari" colspan="11">' . $escape(strtoupper($namaHari)) . '</th>';
+                echo '<th class="hari" colspan="' . $jumlahJpPerHari[$namaHari] . '">' . $escape(strtoupper($namaHari)) . '</th>';
             }
             echo '</tr><tr>';
             foreach ($hari as $namaHari) {
-                for ($jp = 0; $jp <= 10; $jp++) {
+                for ($jp = 1; $jp <= $jumlahJpPerHari[$namaHari]; $jp++) {
                     echo '<th class="jp">' . $jp . '</th>';
                 }
             }
@@ -124,7 +127,7 @@ class JadwalPelajaranController extends Controller
                         $jpPosisi = 0;
 
                         foreach ($jadwalHari as $item) {
-                            $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), 11 - $jpPosisi);
+                            $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), $jumlahJpPerHari[$namaHari] - $jpPosisi);
                             $nilai = match ($jenisBaris) {
                                 'mapel' => optional($item->mapel)->kode_mapel ?? ($item->mata_pelajaran_id ?? '-'),
                                 'guru' => optional($item->guru)->kode_guru ?? $item->guru_id,
@@ -136,8 +139,8 @@ class JadwalPelajaranController extends Controller
                             $jpPosisi += $jumlahJp;
                         }
 
-                        if ($jpPosisi < 11) {
-                            echo '<td colspan="' . (11 - $jpPosisi) . '"></td>';
+                        if ($jpPosisi < $jumlahJpPerHari[$namaHari]) {
+                            echo '<td colspan="' . ($jumlahJpPerHari[$namaHari] - $jpPosisi) . '"></td>';
                         }
                     }
                     echo '</tr>';
@@ -168,6 +171,7 @@ class JadwalPelajaranController extends Controller
         return Pdf::loadView('admin.jadwal_pelajaran.pdf', [
             'hari' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'],
             'jadwalPerKelas' => $jadwalPerKelas,
+            'jumlahJpPerHari' => $this->jumlahJpPerHari(),
         ])->setPaper('a3', 'landscape')->download('jadwal-pelajaran.pdf');
     }
 
@@ -177,10 +181,11 @@ class JadwalPelajaranController extends Controller
         $guru = Guru::all();
         $mapel = MataPelajaran::all();
         $ruangan = Ruangan::all();
+        $jumlahJpPerHari = $this->jumlahJpPerHari();
 
         return view(
             'admin.jadwal_pelajaran.create',
-            compact('kelas', 'guru', 'mapel', 'ruangan')
+            compact('kelas', 'guru', 'mapel', 'ruangan', 'jumlahJpPerHari')
         );
     }
 
@@ -196,7 +201,7 @@ class JadwalPelajaranController extends Controller
             'ruang_id' => 'required|array',
             'ruang_id.*' => 'required|exists:ruangan,id',
             'jumlah_jp' => 'required|array',
-            'jumlah_jp.*' => 'required|integer|min:1|max:10',
+            'jumlah_jp.*' => 'required|integer|min:1|max:12',
         ]);
 
         foreach ($request->mapel_id as $index => $mapelId) {
@@ -239,7 +244,7 @@ class JadwalPelajaranController extends Controller
             'mapel_id' => 'required',
             'ruang_id' => 'required',
             'hari' => 'required',
-            'jumlah_jp' => 'required|integer|min:1|max:10',
+            'jumlah_jp' => 'required|integer|min:1|max:12',
         ]);
 
         $jadwal = Jadwal_pelajaran::findOrFail($id);
@@ -287,6 +292,7 @@ class JadwalPelajaranController extends Controller
             'guru' => Guru::all(),
             'mapel' => MataPelajaran::all(),
             'ruangan' => Ruangan::all(),
+            'jumlahJpPerHari' => $this->jumlahJpPerHari(),
             'kelasTerpilih' => $jadwal->first()->kelas,
             'hariTerpilih' => $hari,
         ]);
@@ -301,7 +307,7 @@ class JadwalPelajaranController extends Controller
             'mapel_id.*' => 'required|distinct|exists:mata_pelajaran,id',
             'guru_id.*' => 'required|exists:dataguru,id',
             'ruang_id.*' => 'required|exists:ruangan,id',
-            'jumlah_jp.*' => 'required|integer|min:1|max:10',
+            'jumlah_jp.*' => 'required|integer|min:1|max:12',
         ]);
 
         $jadwalKelasHari = Jadwal_pelajaran::where('kelas_id', $kelasId)
@@ -335,5 +341,25 @@ class JadwalPelajaranController extends Controller
 
         return redirect()->route('admin.jadwal_pelajaran.index')
             ->with('success', 'Semua jadwal pada hari tersebut berhasil dihapus!');
+    }
+
+    public function publish()
+    {
+        Jadwal_pelajaran::query()->update([
+            'is_published' => true
+        ]);
+
+        return back()->with('success', 'Semua jadwal berhasil dipublikasikan.');
+    }
+
+    private function jumlahJpPerHari(): array
+    {
+        return [
+            'Senin' => 10,
+            'Selasa' => 12,
+            'Rabu' => 10,
+            'Kamis' => 12,
+            'Jumat' => 6,
+        ];
     }
 }

@@ -8,90 +8,241 @@
     <title>Detail Penilaian</title>
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 
-<style>
-    body {
-        margin: 0;
-        background: #f5f6fa;
-        color: #333;
-        font-family: Arial, sans-serif;
-    }
+    <style>
+        body {
+            margin: 0;
+            background: #f5f6fa;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
 
-    .container-fluid {
-        box-sizing: border-box;
-        margin-left: 250px;
-        padding: 30px;
-        min-height: 100vh;
-    }
+        .container-fluid {
+            box-sizing: border-box;
+            margin-left: 250px;
+            padding: 30px;
+            min-height: 100vh;
+        }
 
-    .d-flex { display: flex; }
-    .justify-content-between { justify-content: space-between; }
-    .align-items-center { align-items: center; }
-    .mb-1 { margin-bottom: 4px; }
-    .mb-3 { margin-bottom: 16px; }
-    .mb-4 { margin-bottom: 24px; }
-    .fw-bold { font-weight: 700; }
-    .fw-semibold { font-weight: 600; }
-    .text-muted { color: #64748b; }
-    .text-start { text-align: left; }
-    .text-center { text-align: center; }
-    .d-block { display: block; }
+        .d-flex {
+            display: flex;
+        }
 
-    .card {
-        overflow: hidden;
-        background: #fff;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(15, 23, 42, .06);
-    }
+        .justify-content-between {
+            justify-content: space-between;
+        }
 
-    .card-body { padding: 20px; }
-    .card-body.p-0 { padding: 0; }
-    .card-footer { padding: 14px 20px; border-top: 1px solid #e2e8f0; }
+        .align-items-center {
+            align-items: center;
+        }
 
-    .row { display: flex; gap: 24px; }
-    .col-md-4 { flex: 1; }
-    small { display: block; margin-bottom: 6px; font-size: 12px; }
+        .mb-1 {
+            margin-bottom: 4px;
+        }
 
-    .btn {
-        display: inline-block;
-        padding: 9px 14px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        text-decoration: none;
-        cursor: pointer;
-        font-size: 14px;
-    }
+        .mb-3 {
+            margin-bottom: 16px;
+        }
 
-    .btn-primary { background: #176b87; color: #fff; }
-    .btn-success { background: #198754; color: #fff; }
-    .btn-secondary { background: #6c757d; color: #fff; }
-    .btn-outline-secondary { border-color: #6c757d; color: #6c757d; }
+        .mb-4 {
+            margin-bottom: 24px;
+        }
 
-    .table-responsive { overflow-x: auto; }
-    .table { width: 100%; min-width: 700px; border-collapse: collapse; }
-    .table th, .table td { padding: 10px 12px; border: 1px solid #dee2e6; }
-    .table th { background: #f1f5f9; }
-    .form-control { box-sizing: border-box; width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; }
-    .nilai-input { text-align: right; }
-    .nilai-cell { text-align: right; }
-    .py-5 { padding-top: 48px; padding-bottom: 48px; }
-    .filter-form { display: flex; align-items: end; gap: 10px; margin-bottom: 20px; }
-    .filter-form label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
-    .filter-form select { min-width: 180px; padding: 9px; border: 1px solid #cbd5e1; border-radius: 4px; }
-    .pagination { display: flex; gap: 6px; align-items: center; padding: 14px 20px; }
-    .pagination a, .pagination span { padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; text-decoration: none; color: #176b87; }
-    .pagination .active span { background: #176b87; color: #fff; }
+        .fw-bold {
+            font-weight: 700;
+        }
 
-    @media (max-width: 768px) {
-        .container-fluid { margin-left: 210px; padding: 15px; }
-        .row { flex-direction: column; gap: 14px; }
-        .d-flex { align-items: flex-start; flex-direction: column; gap: 12px; }
-    }
-</style>
+        .fw-semibold {
+            font-weight: 600;
+        }
+
+        .text-muted {
+            color: #64748b;
+        }
+
+        .text-start {
+            text-align: left;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .d-block {
+            display: block;
+        }
+
+        .card {
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, .06);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-body.p-0 {
+            padding: 0;
+        }
+
+        .card-footer {
+            padding: 14px 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .row {
+            display: flex;
+            gap: 24px;
+        }
+
+        .col-md-4 {
+            flex: 1;
+        }
+
+        small {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 9px 14px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #176b87;
+            color: #fff;
+        }
+
+        .btn-success {
+            background: #198754;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+        }
+
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .table th {
+            background: #f1f5f9;
+        }
+
+        .form-control {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .nilai-input {
+            text-align: right;
+        }
+
+        .nilai-cell {
+            text-align: right;
+        }
+
+        .py-5 {
+            padding-top: 48px;
+            padding-bottom: 48px;
+        }
+
+        .filter-form {
+            display: flex;
+            align-items: end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .filter-form select {
+            min-width: 180px;
+            padding: 9px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding: 14px 20px;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 6px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #176b87;
+        }
+
+        .pagination .active span {
+            background: #176b87;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .container-fluid {
+                margin-left: 210px;
+                padding: 15px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .d-flex {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-@include('layouts.sidebar-guru')
+    @include('layouts.sidebar-guru')
 
     <div class="container-fluid py-4">
 
@@ -130,8 +281,8 @@
                         <small class="text-muted">Kelas</small>
                         <div class="fw-semibold">
                             {{ $jadwal->kelas?->tingkat ?? '-' }}
-                    {{ $jadwal->kelas?->jurusan?->kode_jurusan ?? '-' }}
-                    {{ $jadwal->kelas?->nama_kelas ?? '-' }}
+                            {{ $jadwal->kelas?->jurusan?->kode_jurusan ?? '-' }}
+                            {{ $jadwal->kelas?->nama_kelas ?? '-' }}
                         </div>
                     </div>
 
@@ -192,23 +343,20 @@
                                 <th width="120">NIS</th>
                                 <th class="text-start">Nama Siswa</th>
 
-                                @php $urutanJenis = []; @endphp
                                 @foreach($jenisPenilaian as $jenis)
                                     @php
-                                        $namaJenis = strtolower($jenis->jenis_nilai);
-                                        $urutanJenis[$namaJenis] = ($urutanJenis[$namaJenis] ?? 0) + 1;
                                         $tanggalJenis = \Carbon\Carbon::parse($jenis->tanggal_penilaian)->format('d-m-Y');
                                     @endphp
                                     <th width="160">
                                         <span class="d-block fw-semibold">
-                                            {{ ucfirst($jenis->jenis_nilai) }} {{ $urutanJenis[$namaJenis] }}
+                                            {{ ucfirst($jenis->jenis_nilai) }} {{ $jenis->penilaian_ke }}
                                         </span>
                                         <small class="text-muted d-block mt-1">
                                             {{ $tanggalJenis }}
                                         </small>
                                     </th>
-                                    @endforeach
-                                    <th width="100">Aksi</th>
+                                @endforeach
+                                <th width="100">Aksi</th>
 
                             </tr>
 
@@ -219,57 +367,50 @@
 
                             @forelse($siswa as $index => $item)
 
-                                <tr>
+                                                        <tr>
 
-                                    <td class="text-center">
-                                        {{ $index + 1 }}
-                                    </td>
+                                                            <td class="text-center">
+                                                                {{ $index + 1 }}
+                                                            </td>
 
-                                    <td class="text-center">
-                                        {{ $item->nisn ?? '-' }}
-                                    </td>
+                                                            <td class="text-center">
+                                                                {{ $item->nisn ?? '-' }}
+                                                            </td>
 
-                                    <td>
-                                        <strong>
-                                            {{ $item->nama }}
-                                        </strong>
+                                                            <td>
+                                                                <strong>
+                                                                    {{ $item->nama }}
+                                                                </strong>
 
 
-                                    {{-- Nilai --}}
-                                    @foreach($jenisPenilaian as $jenis)
-    @php
-        $nilai = $nilaiSiswa
-            ->where('siswa_id', $item->id)
-            ->where('jenis_nilai', $jenis->jenis_nilai)
-            ->where('tanggal_penilaian', $jenis->tanggal_penilaian)
-            ->first();
-    @endphp
+                                                                {{-- Nilai --}}
+                                                                @foreach($jenisPenilaian as $jenis)
+                                                                        @php
+                                                                            $nilai = $nilaiSiswa
+                                                                                ->where('siswa_id', $item->id)
+                                                                                ->where('jenis_nilai', $jenis->jenis_nilai)
+                                                                                ->where('tanggal_penilaian', $jenis->tanggal_penilaian)
+                                                                                ->first();
+                                                                        @endphp
 
-    <td class="nilai-cell">
-        <input
-            type="number"
-            min="0"
-            max="100"
-            class="form-control nilai-input"
-            name="nilai[{{ $item->id }}][{{ $jenis->id }}]"
-            value="{{ $nilai->nilai ?? '' }}"
-            placeholder="-"
-        >
-    </td>
+                                                                    <td class="nilai-cell">
+                                                                        <input type="number" min="0" max="100" class="form-control nilai-input"
+                                                                            name="nilai[{{ $item->id }}][{{ $jenis->id }}]"
+                                                                            value="{{ $nilai->nilai ?? '' }}" placeholder="-">
+                                                                    </td>
 
-                                    @endforeach
+                                                                @endforeach
 
-                                    <td class="text-center">
-    <a href="{{ route('guru.penilaian.editSiswa', [
-        'jadwal' => $jadwal->id,
-        'siswa' => $item->id
-    ]) }}"
-       class="btn btn-primary">
-        Edit
-    </a>
-</td>
+                                                            <td class="text-center">
+                                                                <a href="{{ route('guru.penilaian.editSiswa', [
+                                    'jadwal' => $jadwal->id,
+                                    'siswa' => $item->id
+                                ]) }}" class="btn btn-primary">
+                                                                    Edit
+                                                                </a>
+                                                            </td>
 
-                                </tr>
+                                                        </tr>
 
                             @empty
 
@@ -344,7 +485,7 @@
                                 Nama Penilaian
                             </label>
 
-                            
+
                         </div>
 
                         <div class="mb-3">
@@ -384,4 +525,5 @@
 
 
 </body>
+
 </html>

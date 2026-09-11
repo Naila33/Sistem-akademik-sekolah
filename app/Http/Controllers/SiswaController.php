@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class SiswaController extends Controller
 {
@@ -43,6 +44,7 @@ class SiswaController extends Controller
             'alamat' => 'required',
             'no_hp' => 'nullable|max:20',
             'email' => 'nullable|email|max:255',
+            'password' => Hash::make($request->nis),
         ]);
 
         Siswa::create($data);

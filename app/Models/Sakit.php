@@ -10,33 +10,30 @@ class Sakit extends Model
 
     protected $fillable = [
         'siswa_id',
-        'tanggal_mulai',
-        'tanggal_selesai',
+        'tanggal',
+        'jam_mulai',
+        'jam_selesai',
         'alasan',
         'dokumen',
-        'status_wali_kelas',
-        'catatan_wali_kelas',
+        'walikelas_id',
+        'status_walikelas',
+        'waktu_verifikasi_walikelas',
+        'catatan_walikelas',
         'status',
     ];
 
     protected $casts = [
-        'tanggal_mulai' => 'date',
-        'tanggal_selesai' => 'date',
+        'tanggal' => 'date',
+        'waktu_verifikasi_walikelas' => 'datetime',
     ];
 
     public function siswa()
     {
-        return $this->belongsTo(
-            DataSiswa::class,
-            'siswa_id'
-        );
+        return $this->belongsTo(Siswa::class, 'siswa_id');
     }
 
-    public function guru()
+    public function waliKelas()
     {
-        return $this->hasMany(
-            SakitGuru::class,
-            'sakit_id'
-        );
+        return $this->belongsTo(Guru::class, 'walikelas_id');
     }
 }

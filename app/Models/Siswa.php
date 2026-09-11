@@ -33,7 +33,9 @@ class Siswa extends Model
 
     public $timestamps = false;
 
-
+    /**
+     * Generate NIS otomatis dengan urut
+     */
     public static function generateNis()
     {
         $lastSiswa = self::orderBy('nis', 'desc')->first();

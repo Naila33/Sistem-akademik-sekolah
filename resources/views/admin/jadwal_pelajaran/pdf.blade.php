@@ -51,12 +51,6 @@
             width: 145px;
         }
 
-        .jp-zero {
-            width: 22px;
-            background: #f4f6f4;
-            font-weight: bold;
-        }
-
         .jp {
             font-weight: normal;
             background: #eef5ed;
@@ -81,13 +75,12 @@
                 <th class="kelas" rowspan="2">Kelas</th>
                 <th class="info" rowspan="2">Info</th>
                 @foreach ($hari as $namaHari)
-                    <th class="day" colspan="12">{{ strtoupper($namaHari) }}</th>
+                    <th class="day" colspan="{{ $jumlahJpPerHari[$namaHari] ?? 10 }}">{{ strtoupper($namaHari) }}</th>
                 @endforeach
             </tr>
             <tr>
                 @foreach ($hari as $namaHari)
-                    <th class="jp">0</th>
-                    @for ($jp = 1; $jp <= 10; $jp++)
+                    @for ($jp = 1; $jp <= ($jumlahJpPerHari[$namaHari] ?? 10); $jp++)
                         <th class="jp">{{ $jp }}</th>
                     @endfor
                 @endforeach
@@ -112,21 +105,14 @@
                         @foreach ($hari as $namaHari)
                             @php
                                 $jadwalHari = $jadwalKelas->filter(fn($item) => strtolower($item->hari) === strtolower($namaHari))->values();
+                                $jumlahJpHari = $jumlahJpPerHari[$namaHari] ?? 10;
                                 $jpPosisi = 0;
-                                $kegiatanJpZero = [
-                                    'Senin' => 'Apel/Pembinaan',
-                                    'Selasa' => 'Serasi',
-                                    'Rabu' => 'Rehat',
-                                    'Kamis' => 'Kasihku',
-                                    'Jumat' => 'Keagamaan',
-                                ][$namaHari] ?? '-';
                             @endphp
                             @if ($jenisBaris === 'mapel')
-                                <td class="jp-zero" rowspan="3">{{ $kegiatanJpZero }}</td>
                             @endif
                             @foreach ($jadwalHari as $item)
                                 @php
-                                    $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), 11 - $jpPosisi);
+                                    $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), $jumlahJpHari - $jpPosisi);
                                     $nilai = match ($jenisBaris) {
                                         'mapel' => optional($item->mapel)->kode_mapel ?? ($item->mata_pelajaran_id ?? '-'),
                                         'guru' => optional($item->guru)->kode_guru ?? $item->guru_id,
@@ -137,8 +123,8 @@
                                 style="background-color: {{ optional($item->mapel)->warna ?? '#d3d3d3' }}" @endif>{{ $nilai }}</td>
                                 @php $jpPosisi += $jumlahJp; @endphp
                             @endforeach
-                            @if ($jpPosisi < 11)
-                                <td colspan="{{ 11 - $jpPosisi }}"></td>
+                            @if ($jpPosisi < $jumlahJpHari)
+                                <td colspan="{{ $jumlahJpHari - $jpPosisi }}"></td>
                             @endif
                         @endforeach
                     </tr>

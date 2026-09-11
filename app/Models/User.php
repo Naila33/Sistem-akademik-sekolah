@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Guru;
+use App\Models\Siswa;
 
 class User extends Authenticatable
 {
@@ -37,4 +38,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Guru::class, 'guru_id', 'id');
     }
+
+    public function siswa()
+{
+    return $this->belongsTo(Siswa::class, 'username', 'nis');
+}
 }

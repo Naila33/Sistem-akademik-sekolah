@@ -89,7 +89,7 @@
                         @endforeach
                     </select>
                     <select name="jumlah_jp[]" required>
-                        @for ($jp = 1; $jp <= 10; $jp++)
+                        @for ($jp = 1; $jp <= ($jumlahJpPerHari[$hariTerpilih] ?? 10); $jp++)
                             <option value="{{ $jp }}" {{ (int) ($item->jumlah_jp ?? 1) === $jp ? 'selected' : '' }}>{{ $jp }} JP
                             </option>
                         @endfor
