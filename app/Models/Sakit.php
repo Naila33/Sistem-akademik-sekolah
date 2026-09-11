@@ -11,8 +11,6 @@ class Sakit extends Model
     protected $fillable = [
         'siswa_id',
         'tanggal',
-        'jam_mulai',
-        'jam_selesai',
         'alasan',
         'dokumen',
         'walikelas_id',

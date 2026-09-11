@@ -16,8 +16,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\PenilaianController;
 use App\Http\Controllers\WaliKelasController;
 use App\Http\Controllers\Admin\PenilaianPjblController;
-use App\Http\Controllers\Siswa\AbsensiPengajuanController;
 use App\Http\Controllers\Admin\AbsensiController;
+use App\Http\Controllers\Siswa\AbsensiController as SiswaAbsensiController;
 use App\Http\Controllers\Admin\SakitController;
 use App\Http\Controllers\Admin\IzinKeluarController;
 use App\Http\Controllers\Admin\IzinPulangController;
@@ -26,6 +26,7 @@ use App\Http\Controllers\Guru\PenilaianPjblController as GuruPenilaianPjblContro
 use App\Http\Controllers\Guru\JadwalController;
 use App\Http\Controllers\Admin\JamPelajaranController;
 use App\Http\Controllers\Guru\SesiAbsensiController;
+use App\Http\Controllers\Siswa\PerizinanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -125,7 +126,7 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
 
 Route::get('/wali-kelas/kelas-mengajar', [WaliKelasController::class, 'kelasMengajar'])
     ->name('wali-kelas.kelas-mengajar');
-    
+
 Route::get(
     '/wali-kelas/input-nilai/{jadwal}',
     [WaliKelasController::class, 'inputNilai']
@@ -181,52 +182,51 @@ Route::middleware('auth')->group(function () {
         '/guru/penilaian/{jadwal}/siswa/{siswa}/update',
         [PenilaianController::class, 'updateSiswa']
     )->name('guru.penilaian.updateSiswa');
-
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
     // PENILAIAN MATA PELAJARAN
 
-Route::get('/penilaian/mapel', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'index'
-])->name('penilaian.mapel.index');
+    Route::get('/penilaian/mapel', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'index'
+    ])->name('penilaian.mapel.index');
 
-Route::get('/penilaian/mapel/kelas/{kelasId}', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'kelas'
-])->name('penilaian.mapel.kelas');
+    Route::get('/penilaian/mapel/kelas/{kelasId}', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'kelas'
+    ])->name('penilaian.mapel.kelas');
 
-Route::get('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'mapel'
-])->name('penilaian.mapel.mapel');
+    Route::get('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'mapel'
+    ])->name('penilaian.mapel.mapel');
 
-Route::get('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/create', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'create'
-])->name('penilaian.mapel.create');
+    Route::get('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/create', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'create'
+    ])->name('penilaian.mapel.create');
 
-Route::post('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'store'
-])->name('penilaian.mapel.store');
+    Route::post('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'store'
+    ])->name('penilaian.mapel.store');
 
-Route::get('/penilaian/mapel/{id}/edit', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'edit'
-])->name('penilaian.mapel.edit');
+    Route::get('/penilaian/mapel/{id}/edit', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'edit'
+    ])->name('penilaian.mapel.edit');
 
-Route::put('/penilaian/mapel/{id}', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'update'
-])->name('penilaian.mapel.update');
+    Route::put('/penilaian/mapel/{id}', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'update'
+    ])->name('penilaian.mapel.update');
 
-Route::delete('/penilaian/mapel/{id}', [
-    \App\Http\Controllers\Admin\PenilaianMapelController::class,
-    'destroy'
-])->name('penilaian.mapel.destroy');
+    Route::delete('/penilaian/mapel/{id}', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'destroy'
+    ])->name('penilaian.mapel.destroy');
 
     /*
     |--------------------------------------------------------------------------
@@ -375,8 +375,8 @@ Route::delete('/penilaian/mapel/{id}', [
     )->name('izin-pulang.index');
 
     Route::get(
-    '/izin-pulang/{id}',
-    [IzinPulangController::class, 'show']
+        '/izin-pulang/{id}',
+        [IzinPulangController::class, 'show']
     )->name('izin-pulang.show');
 
 
@@ -395,103 +395,102 @@ Route::delete('/penilaian/mapel/{id}', [
         '/dispen/{id}',
         [DispenController::class, 'show']
     )->name('dispen.show');
-
 });
 
-    Route::get(
-        '/penilaian/mapel',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'index']
-    )->name('penilaian.mapel.index');
+Route::get(
+    '/penilaian/mapel',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'index']
+)->name('penilaian.mapel.index');
 
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | PILIH MAPEL BERDASARKAN KELAS
 |--------------------------------------------------------------------------
 */
 
-    Route::get(
-        '/penilaian/mapel/kelas/{kelasId}',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'kelas']
-    )->name('penilaian.mapel.kelas');
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'kelas']
+)->name('penilaian.mapel.kelas');
 
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | DATA PENILAIAN BERDASARKAN KELAS + MAPEL
 |--------------------------------------------------------------------------
 */
 
-    Route::get(
-        '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'mapel']
-    )->name('penilaian.mapel.mapel');
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'mapel']
+)->name('penilaian.mapel.mapel');
 
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | TAMBAH PENILAIAN
 |--------------------------------------------------------------------------
 */
 
-    Route::get(
-        '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/create',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'create']
-    )->name('penilaian.mapel.create');
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/create',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'create']
+)->name('penilaian.mapel.create');
 
 
-    Route::post(
-        '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'store']
-    )->name('penilaian.mapel.store');
+Route::post(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'store']
+)->name('penilaian.mapel.store');
 
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | EDIT
 |--------------------------------------------------------------------------
 */
 
-    Route::get(
-        '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}/edit',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'edit']
-    )->name('penilaian.mapel.edit');
+Route::get(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}/edit',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'edit']
+)->name('penilaian.mapel.edit');
 
 
-    Route::put(
-        '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'update']
-    )->name('penilaian.mapel.update');
+Route::put(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'update']
+)->name('penilaian.mapel.update');
 
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | DELETE
 |--------------------------------------------------------------------------
 */
 
-    Route::delete(
-        '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}',
-        [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'destroy']
-    )->name('penilaian.mapel.destroy');
+Route::delete(
+    '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}',
+    [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'destroy']
+)->name('penilaian.mapel.destroy');
 
-    Route::get('/penilaian/pjbl', [PenilaianPjblController::class, 'index'])
-        ->name('penilaian.pjbl.index');
+Route::get('/penilaian/pjbl', [PenilaianPjblController::class, 'index'])
+    ->name('penilaian.pjbl.index');
 
-    Route::get('/penilaian/pjbl/create', [PenilaianPjblController::class, 'create'])
-        ->name('penilaian.pjbl.create');
+Route::get('/penilaian/pjbl/create', [PenilaianPjblController::class, 'create'])
+    ->name('penilaian.pjbl.create');
 
-    Route::post('/penilaian/pjbl', [PenilaianPjblController::class, 'store'])
-        ->name('penilaian.pjbl.store');
+Route::post('/penilaian/pjbl', [PenilaianPjblController::class, 'store'])
+    ->name('penilaian.pjbl.store');
 
-    Route::get('/penilaian/pjbl/{id}/edit', [PenilaianPjblController::class, 'edit'])
-        ->name('penilaian.pjbl.edit');
+Route::get('/penilaian/pjbl/{id}/edit', [PenilaianPjblController::class, 'edit'])
+    ->name('penilaian.pjbl.edit');
 
-    Route::put('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'update'])
-        ->name('penilaian.pjbl.update');
+Route::put('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'update'])
+    ->name('penilaian.pjbl.update');
 
-    Route::delete('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'destroy'])
-        ->name('penilaian.pjbl.destroy');
+Route::delete('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'destroy'])
+    ->name('penilaian.pjbl.destroy');
 
 Route::get('/guru/jadwal', [JadwalController::class, 'index'])
     ->middleware('auth')
@@ -541,12 +540,30 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/siswa/absensi', [AbsensiController::class, 'index'])
-        ->name('siswa.absensi');
-    Route::post('/siswa/absensi', [AbsensiController::class, 'store'])
+    Route::get('/siswa/absensi', [SiswaAbsensiController::class, 'index'])
+        ->name('siswa.absensi.index');
+    Route::post('/siswa/absensi', [SiswaAbsensiController::class, 'store'])
         ->name('siswa.absensi.submit');
-<<<<<<< HEAD
 });
-=======
+
+Route::middleware(['auth'])->prefix('siswa')->name('siswa.')->group(function () {
+
+    // Perizinan sakit
+    Route::get('/perizinan/sakit', [PerizinanController::class, 'sakit'])
+        ->name('perizinan.sakit');
+
+    Route::get('/perizinan/sakit/create', [PerizinanController::class, 'createSakit'])
+        ->name('perizinan.sakit.create');
+
+    Route::post('/perizinan/sakit', [PerizinanController::class, 'storeSakit'])
+        ->name('perizinan.sakit.store');
+
+    Route::get('/perizinan/sakit/{id}/edit', [PerizinanController::class, 'editSakit'])
+        ->name('perizinan.sakit.edit');
+
+    Route::put('/perizinan/sakit/{id}', [PerizinanController::class, 'updateSakit'])
+        ->name('perizinan.sakit.update');
+
+    Route::delete('/perizinan/sakit/{id}', [PerizinanController::class, 'destroySakit'])
+        ->name('perizinan.sakit.destroy');
 });
->>>>>>> c8da456 (update bita)

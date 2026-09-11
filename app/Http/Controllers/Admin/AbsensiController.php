@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Absensi;
+use App\Models\Absen;
 use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Absensi::with([
+        $query = Absen::with([
             'siswa',
             'sesi.jadwal'
         ]);
@@ -30,9 +30,9 @@ class AbsensiController extends Controller
         }
 
         $absensi = $query
-            ->latest('waktu_absen')
+            ->latest('jam_masuk')
             ->paginate(20)
-            ->withQueryString();
+            ->appends($request->query());
 
         return view('admin.absensi.index', compact('absensi'));
     }

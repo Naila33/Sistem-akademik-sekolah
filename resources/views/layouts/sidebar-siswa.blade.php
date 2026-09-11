@@ -14,7 +14,10 @@
         <div class="menu-title">Informasi</div>
         <a href="#">Nilai</a>
         <a href="{{ route('siswa.jadwal.index') }}">Jadwal</a>
-        <a href="{{ route('siswa.absensi') }}">Absensi</a>
+        <a href="{{ route('siswa.absensi.index') }}">Absensi</a>
+
+        <div class="menu-title">Perizinan</div>
+        <a href="{{ route('siswa.perizinan.sakit') }}">Izin</a>
 
         <form action="{{ route('logout') }}" method="POST" class="logout-form">
             @csrf

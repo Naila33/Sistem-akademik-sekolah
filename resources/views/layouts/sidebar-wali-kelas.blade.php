@@ -84,7 +84,6 @@
 
 @endif
 
->>>>>>> Stashed changes
     </div>
 
 
@@ -96,8 +95,4 @@
             Logout
         </button>
     </form>
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 </aside>

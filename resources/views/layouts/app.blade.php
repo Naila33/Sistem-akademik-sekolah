@@ -16,23 +16,14 @@
     {{-- BOOTSTRAP --}}
     {{-- ========================================================= --}}
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     {{-- BOOTSTRAP ICONS --}}
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 
     {{-- SIDEBAR --}}
-    <link
-        rel="stylesheet"
-        href="{{ asset('css/sidebar.css') }}"
-    >
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 
 
     {{-- ========================================================= --}}
@@ -40,7 +31,6 @@
     {{-- ========================================================= --}}
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -296,8 +286,7 @@
             border-color: #198754;
 
             box-shadow:
-                0 0 0 .2rem
-                rgba(25, 135, 84, .15);
+                0 0 0 .2rem rgba(25, 135, 84, .15);
 
         }
 
@@ -363,9 +352,7 @@
                 translateY(-5px);
 
             box-shadow:
-                0 10px 25px
-                rgba(0, 0, 0, .10)
-                !important;
+                0 10px 25px rgba(0, 0, 0, .10) !important;
 
         }
 
@@ -378,8 +365,7 @@
         }
 
 
-        .kelas-card:hover
-        .kelas-icon {
+        .kelas-card:hover .kelas-icon {
 
             transform:
                 scale(1.05);
@@ -462,7 +448,6 @@
             }
 
         }
-
     </style>
 
 
@@ -479,8 +464,15 @@
 
 
         {{-- SIDEBAR --}}
-        @include('layouts.sidebar')
-    @endif
+        @if(request()->is('siswa') || request()->is('siswa/*'))
+            @include('layouts.sidebar-siswa')
+        @elseif(request()->is('guru') || request()->is('guru/*'))
+            @include('layouts.sidebar-guru')
+        @elseif(request()->is('wali-kelas') || request()->is('wali-kelas/*'))
+            @include('layouts.sidebar-wali-kelas')
+        @else
+            @include('layouts.sidebar')
+        @endif
 
 
         {{-- ===================================================== --}}
@@ -538,8 +530,12 @@
 
                         {{ session('error') }}
 
+                    </div>
 
                 @endif
+
+                @yield('content')
+
             </section>
 
 
@@ -553,9 +549,7 @@
     {{-- BOOTSTRAP JS --}}
     {{-- ========================================================= --}}
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
     {{-- ========================================================= --}}

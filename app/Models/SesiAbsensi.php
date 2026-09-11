@@ -10,21 +10,19 @@ class SesiAbsensi extends Model
 
     protected $fillable = [
         'jadwal_pelajaran_id',
-        'kode',
-        'tanggal',
-        'waktu_mulai',
-        'waktu_selesai',
+        'tgl',
+        'token',
         'status',
     ];
 
     protected $casts = [
-        'tanggal' => 'date',
+        'tgl' => 'date',
     ];
 
     public function jadwal()
     {
         return $this->belongsTo(
-            JadwalPelajaran::class,
+            Jadwal_Pelajaran::class,
             'jadwal_pelajaran_id'
         );
     }
@@ -32,7 +30,7 @@ class SesiAbsensi extends Model
     public function absensi()
     {
         return $this->hasMany(
-            Absensi::class,
+            Absen::class,
             'sesi_absensi_id'
         );
     }

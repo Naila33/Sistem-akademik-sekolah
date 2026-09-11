@@ -59,12 +59,10 @@ class Siswa extends Model
     {
         return $this->hasMany(PembagianKelas::class);
     }
-
-<<<<<<< HEAD
     public function absensi()
 {
     return $this->hasMany(
-        Absensi::class,
+        Absen::class,
         'siswa_id'
     );
 }
@@ -101,10 +99,8 @@ public function dispen()
     );
 }
 
-=======
     public function penilaianMapel()
     {
         return $this->hasMany(PenilaianMapel::class, 'siswa_id');
     }
->>>>>>> e46a140 (fix: merapikan merge conflict dari stash dan pull)
 }
