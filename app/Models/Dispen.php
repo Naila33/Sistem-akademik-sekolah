@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Siswa;
 
 class Dispen extends Model
 {
@@ -13,9 +14,9 @@ class Dispen extends Model
         'tanggal_mulai',
         'tanggal_selesai',
         'alasan',
-        'dokumen',
-        'status_kesiswaan',
-        'catatan_kesiswaan',
+        'surat',
+        'status',
+        'catatan',
     ];
 
     protected $casts = [
@@ -26,7 +27,7 @@ class Dispen extends Model
     public function siswa()
     {
         return $this->belongsTo(
-            DataSiswa::class,
+            Siswa::class,
             'siswa_id'
         );
     }
