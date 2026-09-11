@@ -12,48 +12,38 @@
         </p>
     </div>
 
-    @if($kelas->isNotEmpty())
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
-            <h5 class="mb-3">Kelas yang Diampu</h5>
+        @if($waliKelas->isNotEmpty())
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Kelas</th>
-                        <th>Tingkat</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($kelas as $item)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->nama_kelas }}</td>
-                        <td>{{ $item->tingkat }}</td>
-                        <td>
-                            <a href="{{ route('wali-kelas.siswa', $item->id) }}" class="btn btn-primary btn-sm">
-                                Lihat Siswa
-                            </a>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            Belum ada kelas yang diampu.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+    @foreach($waliKelas as $wali)
+        <div class="card mb-3">
+            <div class="card-body">
+
+                <h5>
+                    Kelas {{ $wali->kelas->tingkat }}
+                    {{ $wali->kelas->nama_kelas }}
+                </h5>
+
+                <p class="text-muted">
+                    Jurusan:
+                    {{ $wali->kelas->jurusan->nama_jurusan ?? '-' }}
+                </p>
+
+                <a href="{{ route('wali-kelas.siswa', $wali->kelas->id) }}"
+                   class="btn btn-primary">
+                    Lihat Siswa
+                </a>
+
+            </div>
         </div>
+    @endforeach
+
+@else
+
+    <div class="alert alert-info">
+        Kamu belum ditugaskan sebagai wali kelas.
     </div>
-    @else
-    <div class="alert alert-warning">
-        Guru ini belum ditetapkan sebagai wali kelas.
-    </div>
-    @endif
+
+@endif
 </div>
 
 @endsection

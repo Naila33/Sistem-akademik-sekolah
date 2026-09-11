@@ -80,11 +80,13 @@ class KelasController extends Controller
             'tingkat' => 'required|in:X,XI,XII',
             'jurusan_id' => 'required|exists:jurusan,id',
             'nama_kelas' => 'required|in:A,B,C,D,E,F,G,H',
-            'wali_kelas_id' => 'required|exists:dataguru,id',
-            'tahun_ajaran_id' => 'required|exists:tahun_ajaran,id',
+            'wali_kelas_id' => 'nullable|exists:dataguru,id',
+            'tahun_ajaran_id' => 'nullable|exists:tahun_ajaran,id',
         ]);
 
-        Kelas::findOrFail($id)->update($data);
+        $kelas = Kelas::findOrFail($id);
+        $kelas->fill($data);
+        $kelas->save();
 
         return redirect()->route('kelas.index')->with('success', 'Data kelas berhasil diperbarui.');
     }

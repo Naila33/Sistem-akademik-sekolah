@@ -20,7 +20,7 @@ class JadwalPelajaranController extends Controller
         $selectedJurusan = $request->input('jurusan_id');
         $jumlahJpPerHari = $this->jumlahJpPerHari();
 
-        $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mapel', 'ruangan']);
+        $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mataPelajaran', 'ruangan']);
 
         if ($selectedJurusan) {
             $jadwalQuery->whereHas('kelas', function ($query) use ($selectedJurusan) {
@@ -46,8 +46,8 @@ class JadwalPelajaranController extends Controller
             });
 
         $mapelLegenda = $jadwal
-            ->filter(fn($item) => $item->mapel)
-            ->pluck('mapel')
+            ->filter(fn($item) => $item->mataPelajaran)
+            ->pluck('mataPelajaran')
             ->unique('id')
             ->sortBy('kode_mapel')
             ->values();
@@ -65,7 +65,7 @@ class JadwalPelajaranController extends Controller
     public function exportExcel(Request $request)
     {
         $selectedJurusan = $request->input('jurusan_id');
-        $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mapel', 'ruangan'])
+        $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mataPelajaran', 'ruangan'])
             ->orderBy('kelas_id')
             ->orderBy('hari')
             ->orderBy('id');
@@ -84,7 +84,7 @@ class JadwalPelajaranController extends Controller
 
         return response()->streamDownload(function () use ($hari, $jadwalPerKelas, $jumlahJpPerHari) {
             $escape = static fn($value) => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
-            $warnaMapel = static fn($item) => $escape(optional($item->mapel)->warna ?? '#d3d3d3');
+            $warnaMapel = static fn($item) => $escape(optional($item->mataPelajaran)->warna ?? '#d3d3d3');
 
             echo '<html><head><meta charset="UTF-8"><style>';
             echo 'table{border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;}';
@@ -129,7 +129,7 @@ class JadwalPelajaranController extends Controller
                         foreach ($jadwalHari as $item) {
                             $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), $jumlahJpPerHari[$namaHari] - $jpPosisi);
                             $nilai = match ($jenisBaris) {
-                                'mapel' => optional($item->mapel)->kode_mapel ?? ($item->mata_pelajaran_id ?? '-'),
+                                'mapel' => optional($item->mataPelajaran)->kode_mapel ?? ($item->mata_pelajaran_id ?? '-'),
                                 'guru' => optional($item->guru)->kode_guru ?? $item->guru_id,
                                 default => optional($item->ruangan)->kode_ruang ?? ($item->ruangan_id ?? '-'),
                             };
@@ -156,7 +156,7 @@ class JadwalPelajaranController extends Controller
     public function exportPdf(Request $request)
     {
         $selectedJurusan = $request->input('jurusan_id');
-        $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mapel', 'ruangan'])
+        $jadwalQuery = Jadwal_pelajaran::with(['kelas.jurusan', 'guru', 'mataPelajaran', 'ruangan'])
             ->orderBy('kelas_id')
             ->orderBy('id');
 
@@ -280,7 +280,7 @@ class JadwalPelajaranController extends Controller
     {
         $jadwal = Jadwal_pelajaran::where('kelas_id', $kelasId)
             ->where('hari', $hari)
-            ->with(['kelas.jurusan', 'guru', 'mapel', 'ruangan'])
+            ->with(['kelas.jurusan', 'guru', 'mataPelajaran', 'ruangan'])
             ->orderBy('id')
             ->get();
 

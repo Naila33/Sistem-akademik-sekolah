@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Siswa;
+use App\Models\Jadwal_Pelajaran;
 
 class PenilaianMapel extends Model
 {

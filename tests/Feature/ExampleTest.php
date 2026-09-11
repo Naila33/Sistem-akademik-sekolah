@@ -16,4 +16,16 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_guru_index_renders_generated_account_credentials_from_session(): void
+    {
+        $html = view('admin.master-data.guru.index', ['gurus' => collect([])])
+            ->with('username', '123456789')
+            ->with('password_awal', 'rahasia123')
+            ->render();
+
+        $this->assertStringContainsString('Username', $html);
+        $this->assertStringContainsString('123456789', $html);
+        $this->assertStringContainsString('rahasia123', $html);
+    }
 }

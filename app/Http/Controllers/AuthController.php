@@ -33,6 +33,12 @@ class AuthController extends Controller
             }
 
             if (auth()->user()->role_id == 2) {
+                $guruId = auth()->user()->guru_id;
+
+                if ($guruId && \App\Models\WaliKelas::where('guru_id', $guruId)->exists()) {
+                    return redirect()->route('wali-kelas.dashboard');
+                }
+
                 return redirect()->route('guru.dashboard');
             }
 

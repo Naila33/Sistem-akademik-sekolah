@@ -115,12 +115,26 @@ Route::resource('admin/master-data/guru', GuruController::class)
 Route::resource('kelas', KelasController::class)->except(['show']);
 
 // WALI KELAS
-Route::prefix('wali-kelas')->name('wali-kelas.')->group(function () {
+Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(function () {
+    Route::get('/dashboard', [WaliKelasController::class, 'dashboard'])->name('dashboard');
     Route::get('/', [WaliKelasController::class, 'index'])->name('index');
     Route::get('/siswa/{kelas}', [WaliKelasController::class, 'siswa'])->name('siswa');
     Route::get('/nilai/{siswa}', [WaliKelasController::class, 'nilai'])->name('nilai');
     Route::get('/rapor/{siswa}', [WaliKelasController::class, 'rapor'])->name('rapor');
 });
+
+Route::get('/wali-kelas/kelas-mengajar', [WaliKelasController::class, 'kelasMengajar'])
+    ->name('wali-kelas.kelas-mengajar');
+    
+Route::get(
+    '/wali-kelas/input-nilai/{jadwal}',
+    [WaliKelasController::class, 'inputNilai']
+)->name('wali-kelas.input-nilai');
+
+Route::post(
+    '/wali-kelas/input-nilai/{jadwal}',
+    [WaliKelasController::class, 'simpanNilai']
+)->name('wali-kelas.simpan-nilai');
 
 // SPMB - CALON SISWA
 Route::prefix('admin')->group(function () {
