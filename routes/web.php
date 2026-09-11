@@ -545,4 +545,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('siswa.absensi');
     Route::post('/siswa/absensi', [AbsensiController::class, 'store'])
         ->name('siswa.absensi.submit');
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> c8da456 (update bita)
