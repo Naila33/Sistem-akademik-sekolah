@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
 use App\Models\PenilaianPjbl;
 use App\Models\Pjbl;
 use App\Models\PjblPenguji;
@@ -11,152 +12,381 @@ use Illuminate\Http\Request;
 
 class PenilaianPjblController extends Controller
 {
-   public function index(Request $request)
+    /**
+     * ============================================================
+     * HALAMAN UTAMA
+     * PILIH KELAS
+     * ============================================================
+     */
+    public function index()
+    {
+        $kelas = Kelas::with([
+            'jurusan',
+            'tahunAjaran'
+        ])
+        ->withCount('siswaKelas')
+        ->orderBy('tingkat')
+        ->orderBy('jurusan_id')
+        ->orderBy('nama_kelas')
+        ->get();
+
+        return view(
+            'admin.penilaian.pjbl.index',
+            compact('kelas')
+        );
+    }
+
+
+    /**
+     * ============================================================
+     * HALAMAN PJBL PER KELAS
+     * ============================================================
+     */
+    public function kelas($kelasId)
+    {
+        $kelas = Kelas::with([
+            'jurusan',
+            'tahunAjaran'
+        ])->findOrFail($kelasId);
+
+        $pjbl = Pjbl::with([
+            'tahunAjaran',
+            'penguji.guru'
+        ])
+        ->where('kelas_id', $kelasId)
+        ->latest('tanggal')
+        ->get();
+
+        return view(
+            'admin.penilaian.pjbl.kelas',
+            compact(
+                'kelas',
+                'pjbl'
+            )
+        );
+    }
+
+
+    /**
+     * ============================================================
+     * HALAMAN PENILAIAN PJBL
+     * ============================================================
+     */
+    public function penilaian(Request $request, $kelasId, $pjblId)
 {
+    $kelas = \App\Models\Kelas::with('jurusan')
+        ->findOrFail($kelasId);
+
+    $pjbl = Pjbl::with([
+        'kelas',
+        'tahunAjaran',
+        'penguji.guru',
+    ])->findOrFail($pjblId);
+
+    // Ambil maksimal 5 penguji
+    $penguji = $pjbl->penguji
+        ->take(5)
+        ->values();
+
+    // Query penilaian
     $query = PenilaianPjbl::with([
         'siswa',
-        'pjbl.kelas',
-        'pjbl.tahunAjaran',
-        'pjbl.penguji.guru',
         'pjblPenguji.guru',
-    ]);
+    ])
+    ->where('pjbl_id', $pjblId);
 
+    // SEARCH SISWA
     if ($request->filled('search')) {
 
         $search = $request->search;
 
         $query->whereHas('siswa', function ($q) use ($search) {
-            $q->where('nama', 'like', '%' . $search . '%');
-        });
-    }
 
-    if ($request->filled('kelas_id')) {
+            $q->where('nama', 'like', '%' . $search . '%')
+              ->orWhere('nis', 'like', '%' . $search . '%')
+              ->orWhere('nisn', 'like', '%' . $search . '%');
 
-        $kelasId = $request->kelas_id;
-
-        $query->whereHas('pjbl', function ($q) use ($kelasId) {
-            $q->where('kelas_id', $kelasId);
         });
     }
 
     $penilaian = $query
-        ->latest()
+        ->orderBy('siswa_id')
         ->get();
 
-    $kelas = \App\Models\Kelas::orderBy('tingkat')
-        ->orderBy('nama_kelas')
-        ->get();
+    /*
+    |--------------------------------------------------------------------------
+    | KELOMPOKKAN BERDASARKAN SISWA
+    |--------------------------------------------------------------------------
+    */
 
-    $penilaianPerKelas = $penilaian->groupBy(function ($item) {
-        return $item->pjbl?->kelas?->id ?? 0;
-    });
+    $penilaianPerSiswa = $penilaian
+        ->groupBy('siswa_id');
 
     return view(
-        'admin.penilaian.pjbl.index',
+        'admin.penilaian.pjbl.penilaian',
         compact(
-            'penilaian',
             'kelas',
-            'penilaianPerKelas'
+            'pjbl',
+            'penguji',
+            'penilaian',
+            'penilaianPerSiswa'
         )
     );
 }
 
-    public function create()
-{
-    $pjbl = Pjbl::with([
-        'kelas',
-        'tahunAjaran',
-    ])->get();
 
-    $siswa = Siswa::orderBy('nama')->get();
-
-    $penguji = PjblPenguji::with('guru')->get();
-
-    $kelas = \App\Models\Kelas::orderBy('tingkat')
-        ->orderBy('nama_kelas')
-        ->get();
-
-    return view('admin.penilaian.pjbl.create', compact(
-        'pjbl',
-        'siswa',
-        'penguji',
-        'kelas'
-    ));
-}
-
-    public function edit($id)
+    /**
+     * ============================================================
+     * TAMBAH PENILAIAN
+     * ============================================================
+     */
+    public function create($kelasId, $pjblId)
     {
-        $penilaian = PenilaianPjbl::findOrFail($id);
+        $kelas = Kelas::with([
+            'jurusan',
+            'tahunAjaran'
+        ])->findOrFail($kelasId);
 
         $pjbl = Pjbl::with([
             'kelas',
-            'tahunAjaran',
-        ])->get();
+            'tahunAjaran'
+        ])
+        ->where('id', $pjblId)
+        ->where('kelas_id', $kelasId)
+        ->firstOrFail();
 
-        $siswa = Siswa::orderBy('nama')->get();
 
-        $penguji = PjblPenguji::with('guru')->get();
+        $penguji = PjblPenguji::with('guru')
+            ->where('pjbl_id', $pjblId)
+            ->get();
 
-        return view('admin.penilaian.pjbl.edit', compact(
-            'penilaian',
-            'pjbl',
-            'siswa',
-            'penguji'
-        ));
+
+        /**
+         * Siswa hanya dari kelas yang dipilih
+         */
+        $siswa = Siswa::whereHas('siswaKelas', function ($q) use ($kelasId) {
+
+            $q->where('kelas_id', $kelasId);
+
+        })
+        ->orderBy('nama')
+        ->get();
+
+
+        return view(
+            'admin.penilaian.pjbl.create',
+            compact(
+                'kelas',
+                'pjbl',
+                'penguji',
+                'siswa'
+            )
+        );
     }
 
-    public function store(Request $request)
+
+    /**
+     * ============================================================
+     * SIMPAN PENILAIAN
+     * ============================================================
+     */
+    public function store(Request $request, $kelasId, $pjblId)
     {
         $request->validate([
-            'pjbl_id' => 'required|exists:pjbl,id',
-            'pjbl_penguji_id' => 'required|exists:pjbl_penguji,id',
-            'siswa_id' => 'required|exists:datasiswa,id',
-            'nilai' => 'required|numeric|min:0|max:100',
+
+            'pjbl_penguji_id' =>
+                'required|exists:pjbl_penguji,id',
+
+            'siswa_id' =>
+                'required|exists:datasiswa,id',
+
+            'nilai' =>
+                'required|numeric|min:0|max:100',
+
         ]);
+
+
+        $pjbl = Pjbl::where('id', $pjblId)
+            ->where('kelas_id', $kelasId)
+            ->firstOrFail();
+
 
         PenilaianPjbl::create([
-            'pjbl_id' => $request->pjbl_id,
-            'pjbl_penguji_id' => $request->pjbl_penguji_id,
-            'siswa_id' => $request->siswa_id,
-            'nilai' => $request->nilai,
+
+            'pjbl_id' =>
+                $pjbl->id,
+
+            'pjbl_penguji_id' =>
+                $request->pjbl_penguji_id,
+
+            'siswa_id' =>
+                $request->siswa_id,
+
+            'nilai' =>
+                $request->nilai,
+
         ]);
 
+
         return redirect()
-            ->route('admin.penilaian.pjbl.index')
-            ->with('success', 'Penilaian PJBL berhasil ditambahkan.');
+            ->route(
+                'admin.penilaian.pjbl.penilaian',
+                [
+                    'kelasId' => $kelasId,
+                    'pjblId' => $pjblId
+                ]
+            )
+            ->with(
+                'success',
+                'Penilaian PJBL berhasil ditambahkan.'
+            );
     }
 
-    public function update(Request $request, $id)
+
+    /**
+     * ============================================================
+     * EDIT
+     * ============================================================
+     */
+    public function edit($kelasId, $pjblId, $id)
     {
-        $penilaian = PenilaianPjbl::findOrFail($id);
+        $kelas = Kelas::with([
+            'jurusan',
+            'tahunAjaran'
+        ])->findOrFail($kelasId);
+
+
+        $pjbl = Pjbl::with([
+            'kelas',
+            'tahunAjaran'
+        ])
+        ->where('id', $pjblId)
+        ->where('kelas_id', $kelasId)
+        ->firstOrFail();
+
+
+        $penilaian = PenilaianPjbl::with([
+            'siswa',
+            'pjblPenguji'
+        ])
+        ->where('id', $id)
+        ->where('pjbl_id', $pjblId)
+        ->firstOrFail();
+
+
+        $penguji = PjblPenguji::with('guru')
+            ->where('pjbl_id', $pjblId)
+            ->get();
+
+
+        $siswa = Siswa::whereHas('siswaKelas', function ($q) use ($kelasId) {
+
+            $q->where('kelas_id', $kelasId);
+
+        })
+        ->orderBy('nama')
+        ->get();
+
+
+        return view(
+            'admin.penilaian.pjbl.edit',
+            compact(
+                'kelas',
+                'pjbl',
+                'penilaian',
+                'penguji',
+                'siswa'
+            )
+        );
+    }
+
+
+    /**
+     * ============================================================
+     * UPDATE
+     * ============================================================
+     */
+    public function update(
+        Request $request,
+        $kelasId,
+        $pjblId,
+        $id
+    ) {
+
+        $penilaian = PenilaianPjbl::where('id', $id)
+            ->where('pjbl_id', $pjblId)
+            ->firstOrFail();
+
 
         $request->validate([
-            'pjbl_id' => 'required|exists:pjbl,id',
-            'pjbl_penguji_id' => 'required|exists:pjbl_penguji,id',
-            'siswa_id' => 'required|exists:datasiswa,id',
-            'nilai' => 'required|numeric|min:0|max:100',
+
+            'pjbl_penguji_id' =>
+                'required|exists:pjbl_penguji,id',
+
+            'siswa_id' =>
+                'required|exists:datasiswa,id',
+
+            'nilai' =>
+                'required|numeric|min:0|max:100',
+
         ]);
+
 
         $penilaian->update([
-            'pjbl_id' => $request->pjbl_id,
-            'pjbl_penguji_id' => $request->pjbl_penguji_id,
-            'siswa_id' => $request->siswa_id,
-            'nilai' => $request->nilai,
+
+            'pjbl_penguji_id' =>
+                $request->pjbl_penguji_id,
+
+            'siswa_id' =>
+                $request->siswa_id,
+
+            'nilai' =>
+                $request->nilai,
+
         ]);
 
+
         return redirect()
-            ->route('admin.penilaian.pjbl.index')
-            ->with('success', 'Penilaian PJBL berhasil diperbarui.');
+            ->route(
+                'admin.penilaian.pjbl.penilaian',
+                [
+                    'kelasId' => $kelasId,
+                    'pjblId' => $pjblId
+                ]
+            )
+            ->with(
+                'success',
+                'Penilaian PJBL berhasil diperbarui.'
+            );
     }
 
-    public function destroy($id)
+
+    /**
+     * ============================================================
+     * HAPUS
+     * ============================================================
+     */
+    public function destroy($kelasId, $pjblId, $id)
     {
-        $penilaian = PenilaianPjbl::findOrFail($id);
+        $penilaian = PenilaianPjbl::where('id', $id)
+            ->where('pjbl_id', $pjblId)
+            ->firstOrFail();
+
 
         $penilaian->delete();
 
+
         return redirect()
-            ->route('admin.penilaian.pjbl.index')
-            ->with('success', 'Penilaian PJBL berhasil dihapus.');
+            ->route(
+                'admin.penilaian.pjbl.penilaian',
+                [
+                    'kelasId' => $kelasId,
+                    'pjblId' => $pjblId
+                ]
+            )
+            ->with(
+                'success',
+                'Penilaian PJBL berhasil dihapus.'
+            );
     }
 }

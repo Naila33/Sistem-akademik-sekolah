@@ -20,53 +20,61 @@ class SpmbController extends Controller
     */
 
     public function index(Request $request)
-    {
-        $query = CalonSiswa::with('jurusan');
+{
+    $query = CalonSiswa::with('jurusan');
 
-        if ($request->filled('search')) {
-            $search = $request->search;
+    // Live search
+    if ($request->filled('search')) {
+        $search = $request->search;
 
-            $query->where(function ($q) use ($search) {
-                $q->where('nama_lengkap', 'like', "%{$search}%")
-                    ->orWhere('nisn', 'like', "%{$search}%")
-                    ->orWhere('nik', 'like', "%{$search}%")
-                    ->orWhere('no_pendaftaran', 'like', "%{$search}%");
-            });
-        }
+        $query->where(function ($q) use ($search) {
+            $q->where('nama_lengkap', 'like', "%{$search}%")
+              ->orWhere('no_pendaftaran', 'like', "%{$search}%")
+              ->orWhere('nisn', 'like', "%{$search}%")
+              ->orWhere('nik', 'like', "%{$search}%");
+        });
+    }
 
-        if ($request->filled('jurusan_id')) {
-            $query->where(
-                'jurusan_id',
-                $request->jurusan_id
-            );
-        }
+    // Filter jurusan
+    if ($request->filled('jurusan_id')) {
+        $query->where('jurusan_id', $request->jurusan_id);
+    }
 
-        if ($request->filled('jalur_pendaftaran')) {
-            $query->where(
-                'jalur_pendaftaran',
-                $request->jalur_pendaftaran
-            );
-        }
-
-        if ($request->filled('status_daftar_ulang')) {
-            $query->where(
-                'status_daftar_ulang',
-                $request->status_daftar_ulang
-            );
-        }
-
-        $calonSiswa = $query
-            ->latest()
-            ->paginate(10)
-            ->appends(request()->query());
-
-        $jurusan = Jurusan::orderBy('nama_jurusan')->get();
-
-        return view(
-            'admin.spmb.index',
-            compact('calonSiswa', 'jurusan')
+    // Filter jalur
+    if ($request->filled('jalur_pendaftaran')) {
+        $query->where(
+            'jalur_pendaftaran',
+            $request->jalur_pendaftaran
         );
     }
+
+    // Filter status
+    if ($request->filled('status_daftar_ulang')) {
+        $query->where(
+            'status_daftar_ulang',
+            $request->status_daftar_ulang
+        );
+    }
+
+    $calonSiswa = $query
+        ->latest('id')
+        ->paginate(10)
+        ->withQueryString();
+
+    $jurusan = Jurusan::orderBy('nama_jurusan')->get();
+
+    if ($request->ajax()) {
+        return view('admin.spmb.index', compact(
+            'calonSiswa',
+            'jurusan'
+        ));
+    }
+
+    return view('admin.spmb.index', compact(
+        'calonSiswa',
+        'jurusan'
+    ));
+}
 
     /*
     |--------------------------------------------------------------------------

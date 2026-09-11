@@ -58,27 +58,39 @@
 
             <form method="GET"
                   action="{{ route('admin.spmb.index') }}"
-                  class="live-search-form">
+                  id="spmbFilterForm">
 
                 <div class="row g-3">
 
+                    {{-- PENCARIAN --}}
                     <div class="col-md-4">
 
                         <label class="form-label">
                             Pencarian
                         </label>
 
-                        <input
-                            type="text"
-                            name="search"
-                            class="form-control live-search-input"
-                            placeholder="Nama, NISN, NIK, No. Pendaftaran"
-                            value="{{ request('search') }}"
-                        >
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="search"
+                                id="spmbSearch"
+                                class="form-control"
+                                placeholder="Nama, NISN, NIK, No. Pendaftaran"
+                                value="{{ request('search') }}"
+                                autocomplete="off"
+                            >
+
+                        </div>
 
                     </div>
 
 
+                    {{-- JURUSAN --}}
                     <div class="col-md-3">
 
                         <label class="form-label">
@@ -86,6 +98,7 @@
                         </label>
 
                         <select name="jurusan_id"
+                                id="spmbJurusan"
                                 class="form-select">
 
                             <option value="">
@@ -110,6 +123,7 @@
                     </div>
 
 
+                    {{-- JALUR --}}
                     <div class="col-md-2">
 
                         <label class="form-label">
@@ -117,6 +131,7 @@
                         </label>
 
                         <select name="jalur_pendaftaran"
+                                id="spmbJalur"
                                 class="form-select">
 
                             <option value="">
@@ -148,7 +163,8 @@
                     </div>
 
 
-                    <div class="col-md-2">
+                    {{-- STATUS --}}
+                    <div class="col-md-3">
 
                         <label class="form-label">
                             Status
@@ -156,6 +172,7 @@
 
                         <select
                             name="status_daftar_ulang"
+                            id="spmbStatus"
                             class="form-select">
 
                             <option value="">
@@ -186,15 +203,6 @@
 
                     </div>
 
-
-                    <div class="col-md-1 d-flex align-items-end">
-
-                        <button class="btn btn-dark w-100">
-                            Cari
-                        </button>
-
-                    </div>
-
                 </div>
 
             </form>
@@ -203,64 +211,10 @@
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.live-search-form').forEach(function (form) {
-                const input = form.querySelector('.live-search-input');
-                if (!input) return;
-
-                let timeout;
-
-                function submitLiveSearch() {
-                    const formData = new FormData(form);
-                    const params = new URLSearchParams(formData).toString();
-                    const action = form.getAttribute('action') || window.location.href;
-                    const url = params ? action + '?' + params : action;
-
-                    fetch(url, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'text/html'
-                        }
-                    })
-                    .then(function (response) {
-                        return response.text();
-                    })
-                    .then(function (html) {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newResults = doc.querySelector('#spmb-search-results');
-                        const currentResults = document.querySelector('#spmb-search-results');
-
-                        if (newResults && currentResults) {
-                            currentResults.innerHTML = newResults.innerHTML;
-                        }
-
-                        history.replaceState(null, '', url);
-                    })
-                    .catch(function () {
-                        form.submit();
-                    });
-                }
-
-                input.addEventListener('input', function () {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(function () {
-                        submitLiveSearch();
-                    }, 400);
-                });
-
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    submitLiveSearch();
-                });
-            });
-        });
-    </script>
-
 
     {{-- TABLE --}}
-    <div class="card shadow-sm border-0" id="spmb-search-results">
+    <div class="card shadow-sm border-0"
+         id="spmb-search-results">
 
         <div class="card-body p-0">
 
@@ -440,6 +394,7 @@
         </div>
 
 
+        {{-- PAGINATION --}}
         @if($calonSiswa->hasPages())
 
             <div class="card-footer bg-white">
@@ -453,5 +408,230 @@
     </div>
 
 </div>
+
+
+@push('scripts')
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const form = document.getElementById('spmbFilterForm');
+    const results = document.getElementById('spmb-search-results');
+
+    if (!form || !results) {
+        return;
+    }
+
+    let searchTimeout;
+
+    function loadData(url = null) {
+
+        let targetUrl = url;
+
+        if (!targetUrl) {
+
+            const formData = new FormData(form);
+
+            const params = new URLSearchParams(formData);
+
+            targetUrl =
+                "{{ route('admin.spmb.index') }}" +
+                "?" +
+                params.toString();
+        }
+
+        fetch(targetUrl, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+
+            const parser = new DOMParser();
+
+            const doc = parser.parseFromString(
+                html,
+                'text/html'
+            );
+
+            const newResults =
+                doc.querySelector('#spmb-search-results');
+
+            if (newResults) {
+
+                results.innerHTML =
+                    newResults.innerHTML;
+
+                history.pushState(
+                    {},
+                    '',
+                    targetUrl
+                );
+            }
+
+        })
+        .catch(error => {
+
+            console.error(
+                'Gagal mengambil data:',
+                error
+            );
+
+        });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LIVE SEARCH
+    |--------------------------------------------------------------------------
+    */
+
+    const searchInput =
+        document.getElementById('spmbSearch');
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            'input',
+            function () {
+
+                clearTimeout(searchTimeout);
+
+                searchTimeout = setTimeout(
+                    function () {
+
+                        loadData();
+
+                    },
+                    400
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FILTER SELECT
+    |--------------------------------------------------------------------------
+    */
+
+    const filterInputs = form.querySelectorAll(
+        'select'
+    );
+
+    filterInputs.forEach(function (input) {
+
+        input.addEventListener(
+            'change',
+            function () {
+
+                loadData();
+
+            }
+        );
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESET
+    |--------------------------------------------------------------------------
+    */
+
+    const resetButton =
+        document.getElementById('resetSpmb');
+
+    if (resetButton) {
+
+        resetButton.addEventListener(
+            'click',
+            function () {
+
+                form.reset();
+
+                loadData();
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PAGINATION AJAX
+    |--------------------------------------------------------------------------
+    */
+
+    results.addEventListener(
+        'click',
+        function (event) {
+
+            const link =
+                event.target.closest(
+                    '.pagination a'
+                );
+
+            if (!link) {
+                return;
+            }
+
+            event.preventDefault();
+
+            loadData(link.href);
+
+        }
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | BROWSER BACK / FORWARD
+    |--------------------------------------------------------------------------
+    */
+
+    window.addEventListener(
+        'popstate',
+        function () {
+
+            loadData(
+                window.location.href
+            );
+
+        }
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FORM SUBMIT
+    |--------------------------------------------------------------------------
+    */
+
+    form.addEventListener(
+        'submit',
+        function (event) {
+
+            event.preventDefault();
+
+            loadData();
+
+        }
+    );
+
+});
+
+</script>
+
+@endpush
 
 @endsection

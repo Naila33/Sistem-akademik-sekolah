@@ -12,179 +12,122 @@ use Illuminate\Http\Request;
 
 class PenilaianMapelController extends Controller
 {
-    /**
-     * =========================================================
-     * HALAMAN 1
-     * PILIH KELAS
-     * =========================================================
-     */
-    public function index(Request $request)
-    {
-        $query = Kelas::with([
-            'jurusan',
-            'tahunAjaran'
-        ])
-        ->withCount('siswaKelas');
+    /*
+    |--------------------------------------------------------------------------
+    | INDEX KELAS
+    |--------------------------------------------------------------------------
+    */
 
-        /*
-        |--------------------------------------------------------------------------
-        | SEARCH KELAS
-        |--------------------------------------------------------------------------
-        */
-
-        if ($request->filled('search')) {
-
-            $search = $request->search;
-
-            $query->where(function ($q) use ($search) {
-
-                $q->where('tingkat', 'like', "%{$search}%")
-                    ->orWhere('nama_kelas', 'like', "%{$search}%")
-                    ->orWhereHas('jurusan', function ($jurusan) use ($search) {
-                        $jurusan->where('nama_jurusan', 'like', "%{$search}%");
-                    });
-
-            });
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | FILTER JENJANG
-        |--------------------------------------------------------------------------
-        */
-
-        if ($request->filled('tingkat')) {
-            $query->where('tingkat', $request->tingkat);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | FILTER JURUSAN
-        |--------------------------------------------------------------------------
-        */
-
-        if ($request->filled('jurusan_id')) {
-            $query->where('jurusan_id', $request->jurusan_id);
-        }
-
-        $kelas = $query
-            ->orderBy('tingkat')
-            ->orderBy('nama_kelas')
-            ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | DATA FILTER
-        |--------------------------------------------------------------------------
-        */
-
-        $jurusan = \App\Models\Jurusan::orderBy('nama_jurusan')->get();
-
-        $tingkat = Kelas::select('tingkat')
-            ->distinct()
-            ->orderBy('tingkat')
-            ->pluck('tingkat');
-
-        return view(
-            'admin.penilaian.mapel.index',
-            compact(
-                'kelas',
-                'jurusan',
-                'tingkat'
-            )
-        );
-    }
-
-
-    /**
-     * =========================================================
-     * HALAMAN 2
-     * PILIH MATA PELAJARAN
-     * =========================================================
-     */
-    public function kelas(Request $request, $kelasId)
+    public function index()
     {
         $kelas = Kelas::with([
             'jurusan',
             'tahunAjaran'
-        ])->findOrFail($kelasId);
-
-        /*
-        |--------------------------------------------------------------------------
-        | MAPEL YANG ADA DI JADWAL KELAS
-        |--------------------------------------------------------------------------
-        */
-
-        $query = MataPelajaran::whereHas('jadwal', function ($q) use ($kelasId) {
-
-            $q->where('kelas_id', $kelasId);
-
-        });
-
-        /*
-        |--------------------------------------------------------------------------
-        | SEARCH MAPEL
-        |--------------------------------------------------------------------------
-        */
-
-        if ($request->filled('search')) {
-
-            $search = $request->search;
-
-            $query->where(function ($q) use ($search) {
-
-                $q->where('nama_mapel', 'like', "%{$search}%")
-                    ->orWhere('kode_mapel', 'like', "%{$search}%");
-
-            });
-        }
-
-        $mataPelajaran = $query
-            ->withCount([
-                'jadwal as jumlah_jadwal' => function ($q) use ($kelasId) {
-                    $q->where('kelas_id', $kelasId);
-                }
-            ])
-            ->orderBy('nama_mapel')
-            ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | HITUNG JUMLAH PENILAIAN
-        |--------------------------------------------------------------------------
-        */
-
-        foreach ($mataPelajaran as $mapel) {
-
-            $mapel->jumlah_penilaian = PenilaianMapel::whereHas(
-                'jadwal',
-                function ($q) use ($kelasId, $mapel) {
-
-                    $q->where('kelas_id', $kelasId)
-                        ->where('mata_pelajaran_id', $mapel->id);
-
-                }
-            )->count();
-
-        }
+        ])
+        ->orderBy('tingkat')
+        ->orderBy('nama_kelas')
+        ->get();
 
         return view(
-            'admin.penilaian.mapel.kelas',
-            compact(
-                'kelas',
-                'mataPelajaran'
-            )
+            'admin.penilaian.mapel.index',
+            compact('kelas')
         );
     }
 
+    public function kelas($kelasId)
+{
+    $kelas = Kelas::with([
+        'jurusan',
+        'tahunAjaran'
+    ])->findOrFail($kelasId);
 
-    /**
-     * =========================================================
-     * HALAMAN 3
-     * TABEL PENILAIAN
-     * =========================================================
-     */
+    $mataPelajaran = MataPelajaran::whereHas('jadwal', function ($query) use ($kelasId) {
+        $query->where('kelas_id', $kelasId);
+    })
+    ->orderBy('nama_mapel')
+    ->get();
+
+    return view(
+        'admin.penilaian.mapel.kelas',
+        compact('kelas', 'mataPelajaran')
+    );
+}
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HALAMAN MAPEL BERDASARKAN KELAS
+    |--------------------------------------------------------------------------
+    */
+
     public function mapel(Request $request, $kelasId, $mapelId)
+{
+    $kelas = Kelas::with([
+        'jurusan',
+        'tahunAjaran'
+    ])->findOrFail($kelasId);
+
+    // SATU mata pelajaran
+    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+
+    $query = PenilaianMapel::with([
+        'siswa',
+        'jadwal.guru',
+        'jadwal.mataPelajaran',
+    ])
+    ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
+
+        $q->where('kelas_id', $kelasId)
+          ->where('mata_pelajaran_id', $mapelId);
+
+    });
+
+    // SEARCH SISWA
+    if ($request->filled('search')) {
+
+        $search = $request->search;
+
+        $query->whereHas('siswa', function ($q) use ($search) {
+
+            $q->where('nama', 'like', "%{$search}%")
+              ->orWhere('nis', 'like', "%{$search}%")
+              ->orWhere('nisn', 'like', "%{$search}%");
+
+        });
+    }
+
+    // FILTER JENIS NILAI
+    if ($request->filled('jenis_nilai')) {
+
+        $query->where(
+            'jenis_nilai',
+            $request->jenis_nilai
+        );
+
+    }
+
+    $penilaian = $query
+        ->latest()
+        ->get();
+
+    return view(
+        'admin.penilaian.mapel.mapel',
+        compact(
+            'kelas',
+            'mataPelajaran',
+            'penilaian'
+        )
+    );
+}
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TABEL PENILAIAN BERDASARKAN KELAS + MAPEL
+    |--------------------------------------------------------------------------
+    */
+
+    public function nilai(Request $request, $kelasId, $mapelId)
     {
         $kelas = Kelas::with([
             'jurusan',
@@ -193,41 +136,30 @@ class PenilaianMapelController extends Controller
 
         $mataPelajaran = MataPelajaran::findOrFail($mapelId);
 
-        /*
-        |--------------------------------------------------------------------------
-        | PASTIKAN MAPEL MEMANG ADA DI KELAS
-        |--------------------------------------------------------------------------
-        */
-
-        $adaJadwal = Jadwal_Pelajaran::where('kelas_id', $kelasId)
-            ->where('mata_pelajaran_id', $mapelId)
-            ->exists();
-
-        if (!$adaJadwal) {
-            abort(404);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | QUERY NILAI
-        |--------------------------------------------------------------------------
-        */
-
         $query = PenilaianMapel::with([
             'siswa',
+            'jadwal.mataPelajaran',
+            'jadwal.kelas',
             'jadwal.guru'
         ])
-        ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
+        ->whereHas('jadwal', function ($q) use (
+            $kelasId,
+            $mapelId
+        ) {
 
             $q->where('kelas_id', $kelasId)
-                ->where('mata_pelajaran_id', $mapelId);
+              ->where(
+                  'mata_pelajaran_id',
+                  $mapelId
+              );
 
         });
 
+
         /*
-        |--------------------------------------------------------------------------
-        | SEARCH NAMA SISWA
-        |--------------------------------------------------------------------------
+        |----------------------------------------------------------------------
+        | SEARCH SISWA
+        |----------------------------------------------------------------------
         */
 
         if ($request->filled('search')) {
@@ -236,17 +168,19 @@ class PenilaianMapelController extends Controller
 
             $query->whereHas('siswa', function ($q) use ($search) {
 
-                $q->where('nama', 'like', "%{$search}%")
-                    ->orWhere('nis', 'like', "%{$search}%")
-                    ->orWhere('nisn', 'like', "%{$search}%");
+                $q->where('nama', 'like', '%' . $search . '%')
+                  ->orWhere('nis', 'like', '%' . $search . '%')
+                  ->orWhere('nisn', 'like', '%' . $search . '%');
 
             });
+
         }
 
+
         /*
-        |--------------------------------------------------------------------------
+        |----------------------------------------------------------------------
         | FILTER JENIS NILAI
-        |--------------------------------------------------------------------------
+        |----------------------------------------------------------------------
         */
 
         if ($request->filled('jenis_nilai')) {
@@ -255,80 +189,45 @@ class PenilaianMapelController extends Controller
                 'jenis_nilai',
                 $request->jenis_nilai
             );
+
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTER TANGGAL
-        |--------------------------------------------------------------------------
-        */
-
-        if ($request->filled('tanggal')) {
-
-            $query->whereDate(
-                'created_at',
-                $request->tanggal
-            );
-        }
 
         $penilaian = $query
             ->latest()
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | DATA UNTUK TAMBAH NILAI
-        |--------------------------------------------------------------------------
-        */
-
-        $jadwal = Jadwal_Pelajaran::with([
-            'kelas',
-            'mataPelajaran',
-            'guru'
-        ])
-        ->where('kelas_id', $kelasId)
-        ->where('mata_pelajaran_id', $mapelId)
-        ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | SISWA DI KELAS
-        |--------------------------------------------------------------------------
-        */
-
-        $siswa = Siswa::whereHas('siswaKelas', function ($q) use ($kelasId) {
-
-            $q->where('kelas_id', $kelasId);
-
-        })
-        ->orderBy('nama')
-        ->get();
 
         return view(
-            'admin.penilaian.mapel.mapel',
+            'admin.penilaian.mapel.nilai',
             compact(
                 'kelas',
                 'mataPelajaran',
-                'penilaian',
-                'jadwal',
-                'siswa'
+                'penilaian'
             )
         );
     }
 
 
-    /**
-     * =========================================================
-     * CREATE
-     * =========================================================
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE
+    |--------------------------------------------------------------------------
+    */
+
     public function create($kelasId, $mapelId)
     {
         $kelas = Kelas::with([
-            'jurusan'
+            'jurusan',
+            'tahunAjaran'
         ])->findOrFail($kelasId);
 
         $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+
+
+        /*
+        | Ambil jadwal mapel pada kelas tersebut
+        */
 
         $jadwal = Jadwal_Pelajaran::with([
             'kelas',
@@ -336,60 +235,141 @@ class PenilaianMapelController extends Controller
             'guru'
         ])
         ->where('kelas_id', $kelasId)
-        ->where('mata_pelajaran_id', $mapelId)
+        ->where(
+            'mata_pelajaran_id',
+            $mapelId
+        )
         ->get();
 
-        $siswa = Siswa::whereHas('siswaKelas', function ($q) use ($kelasId) {
-
-            $q->where('kelas_id', $kelasId);
-
-        })
-        ->orderBy('nama')
-        ->get();
 
         return view(
             'admin.penilaian.mapel.create',
             compact(
                 'kelas',
                 'mataPelajaran',
-                'jadwal',
-                'siswa'
+                'jadwal'
             )
         );
     }
 
 
-    /**
-     * =========================================================
-     * STORE
-     * =========================================================
-     */
-    public function store(Request $request, $kelasId, $mapelId)
+    /*
+    |--------------------------------------------------------------------------
+    | SEARCH SISWA VIA AJAX
+    |--------------------------------------------------------------------------
+    */
+
+    public function searchSiswa(Request $request, $kelasId)
     {
-        $request->validate([
-            'jadwal_pelajaran_id' => 'required|exists:jadwal_pelajaran,id',
-            'siswa_id' => 'required|exists:datasiswa,id',
-            'jenis_nilai' => 'required|in:harian,ujian',
-            'nilai' => 'required|numeric|min:0|max:100',
-        ]);
+        $search = trim(
+            $request->get('search', '')
+        );
+
 
         /*
-        |--------------------------------------------------------------------------
-        | PASTIKAN JADWAL MILIK KELAS + MAPEL
-        |--------------------------------------------------------------------------
+        | Jangan query kalau kurang dari 2 karakter
         */
 
-        $jadwal = Jadwal_Pelajaran::where('id', $request->jadwal_pelajaran_id)
-            ->where('kelas_id', $kelasId)
-            ->where('mata_pelajaran_id', $mapelId)
-            ->firstOrFail();
+        if (strlen($search) < 2) {
+
+            return response()->json([]);
+
+        }
+
+
+        /*
+        | Cari siswa yang terdaftar pada kelas tersebut
+        */
+
+        $siswa = Siswa::whereHas(
+            'siswaKelas',
+            function ($query) use ($kelasId) {
+
+                $query->where(
+                    'kelas_id',
+                    $kelasId
+                );
+
+            }
+        )
+        ->where(function ($query) use ($search) {
+
+            $query->where(
+                'nama',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'nis',
+                'like',
+                '%' . $search . '%'
+            )
+            ->orWhere(
+                'nisn',
+                'like',
+                '%' . $search . '%'
+            );
+
+        })
+        ->orderBy('nama')
+        ->limit(20)
+        ->get([
+            'id',
+            'nis',
+            'nisn',
+            'nama'
+        ]);
+
+
+        return response()->json($siswa);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STORE
+    |--------------------------------------------------------------------------
+    */
+
+    public function store(
+        Request $request,
+        $kelasId,
+        $mapelId
+    ) {
+
+        $request->validate([
+
+            'jadwal_pelajaran_id' =>
+                'required|exists:jadwal_pelajaran,id',
+
+            'siswa_id' =>
+                'required|exists:datasiswa,id',
+
+            'jenis_nilai' =>
+                'required|in:harian,ujian',
+
+            'nilai' =>
+                'required|numeric|min:0|max:100',
+
+        ]);
+
 
         PenilaianMapel::create([
-            'jadwal_pelajaran_id' => $jadwal->id,
-            'siswa_id' => $request->siswa_id,
-            'jenis_nilai' => $request->jenis_nilai,
-            'nilai' => $request->nilai,
+
+            'jadwal_pelajaran_id' =>
+                $request->jadwal_pelajaran_id,
+
+            'siswa_id' =>
+                $request->siswa_id,
+
+            'jenis_nilai' =>
+                $request->jenis_nilai,
+
+            'nilai' =>
+                $request->nilai,
+
         ]);
+
 
         return redirect()
             ->route(
@@ -406,30 +386,35 @@ class PenilaianMapelController extends Controller
     }
 
 
-    /**
-     * =========================================================
-     * EDIT
-     * =========================================================
-     */
-    public function edit($kelasId, $mapelId, $id)
-    {
+    /*
+    |--------------------------------------------------------------------------
+    | EDIT
+    |--------------------------------------------------------------------------
+    */
+
+    public function edit(
+        $kelasId,
+        $mapelId,
+        $id
+    ) {
+
         $kelas = Kelas::with([
-            'jurusan'
+            'jurusan',
+            'tahunAjaran'
         ])->findOrFail($kelasId);
 
-        $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+        $mataPelajaran =
+            MataPelajaran::findOrFail($mapelId);
 
-        $penilaian = PenilaianMapel::with([
-            'siswa',
-            'jadwal'
-        ])->where('id', $id)
-            ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
 
-                $q->where('kelas_id', $kelasId)
-                    ->where('mata_pelajaran_id', $mapelId);
+        $penilaian =
+            PenilaianMapel::with([
+                'siswa',
+                'jadwal.guru',
+                'jadwal.mataPelajaran',
+                'jadwal.kelas'
+            ])->findOrFail($id);
 
-            })
-            ->firstOrFail();
 
         $jadwal = Jadwal_Pelajaran::with([
             'kelas',
@@ -437,16 +422,12 @@ class PenilaianMapelController extends Controller
             'guru'
         ])
         ->where('kelas_id', $kelasId)
-        ->where('mata_pelajaran_id', $mapelId)
+        ->where(
+            'mata_pelajaran_id',
+            $mapelId
+        )
         ->get();
 
-        $siswa = Siswa::whereHas('siswaKelas', function ($q) use ($kelasId) {
-
-            $q->where('kelas_id', $kelasId);
-
-        })
-        ->orderBy('nama')
-        ->get();
 
         return view(
             'admin.penilaian.mapel.edit',
@@ -454,18 +435,18 @@ class PenilaianMapelController extends Controller
                 'kelas',
                 'mataPelajaran',
                 'penilaian',
-                'jadwal',
-                'siswa'
+                'jadwal'
             )
         );
     }
 
 
-    /**
-     * =========================================================
-     * UPDATE
-     * =========================================================
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE
+    |--------------------------------------------------------------------------
+    */
+
     public function update(
         Request $request,
         $kelasId,
@@ -473,33 +454,43 @@ class PenilaianMapelController extends Controller
         $id
     ) {
 
-        $penilaian = PenilaianMapel::where('id', $id)
-            ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
+        $penilaian =
+            PenilaianMapel::findOrFail($id);
 
-                $q->where('kelas_id', $kelasId)
-                    ->where('mata_pelajaran_id', $mapelId);
-
-            })
-            ->firstOrFail();
 
         $request->validate([
-            'jadwal_pelajaran_id' => 'required|exists:jadwal_pelajaran,id',
-            'siswa_id' => 'required|exists:datasiswa,id',
-            'jenis_nilai' => 'required|in:harian,ujian',
-            'nilai' => 'required|numeric|min:0|max:100',
+
+            'jadwal_pelajaran_id' =>
+                'required|exists:jadwal_pelajaran,id',
+
+            'siswa_id' =>
+                'required|exists:datasiswa,id',
+
+            'jenis_nilai' =>
+                'required|in:harian,ujian',
+
+            'nilai' =>
+                'required|numeric|min:0|max:100',
+
         ]);
 
-        $jadwal = Jadwal_Pelajaran::where('id', $request->jadwal_pelajaran_id)
-            ->where('kelas_id', $kelasId)
-            ->where('mata_pelajaran_id', $mapelId)
-            ->firstOrFail();
 
         $penilaian->update([
-            'jadwal_pelajaran_id' => $jadwal->id,
-            'siswa_id' => $request->siswa_id,
-            'jenis_nilai' => $request->jenis_nilai,
-            'nilai' => $request->nilai,
+
+            'jadwal_pelajaran_id' =>
+                $request->jadwal_pelajaran_id,
+
+            'siswa_id' =>
+                $request->siswa_id,
+
+            'jenis_nilai' =>
+                $request->jenis_nilai,
+
+            'nilai' =>
+                $request->nilai,
+
         ]);
+
 
         return redirect()
             ->route(
@@ -516,23 +507,23 @@ class PenilaianMapelController extends Controller
     }
 
 
-    /**
-     * =========================================================
-     * DELETE
-     * =========================================================
-     */
-    public function destroy($kelasId, $mapelId, $id)
-    {
-        $penilaian = PenilaianMapel::where('id', $id)
-            ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
+    /*
+    |--------------------------------------------------------------------------
+    | DESTROY
+    |--------------------------------------------------------------------------
+    */
 
-                $q->where('kelas_id', $kelasId)
-                    ->where('mata_pelajaran_id', $mapelId);
+    public function destroy(
+        $kelasId,
+        $mapelId,
+        $id
+    ) {
 
-            })
-            ->firstOrFail();
+        $penilaian =
+            PenilaianMapel::findOrFail($id);
 
         $penilaian->delete();
+
 
         return redirect()
             ->route(

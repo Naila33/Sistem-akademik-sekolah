@@ -24,19 +24,53 @@ class Pjbl extends Model
     }
 
     public function tahunAjaran()
-{
-    return $this->belongsTo(
-        TahunAjaran::class,
-        'tahun_ajaran_id',
-        'id'
-    );
-}
+    {
+        return $this->belongsTo(
+            TahunAjaran::class,
+            'tahun_ajaran_id',
+            'id'
+        );
+    }
 
-    /**
-     * Penguji PJBL
-     */
     public function penguji()
     {
-        return $this->hasMany(PjblPenguji::class, 'pjbl_id');
+        return $this->hasMany(
+            PjblPenguji::class,
+            'pjbl_id'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | NAMA PERIODE PJBL
+    |--------------------------------------------------------------------------
+    */
+
+    public function getNamaPeriodeAttribute()
+    {
+        $periode = strtolower($this->periode ?? '');
+
+        preg_match('/(\d+)/', $periode, $matches);
+
+        $nomor = isset($matches[1])
+            ? (int) $matches[1]
+            : null;
+
+        return match ($nomor) {
+
+            1 => 'PJBL Ganjil Smt 1',
+
+            2 => 'PJBL Genap Smt 2',
+
+            default =>
+                'PJBL ' .
+                ucfirst(
+                    str_replace(
+                        '_',
+                        ' ',
+                        $this->periode
+                    )
+                ),
+        };
     }
 }

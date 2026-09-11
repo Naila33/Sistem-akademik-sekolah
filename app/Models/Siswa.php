@@ -57,4 +57,45 @@ class Siswa extends Model
     {
         return $this->hasMany(PembagianKelas::class);
     }
+
+    public function absensi()
+{
+    return $this->hasMany(
+        Absensi::class,
+        'siswa_id'
+    );
+}
+
+public function sakit()
+{
+    return $this->hasMany(
+        Sakit::class,
+        'siswa_id'
+    );
+}
+
+public function izinKeluar()
+{
+    return $this->hasMany(
+        IzinKeluar::class,
+        'siswa_id'
+    );
+}
+
+public function izinPulang()
+{
+    return $this->hasMany(
+        IzinPulang::class,
+        'siswa_id'
+    );
+}
+
+public function dispen()
+{
+    return $this->hasMany(
+        Dispen::class,
+        'siswa_id'
+    );
+}
+
 }

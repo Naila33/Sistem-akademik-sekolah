@@ -48,4 +48,36 @@ class Guru extends Model
         'guru_id'
     );
 }
+
+public function sakitSebagaiWali()
+{
+    return $this->hasMany(
+        Sakit::class,
+        'walikelas_id'
+    );
+}
+
+public function sakitGuru()
+{
+    return $this->hasMany(
+        SakitGuru::class,
+        'guru_id'
+    );
+}
+
+public function izinKeluar()
+{
+    return $this->hasMany(
+        IzinKeluar::class,
+        'guru_mapel_id'
+    );
+}
+
+public function izinPulang()
+{
+    return $this->hasMany(
+        IzinPulang::class,
+        'guru_mapel_id'
+    );
+}
 }

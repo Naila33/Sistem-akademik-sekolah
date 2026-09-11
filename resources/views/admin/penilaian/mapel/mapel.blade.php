@@ -181,34 +181,38 @@
 
 
                     {{-- BUTTON --}}
-                    <div class="col-md-2 d-flex align-items-end">
+<div class="col-md-4 d-flex align-items-end">
 
-                        <div class="d-flex gap-2 w-100">
+    <div class="d-flex gap-2 w-100">
 
-                            <button type="submit"
-                                    class="btn btn-success flex-fill">
+        {{-- TERAPKAN FILTER --}}
+        <button type="submit"
+                class="btn btn-success">
 
-                                <i class="bi bi-funnel"></i>
+            <i class="bi bi-funnel me-1"></i>
+            Terapkan Filter
 
-                            </button>
+        </button>
 
-                            <a href="{{ route(
-                                'admin.penilaian.mapel.mapel',
-                                [
-                                    'kelasId' => $kelas->id,
-                                    'mapelId' => $mataPelajaran->id
-                                ]
-                            ) }}"
-                               class="btn btn-secondary">
 
-                                <i class="bi bi-arrow-counterclockwise"></i>
+        {{-- RESET --}}
+        <a href="{{ route(
+            'admin.penilaian.mapel.mapel',
+            [
+                'kelasId' => $kelas->id,
+                'mapelId' => $mataPelajaran->id
+            ]
+        ) }}"
+           class="btn btn-secondary">
 
-                            </a>
+            <i class="bi bi-arrow-counterclockwise me-1"></i>
+            Reset
 
-                        </div>
+        </a>
 
-                    </div>
+    </div>
 
+</div>
                 </div>
 
             </form>
