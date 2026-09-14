@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SesiAbsensi;
-use App\Models\Absen;
+use App\Models\Absensi;
 use Carbon\Carbon;
 
 class AbsensiController extends Controller
@@ -35,7 +35,7 @@ class AbsensiController extends Controller
         $siswa = auth()->user()->siswa;
 
         // Cek apakah siswa sudah absen di sesi ini
-        $sudahAbsen = Absen::where('sesi_absensi_id', $sesi->id)
+        $sudahAbsen = Absensi::where('sesi_absensi_id', $sesi->id)
             ->where('siswa_id', $siswa->id)
             ->exists();
 
@@ -51,7 +51,7 @@ class AbsensiController extends Controller
         // untuk menentukan hadir / terlambat.
         $status = 'hadir';
 
-        Absen::create([
+        Absensi::create([
             'sesi_absensi_id' => $sesi->id,
             'siswa_id' => $siswa->id,
             'tanggal' => $sekarang->toDateString(),

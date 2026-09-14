@@ -484,7 +484,6 @@
 
                     @yield(
                         'title',
-                        'Dashboard'
                     )
 
                 </h3>
@@ -492,7 +491,7 @@
 
                 <div class="admin-info">
 
-                    Administrator
+                    
 
                 </div>
 
