@@ -311,7 +311,7 @@
                                         $jpPosisi += $jumlahJpTampil;
                                     }
 
-                                    if ($jpPosisi > 10) {
+                                    if ($jpPosisi > $jumlahJpHari) {
                                         break;
                                     }
                                 }
@@ -341,7 +341,8 @@
                                 </div>
 
                                 {{-- BARIS GURU --}}
-                                <div class="schedule-row">
+                                <div class="schedule-row"
+                                    style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                     @forelse ($posisiJadwal as $data)
                                         @php
                                             $item = $data['item'];
@@ -360,7 +361,8 @@
                                 </div>
 
                                 {{-- BARIS RUANG --}}
-                                <div class="schedule-row">
+                                <div class="schedule-row"
+                                    style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                     @forelse ($posisiJadwal as $data)
                                         @php
                                             $item = $data['item'];

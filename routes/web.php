@@ -28,6 +28,9 @@ use App\Http\Controllers\Admin\JamPelajaranController;
 use App\Http\Controllers\Guru\SesiAbsensiController;
 use App\Http\Controllers\Siswa\PerizinanController;
 use App\Http\Controllers\Siswa\DispenController as SiswaDispenController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
+use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,17 +43,17 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
 
-Route::get('/guru/dashboard', function () {
-    return view('guru.dashboard');
-})->middleware('auth')->name('guru.dashboard');
+Route::get('/guru/dashboard', [GuruDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('guru.dashboard');
 
-Route::get('/siswa/dashboard', function () {
-    return view('siswa.dashboard');
-})->middleware('auth')->name('siswa.dashboard');
+Route::get('/siswa/dashboard', [SiswaDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('siswa.dashboard');
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
@@ -63,9 +66,9 @@ Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 })->name('home');
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('admin.dashboard');
 
 Route::view('/admin/master-data', 'admin.master-data.index')->name('master-data.index');
 
@@ -269,7 +272,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/create',
         [
-           PenilaianPjblController::class,
+            PenilaianPjblController::class,
             'create'
         ]
     )->name('penilaian.pjbl.create');
@@ -279,7 +282,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
-           PenilaianPjblController::class,
+            PenilaianPjblController::class,
             'store'
         ]
     )->name('penilaian.pjbl.store');
@@ -594,5 +597,4 @@ Route::middleware(['auth'])
             '/dispen/{id}',
             [SiswaDispenController::class, 'show']
         )->name('dispen.show');
-
     });

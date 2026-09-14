@@ -21,7 +21,7 @@ class WaliKelas extends Model
 
     public function guru()
     {
-        return $this->belongsTo(Dataguru::class, 'guru_id');
+        return $this->belongsTo(Guru::class, 'guru_id');
     }
 
     public function tahunAjaran()

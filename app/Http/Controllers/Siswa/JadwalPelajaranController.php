@@ -18,7 +18,6 @@ class JadwalPelajaranController extends Controller
             'Rabu',
             'Kamis',
             'Jumat',
-            'Sabtu',
         ];
         $jumlahJpPerHari = [
             'Senin' => 10,
