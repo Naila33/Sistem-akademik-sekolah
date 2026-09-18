@@ -1,143 +1,152 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+@section('title', 'Penilaian PjBL')
 
-    <title>Penilaian PjBL</title>
-
+@push('styles')
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
+        .page-wrap {
+            width: 100%;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: auto;
+        .page-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+            padding: 24px;
         }
 
-        .content {
-            margin-left: 250px;
-            min-height: 100vh;
-            padding: 30px;
-            box-sizing: border-box;
+        .page-title {
+            margin: 0 0 8px;
+            font-size: 25px;
+            font-weight: 500;
+            font-size: 25px;
         }
 
-        .header {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        .page-subtitle {
+            margin: 0 0 22px;
+            color: #6b7280;
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+        .info-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
         }
 
-        .student {
+        .info-card p {
+            margin: 8px 0;
+            color: #374151;
+        }
+
+        .student-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+        }
+
+        .student-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 20px;
         }
 
-        input {
-            width: 80px;
-            padding: 8px;
+        .student-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        button {
-            padding: 10px 20px;
+        .student-meta strong {
+            font-size: 16px;
+        }
+
+        .nilai-input {
+            width: 100px;
+            padding: 9px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 10px 16px;
+            background: #2449A4;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
             cursor: pointer;
         }
 
+        .btn-secondary {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 1px solid #cbd5e1;
+            color: #fff;
+            background: #6c757d;
+            margin-left: 8px;
+        }
+
         @media (max-width: 768px) {
-            .content {
-                margin-left: 210px;
-                padding: 20px;
+            .student-row {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
+
+        .fs-12 {
+    font-size: 13px;
+}
     </style>
-</head>
+@endpush
 
-<body>
+@section('content')
+    <div class="page-wrap">
+        <div class="page-card">
+            <h1 class="page-title">Penilaian PjBL</h1>
+            <p class="page-subtitle">Data penilaian proyek siswa</p>
 
-    @include('layouts.sidebar-guru')
-    <main class="content">
-        <div class="container">
-
-            <div class="header">
-
-                <h2>Penilaian PjBL</h2>
-
-                <p>
-                    <strong>PjBL:</strong>
-                    {{ ucwords(str_replace('_', ' ', $pjbl->periode)) }}
-                </p>
-
-                <p>
-                    <strong>Guru Penguji:</strong>
-                    {{ $guru->nama }}
-                </p>
-
-                <p>
-                    <p>
-    <strong>Jenis Penguji:</strong>
-    {{ ucwords(str_replace('_', ' ', $penguji->jenis_penguji)) }}
-</p>
-                </p>
-
+            <div class="info-card">
+                <p><strong>PjBL:</strong> {{ ucwords(str_replace('_', ' ', $pjbl->periode)) }}</p>
+                <p><strong>Guru Penguji:</strong> {{ $guru->nama }}</p>
+                <p><strong>Jenis Penguji:</strong> {{ ucwords(str_replace('_', ' ', $penguji->jenis_penguji)) }}</p>
             </div>
 
-
             <form action="{{ route('guru.penilaian-pjbl.simpan', $pjbl->id) }}" method="POST">
-
                 @csrf
 
                 @forelse ($siswaKelas as $siswaKelasItem)
-                    <div class="card">
-
-                        <div class="student">
-
-                            <div>
+                    <div class="student-card">
+                        <div class="student-row">
+                            <div class="student-meta">
                                 <strong>{{ $siswaKelasItem->siswa->nama }}</strong>
-                                <br>
                                 <small>NIS: {{ $siswaKelasItem->siswa->nis }}</small>
                             </div>
 
                             <div>
-                                <label>Nilai</label>
-
-                                <input type="number" name="nilai[{{ $siswaKelasItem->siswa_id }}]" min="0" max="100"
-                                    required>
+                                <label for="nilai_{{ $siswaKelasItem->siswa_id }}">Nilai</label>
+                                <input id="nilai_{{ $siswaKelasItem->siswa_id }}" class="nilai-input" type="number"
+                                    name="nilai[{{ $siswaKelasItem->siswa_id }}]" min="0" max="100" required>
                             </div>
-
                         </div>
                     </div>
                 @empty
-                    <div class="card">Belum ada siswa di kelas ini.</div>
+                    <div class="student-card">Belum ada siswa di kelas ini.</div>
                 @endforelse
 
-
-                <button type="submit">
-                    Simpan Penilaian
-                </button>
-
-                <a href="{{ route('guru.penilaian-pjbl.index') }}"> Kembali </a>
-
+                <div class="mt-3">
+                    <button type="submit" class="btn-primary fs-12">Simpan Penilaian</button>
+                    <a href="{{ route('guru.penilaian-pjbl.index') }}" class="btn-secondary fs-12" >Kembali</a>
+                </div>
             </form>
-
         </div>
-    </main>
-
-</body>
-
-</html>
+    </div>
+@endsection

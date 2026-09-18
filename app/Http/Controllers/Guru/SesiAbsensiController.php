@@ -33,6 +33,7 @@ class SesiAbsensiController extends Controller
         $jadwal = Jadwal_pelajaran::with([
             'mapel',
             'kelas.jurusan',
+            'jamPelajaran',
         ])
             ->where('guru_id', $guru->id)
             ->get()
@@ -75,7 +76,7 @@ class SesiAbsensiController extends Controller
         // Pastikan jam tersedia
         if (!$jamPelajaran->jam_mulai || !$jamPelajaran->jam_selesai) {
             return redirect()->route('absensi.show', ['jadwal' => $jadwal->id])
-    ->with('success', 'Sesi absensi berhasil dibuka.');
+                ->with('success', 'Sesi absensi berhasil dibuka.');
         }
 
         $sekarang = Carbon::now();
@@ -113,9 +114,9 @@ class SesiAbsensiController extends Controller
 
         if ($sesi) {
             return redirect()
-        ->route('absensi.show', $jadwal->id)
-        ->with('success', 'Sesi absensi sudah dibuka.');
-}                           
+                ->route('absensi.show', $jadwal->id)
+                ->with('success', 'Sesi absensi sudah dibuka.');
+        }
 
         // Generate kode acak
         $token = strtoupper(Str::random(6));
@@ -127,7 +128,7 @@ class SesiAbsensiController extends Controller
         ]);
 
         return redirect()
-    ->route('absensi.show', $jadwal->id)
-    ->with('success', 'Sesi absensi berhasil dibuka.');
-}
+            ->route('absensi.show', $jadwal->id)
+            ->with('success', 'Sesi absensi berhasil dibuka.');
+    }
 }

@@ -3,26 +3,23 @@
 @section('title', 'Ajukan Dispensasi')
 
 @section('content')
+@push('styles')
+    <style>
+        body {
+            font-family: 'poppins', sans-serif;
+            color: #212529;
+        }
+
+        h3 {
+            font-size: 25px;
+        }
+    </style>
+@endpush
 
 <div class="container-fluid py-4">
 
-    {{-- HEADER --}}
-
     <div class="mb-4">
-
-        <a
-            href="{{ route('siswa.dispen.index') }}"
-            class="text-decoration-none text-muted"
-        >
-
-            <i class="bi bi-arrow-left me-1"></i>
-
-            Kembali ke Dispensasi
-
-        </a>
-
-
-        <h3 class="fw-bold mt-3 mb-1">
+        <h3 class="fw-500 mt-3 mb-3">
 
             Ajukan Dispensasi
 
@@ -52,12 +49,9 @@
 
                 @csrf
 
-
-                {{-- DATA SISWA --}}
-
                 <div class="mb-4">
 
-                    <h5 class="fw-bold mb-3">
+                    <h5 class="fw-400 mb-4">
                         Data Siswa
                     </h5>
 
@@ -107,7 +101,7 @@
 
                 <div class="mb-4">
 
-                    <h5 class="fw-bold mb-3">
+                    <h5 class="fw-400 mb-4">
                         Periode Dispensasi
                     </h5>
 
@@ -184,7 +178,7 @@
 
                     <label
                         for="alasan"
-                        class="form-label fw-semibold"
+                        class="form-label fw-500"
                     >
 
                         Alasan Dispensasi
@@ -264,7 +258,7 @@
                         class="btn btn-secondary"
                     >
 
-                        Batal
+                        Kembali
 
                     </a>
 

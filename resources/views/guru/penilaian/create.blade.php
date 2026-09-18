@@ -1,221 +1,186 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Nilai</title>
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+@section('title', 'Input Nilai')
+
+@push('styles')
     <style>
         body {
-            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #212529;
             background: #f5f6fa;
-            color: #333;
-            font-family: Arial, sans-serif;
         }
 
-        .container {
-            margin-left: 250px;
-            padding: 30px;
-            max-width: none;
-        }
-
-        .card {
-            padding: 22px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-        }
-
-        .table {
+        .page-wrap {
             width: 100%;
-            border-collapse: collapse;
         }
 
-        .table th,
-        .table td {
-            border: 1px solid #dee2e6;
-            padding: 10px;
-            text-align: left;
+        .page-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+            padding: 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .page-header h3 {
+            margin: 0 0 6px;
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #6b7280;
         }
 
         .form-control,
         .form-select {
             box-sizing: border-box;
-            padding: 8px 10px;
+            padding: 8px 12px;
             border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-
-        .form-control {
-            width: 100%;
+            border-radius: 8px;
         }
 
         .form-select {
-            width: 300px;
+            max-width: 220px;
+            width: 100%;
         }
 
-        .btn {
+        .table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 0.82rem;
+        }
+
+        .table td,
+        .table th {
+            vertical-align: middle;
+        }
+
+        .btn-action {
             display: inline-block;
-            padding: 8px 14px;
-            border: 0;
-            border-radius: 4px;
+            padding: 9px 14px;
+            border-radius: 8px;
             text-decoration: none;
+            font-weight: 500;
+            border: none;
             cursor: pointer;
+            font-size: 13px;
         }
 
         .btn-primary {
-            background: #176b87;
-            color: white;
+            background: #2449A4;
+            color: #fff;
         }
 
         .btn-secondary {
             background: #6c757d;
-            color: white;
+            color: #fff;
+        }
+
+        .btn-action:hover {
+            opacity: 0.95;
         }
 
         @media (max-width: 768px) {
-            .container {
-                margin-left: 210px;
-                padding: 15px;
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
+
+        .fs-12 {
+    font-size: 13px;
+}
     </style>
-</head>
+    </style>
+@endpush
 
-<body>
-    @include('layouts.sidebar-guru')
-
-    <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-
-            <div>
-                <h3>Input Nilai</h3>
-
-                <p class="mb-0">
-                    {{ $jadwal->mapel?->nama_mapel ?? 'Mata pelajaran tidak tersedia' }}
-                    - Tingkat {{ $jadwal->kelas?->tingkat ?? 'Tingkat tidak tersedia' }}
-                    - Kelas {{ $jadwal->kelas?->nama_kelas ?? 'Kelas tidak tersedia' }}
-                    - Jurusan {{ $jadwal->kelas?->jurusan?->nama_jurusan ?? 'Jurusan tidak tersedia' }}
-                </p>
-            </div>
-
-            <a href="{{ route('guru.penilaian.index') }}" class="btn btn-secondary">
-                Kembali
-            </a>
-
-        </div>
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <form action="{{ route('guru.penilaian.store', $jadwal->id) }}" method="POST">
-
-            @csrf
-
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Jenis Nilai
-                </label>
-
-                <select name="jenis_nilai" class="form-select" style="max-width: 300px;" required>
-
-                    <option value="">-- Pilih --</option>
-
-                    <option value="harian">
-                        Harian
-                    </option>
-
-                    <option value="ujian">
-                        Ujian
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-                <label for="tanggal_penilaian">Tanggal Penilaian</label>
-
-                <input type="date" name="tanggal_penilaian" id="tanggal_penilaian"
-                    value="{{ old('tanggal_penilaian', date('Y-m-d')) }}" required>
-            </div>
-
-            <div class="card">
-
-                <div class="card-body p-0">
-
-                    <div class="table-responsive">
-
-                        <table class="table table-bordered mb-0">
-
-                            <thead>
-                                <tr>
-                                    <th width="60">No</th>
-                                    <th>NIS</th>
-                                    <th>Nama Siswa</th>
-                                    <th width="150">Nilai</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                @foreach ($siswa as $index => $item)
-
-                                    <tr>
-
-                                        <td>
-                                            {{ $index + 1 }}
-                                        </td>
-
-                                        <td>
-                                            {{ $item->nisn }}
-                                        </td>
-
-                                        <td>
-                                            {{ $item->nama }}
-                                        </td>
-
-                                        <td>
-
-                                            <input type="number" name="nilai[{{ $item->id }}]" class="form-control" min="0"
-                                                max="100" step="0.01" placeholder="0-100">
-
-                                        </td>
-
-                                    </tr>
-
-                                @endforeach
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
+@section('content')
+    <div class="page-wrap">
+        <div class="page-card">
+            <div class="page-header mb-4">
+                <div>
+                    <h3>Input Nilai</h3>
+                    <p>
+                        {{ $jadwal->mapel?->nama_mapel ?? 'Mata pelajaran tidak tersedia' }}
+                        - Tingkat {{ $jadwal->kelas?->tingkat ?? 'Tingkat tidak tersedia' }}
+                        - Kelas {{ $jadwal->kelas?->nama_kelas ?? 'Kelas tidak tersedia' }}
+                        - Jurusan {{ $jadwal->kelas?->jurusan?->nama_jurusan ?? 'Jurusan tidak tersedia' }}
+                    </p>
                 </div>
 
+                
             </div>
 
-            <div class="mt-3">
-                <button type="submit" class="btn btn-primary">
-                    Simpan Semua Nilai
-                </button>
+            @if (session('success'))
+                <div class="alert alert-success mb-3">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-                <a href="{{ route('guru.penilaian.detail', $jadwal->id) }}" class="btn btn-secondary">
-                    Lihat Detail
-                </a>
-            </div>
+            <form action="{{ route('guru.penilaian.store', $jadwal->id) }}" method="POST">
+                @csrf
 
-        </form>
+                <div class="mb-3" style="max-width: 220px;">
+                    <label class="form-label fw-semibold">Jenis Nilai</label>
+                    <select name="jenis_nilai" class="form-select" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="harian">Harian</option>
+                        <option value="ujian">Ujian</option>
+                    </select>
+                </div>
 
+                <div class="mb-4">
+                    <label for="tanggal_penilaian" class="form-label fw-semibold">Tanggal Penilaian</label>
+                    <input type="date" name="tanggal_penilaian" id="tanggal_penilaian" class="form-control"
+                        value="{{ old('tanggal_penilaian', date('Y-m-d')) }}" required>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th width="60">No</th>
+                                <th>NIS</th>
+                                <th>Nama Siswa</th>
+                                <th width="180">Nilai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($siswa as $index => $item)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $item->nisn }}</td>
+                                    <td>{{ $item->nama }}</td>
+                                    <td>
+                                        <input type="number" name="nilai[{{ $item->id }}]" class="form-control" min="0"
+                                            max="100" step="0.01" placeholder="0-100">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn-action btn-primary fs-12">
+                        Simpan Semua Nilai
+                    </button>
+
+                    <a href="{{ route('guru.penilaian.detail', $jadwal->id) }}" class="btn-action btn-secondary fs-12">
+                        Lihat Detail
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-
-</body>
-
-</html>
+@endsection

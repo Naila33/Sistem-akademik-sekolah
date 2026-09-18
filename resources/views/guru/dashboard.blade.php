@@ -28,25 +28,6 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
         }
 
-        .logout-form {
-            margin: 15px 20px 0;
-        }
-
-        .logout-form button {
-            width: 100%;
-            padding: 12px 0;
-            border: 0;
-            background: transparent;
-            color: #cbd5e1;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: left;
-        }
-
-        .logout-form button:hover {
-            color: white;
-        }
-
         @media (max-width: 768px) {
             .content {
                 margin-left: 210px;

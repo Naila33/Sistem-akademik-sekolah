@@ -154,6 +154,16 @@ class DispenController extends Controller
     $siswa = $this->siswaLogin();
 
     $data = $request->validate([
+        'nama_siswa' => [
+            'required',
+            'string',
+        ],
+
+        'nis' => [
+            'required',
+            'string',
+        ],
+
         'tanggal_mulai' => [
             'required',
             'date',

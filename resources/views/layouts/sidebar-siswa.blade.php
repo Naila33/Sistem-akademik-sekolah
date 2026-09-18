@@ -10,9 +10,6 @@
         <div class="menu-title">Menu Utama</div>
         <a href="{{ route('siswa.dashboard') }}"><i class="bi bi-house-door" aria-hidden="true"></i>Dashboard</a>
 
-        <div class="menu-title">Akun</div>
-        <a href="{{ route('password.change') }}"><i class="bi bi-key" aria-hidden="true"></i>Ganti Password</a>
-
         <div class="menu-title">Informasi</div>
         <a href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i>Nilai</a>
         <a href="{{ route('siswa.jadwal.index') }}"><i class="bi bi-calendar3" aria-hidden="true"></i>Jadwal</a>

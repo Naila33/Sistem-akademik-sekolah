@@ -1,75 +1,65 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi Siswa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+@section('title', 'Absensi Siswa')
+
+@push('styles')
     <style>
-        body {
-            margin: 0;
-            background: #f5f6fa;
-            color: #333;
-            font-family: Arial, sans-serif;
+       body {
+            font-family: 'poppins', sans-serif;
+            color: #212529;
         }
 
-        .content {
-            margin-left: 250px;
-            min-height: 100vh;
-            padding: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                margin-left: 210px;
-                padding: 15px;
-            }
+        h1 {
+            font-weight: 500;
+            font-size: 25px;
         }
     </style>
-</head>
+@endpush
 
-<body>
-
-    @include('layouts.sidebar-siswa')
-
-    <main class="content">
-
-        <div class="container py-4">
-
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-
-                    <h4 class="fw-bold mb-2">Absensi</h4>
-                    <p class="text-muted">
-                        Masukkan kode absensi yang diberikan oleh guru.
-                    </p>
-
-                    <form action="{{ route('siswa.absensi.submit') }}" method="POST">
-                        @csrf
-
-                        <div class="mb-3">
-                            <label for="token" class="form-label">
-                                Kode Absensi
-                            </label>
-
-                            <input type="text" name="token" id="token" class="form-control"
-                                placeholder="Masukkan kode absensi" autocomplete="off" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">
-                            Absen
-                        </button>
-                    </form>
-
-                </div>
+@section('content')
+        @if (session('success'))
+            <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
             </div>
+        @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div>
+                        <h1 class="mb-3">Absensi Siswa</h1>
+                        <p class="text-muted mb-0">Masukkan kode absensi yang diberikan oleh guru.</p>
+                    </div>
+                </div>
+
+                <form action="{{ route('siswa.absensi.submit') }}" method="POST">
+                    @csrf
+
+                    <div class="mb-4">
+                        <label for="token" class="form-label fw-medium">Kode Absensi</label>
+                        <input type="text" name="token" id="token" class="form-control @error('token') is-invalid @enderror"
+                            placeholder="Masukkan kode absensi" autocomplete="off" required>
+                        @error('token')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                     Kirim Absensi
+                    </button>
+                </form>
+            </div>
         </div>
-
-    </main>
-
-</body>
-
-</html>
+@endsection
