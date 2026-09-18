@@ -3,14 +3,23 @@
 @section('title', 'Ganti Password')
 
 @push('styles')
-   <style>
+    <style>
+        body {
+            font-family: 'poppins', sans-serif;
+            color: #212529;
+        }
+
+        h1 {
+            font-weight: 500;
+            font-size: 25px;
+        }
     </style>
 @endpush
 
 @section('content')
     <div class="password-page">
         <div class="password-header">
-            <h1><i class="bi bi-shield-lock me-2 text-primary"></i>Ganti Password</h1>
+            <h1>Ganti Password</h1>
             <p>Perbarui password akunmu secara berkala agar tetap aman.</p>
         </div>
 
@@ -35,6 +44,19 @@
 
         <div class="card password-card shadow-sm">
             <div class="card-body p-4 p-md-5">
+                @php
+                    $roleId = auth()->user()?->role_id;
+                    $backRoute = route('siswa.dashboard');
+
+                    if ($roleId == 1) {
+                        $backRoute = route('admin.dashboard');
+                    } elseif ($roleId == 2) {
+                        $guruId = auth()->user()->guru_id;
+                        $isWaliKelas = $guruId && \App\Models\WaliKelas::where('guru_id', $guruId)->exists();
+                        $backRoute = $isWaliKelas ? route('wali-kelas.dashboard') : route('guru.dashboard');
+                    }
+                @endphp
+
                 <form action="{{ route('password.update') }}" method="POST">
                     @csrf
 
@@ -63,11 +85,9 @@
                             autocomplete="new-password" minlength="8" required>
                     </div>
 
-                    <div class="password-actions">
-                        <a href="{{ route('siswa.dashboard') }}" class="btn btn-light border"><i
-                                class="bi bi-arrow-left me-1"></i>Kembali</a>
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle me-1"></i>Simpan
-                            Password</button>
+                    <div class="password-actions mt-4">
+                        <a href="{{ $backRoute }}" class="btn btn-secondary border">Kembali</a>
+                        <button type="submit" class="btn btn-primary"> Simpan Password</button>
                     </div>
                 </form>
             </div>

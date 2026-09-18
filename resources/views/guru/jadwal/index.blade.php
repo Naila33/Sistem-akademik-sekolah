@@ -1,53 +1,95 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Pelajaran</title>
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">       
+@section('title', 'Jadwal Mengajar')
+
+@push('styles')
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            margin-left: 250px;
-            padding: 60px;
-            color: #212529;
+        .page-wrap {
+            width: 100%;
+        }
+
+        .page-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+            padding: 24px;
+        }
+
+        .page-title {
+            margin: 0 0 8px;
+            font-size: 25px;
+            font-weight: 500;
+            font-size: 25px;
+        }
+
+        .page-subtitle {
+            margin: 0 0 20px;
+            color: #6b7280;
+        }
+
+        .table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 0.82rem;
+            vertical-align: middle;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .empty-state {
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #64748b;
         }
     </style>
-</head>
-<body>
-<h1>Jadwal Mengajar</h1>
+@endpush
 
-@include('layouts.sidebar-guru')
-@forelse ($jadwal as $item)
+@section('content')
+    <div class="page-wrap">
+        <div class="page-card">
+            <h1 class="page-title">Jadwal Mengajar</h1>
+            <p class="page-subtitle">Daftar jadwal pelajaran yang telah dipublikasikan.</p>
 
-    <div>
-        <strong>{{ $item->hari }}</strong>
-        <br>
-
-        Kelas:
-        {{ $item->kelas->tingkat ?? '-' }}
-        {{ $item->kelas->jurusan->kode_jurusan }}  
-        {{ $item->kelas->nama_kelas ?? '-' }}
-
-        <br>
-
-        Mata Pelajaran:
-        {{ $item->mapel->nama_mapel ?? '-' }}
-
-        <br>
-
-        Ruangan:
-        {{ $item->ruangan->nama_ruang ?? '-' }}
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th width="60">No</th>
+                            <th>Hari</th>
+                            <th>Kelas</th>
+                            <th>Mata Pelajaran</th>
+                            <th>Ruangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($jadwal as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->hari ?? '-' }}</td>
+                                <td>
+                                    {{ $item->kelas?->tingkat ?? '' }}
+                                    {{ $item->kelas?->jurusan?->kode_jurusan ?? '' }}
+                                    {{ $item->kelas?->nama_kelas ?? '' }}
+                                </td>
+                                <td>{{ $item->mapel?->nama_mapel ?? '-' }}</td>
+                                <td>{{ $item->ruangan?->nama_ruang ?? '-' }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state mb-0">
+                                        Belum ada jadwal yang dipublikasikan.
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <hr>
-
-@empty
-
-    <p>Belum ada jadwal yang dipublikasikan.</p>
-
-@endforelse
-</body>
-</html>
+@endsection

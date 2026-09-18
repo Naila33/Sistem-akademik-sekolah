@@ -75,6 +75,10 @@
 }
 
 .logout-form button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     font-family: 'Poppins', sans-serif;
     width: 100%;
     border: none;
@@ -91,6 +95,7 @@
     background: #3c73fe;
     color: #A0CAE0;
 }
+
 
 .jadwal {
     padding: 15px 0;
