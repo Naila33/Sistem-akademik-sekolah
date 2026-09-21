@@ -27,7 +27,10 @@ class Sakit extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'siswa_id');
+        return $this->belongsTo(
+            DataSiswa::class,
+            'siswa_id'
+        );
     }
 
     public function waliKelas()

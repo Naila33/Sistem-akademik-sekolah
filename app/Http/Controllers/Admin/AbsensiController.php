@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Absen;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Absen::with([
+        $query = Absensi::with([
             'siswa',
             'sesi.jadwal'
         ]);

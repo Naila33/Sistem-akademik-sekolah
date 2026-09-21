@@ -62,15 +62,17 @@ Route::get('/ganti-password', [AuthController::class, 'showChangePassword'])->mi
 Route::post('/ganti-password', [AuthController::class, 'changePassword'])->middleware('auth')->name('password.update');
 
 // DASHBOARD & HOME
-Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
-})->name('home');
+Route::middleware(['auth'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
-    ->middleware('auth')
-    ->name('admin.dashboard');
+        Route::get('/dashboard', [
+            AdminDashboardController::class,
+            'index'
+        ])->name('dashboard');
 
-Route::view('/admin/master-data', 'admin.master-data.index')->name('master-data.index');
+    }); 
 
 // ADMIN MASTER DATA ROUTES
 Route::get('/admin/ruangan', [RuanganController::class, 'index'])->name('ruangan.index');
@@ -273,6 +275,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/create',
         [
             PenilaianPjblController::class,
+           PenilaianPjblController::class,
             'create'
         ]
     )->name('penilaian.pjbl.create');
@@ -283,6 +286,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
             PenilaianPjblController::class,
+           PenilaianPjblController::class,
             'store'
         ]
     )->name('penilaian.pjbl.store');
@@ -597,4 +601,5 @@ Route::middleware(['auth'])
             '/dispen/{id}',
             [SiswaDispenController::class, 'show']
         )->name('dispen.show');
+
     });
