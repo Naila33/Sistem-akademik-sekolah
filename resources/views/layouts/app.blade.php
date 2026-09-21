@@ -464,7 +464,27 @@
 
 
         {{-- SIDEBAR --}}
-        @if(request()->is('siswa') || request()->is('siswa/*'))
+        @php
+            $currentUser = auth()->user();
+            $currentRole = $currentUser?->role_id;
+        @endphp
+
+        @if($currentUser && $currentRole == 3)
+            @include('layouts.sidebar-siswa')
+        @elseif($currentUser && $currentRole == 2)
+            @php
+                $guruId = $currentUser->guru_id;
+                $isWaliKelas = $guruId && \App\Models\WaliKelas::where('guru_id', $guruId)->exists();
+            @endphp
+
+            @if($isWaliKelas)
+                @include('layouts.sidebar-wali-kelas')
+            @else
+                @include('layouts.sidebar-guru')
+            @endif
+        @elseif($currentUser && $currentRole == 1)
+            @include('layouts.sidebar')
+        @elseif(request()->is('siswa') || request()->is('siswa/*'))
             @include('layouts.sidebar-siswa')
         @elseif(request()->is('guru') || request()->is('guru/*'))
             @include('layouts.sidebar-guru')
@@ -479,7 +499,7 @@
         @include('layouts.sidebar')
     @endif
 
-    <main class="main">
+        <main class="main">
 
 
             {{-- NAVBAR --}}
@@ -489,7 +509,6 @@
 
                     @yield(
                         'title',
-                        'Dashboard'
                     )
 
                 </h3>
@@ -497,7 +516,7 @@
 
                 <div class="admin-info">
 
-                    Administrator
+
 
                 </div>
 

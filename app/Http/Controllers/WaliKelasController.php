@@ -8,6 +8,8 @@ use App\Models\SiswaKelas;
 use App\Models\WaliKelas;
 use App\Models\Jadwal_pelajaran;
 use App\Models\PenilaianMapel;
+use App\Models\IzinKeluar;
+use App\Models\IzinPulang;
 use Illuminate\Http\Request;
 
 class WaliKelasController extends Controller
@@ -293,5 +295,67 @@ class WaliKelasController extends Controller
                 'success',
                 'Nilai harian berhasil disimpan.'
             );
+    }
+
+    private function kelasYangDiajar()
+    {
+        return Jadwal_pelajaran::where('guru_id', auth()->user()->guru_id)
+            ->pluck('kelas_id')->unique()->values();
+    }
+
+    public function izinKeluar()
+    {
+        $izinKeluar = IzinKeluar::with('siswa')
+            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
+            ->latest('id')->paginate(20)->withQueryString();
+
+        return view('wali-kelas.izin-keluar.index', compact('izinKeluar'));
+    }
+
+    public function verifikasiIzinKeluar(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status_wali_kelas' => 'required|in:diterima,ditolak',
+            'catatan_wali_kelas' => 'nullable|string|max:1000',
+        ]);
+
+        $izin = IzinKeluar::whereKey($id)
+            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
+            ->firstOrFail();
+        $izin->update([
+            'status_wali_kelas' => $validated['status_wali_kelas'],
+            'waktu_verifikasi_wali_kelas' => now(),
+            'catatan_wali_kelas' => $validated['catatan_wali_kelas'] ?? null,
+        ]);
+
+        return back()->with('success', 'Izin keluar berhasil diverifikasi.');
+    }
+
+    public function izinPulang()
+    {
+        $izinPulang = IzinPulang::with('siswa')
+            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
+            ->latest('id')->paginate(20)->withQueryString();
+
+        return view('wali-kelas.izin-pulang.index', compact('izinPulang'));
+    }
+
+    public function verifikasiIzinPulang(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status_wali_kelas' => 'required|in:diterima,ditolak',
+            'catatan_wali_kelas' => 'nullable|string|max:1000',
+        ]);
+
+        $izin = IzinPulang::whereKey($id)
+            ->whereHas('siswa.siswaKelas', fn ($query) => $query->whereIn('kelas_id', $this->kelasYangDiajar()))
+            ->firstOrFail();
+        $izin->update([
+            'status_wali_kelas' => $validated['status_wali_kelas'],
+            'waktu_verifikasi_wali_kelas' => now(),
+            'catatan_wali_kelas' => $validated['catatan_wali_kelas'] ?? null,
+        ]);
+
+        return back()->with('success', 'Izin pulang berhasil diverifikasi.');
     }
 }

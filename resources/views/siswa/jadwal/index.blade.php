@@ -1,21 +1,16 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@section('title', 'Jadwal Pelajaran')
 
-    <title>Jadwal Pelajaran</title>
-
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-
+@push('styles')
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            margin-left: 250px;
-            padding: 60px;
+            font-family: 'poppins', sans-serif;
             color: #212529;
+        }
+
+        .schedule-page {
+            width: 100%;
         }
 
         .container {
@@ -37,6 +32,8 @@
 
         h1 {
             margin: 0 0 5px;
+            font-weight: 500;
+            font-size: 25px;
         }
 
         .header p {
@@ -66,8 +63,8 @@
         }
 
         table {
-            width: 100%;
-            min-width: 1100px;
+            width: max-content;
+            min-width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
         }
@@ -77,6 +74,7 @@
             border: 1px solid #cbd5da;
             padding: 8px;
             vertical-align: top;
+            box-sizing: border-box;
         }
 
         th {
@@ -127,7 +125,8 @@
         }
 
         .day {
-            width: 255px;
+            width: 260px;
+            min-width: 260px;
             min-height: 110px;
         }
 
@@ -136,14 +135,17 @@
             margin: -8px -8px 8px;
             padding: 4px;
             border-bottom: 1px solid #cbd5da;
+            box-sizing: border-box;
+            width: calc(100% + 16px);
         }
 
         .jp-numbers,
         .schedule-list,
         .schedule-row {
             display: grid;
-            grid-template-columns: repeat(10, minmax(22px, 1fr));
+            grid-template-columns: repeat(10, minmax(24px, 1fr));
             gap: 0;
+            width: 100%;
         }
 
         .jp-numbers {
@@ -186,6 +188,8 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             font-size: 12px;
+            box-sizing: border-box;
+            min-height: 26px;
         }
 
         .schedule-value:last-child {
@@ -202,11 +206,6 @@
         }
 
         @media (max-width: 600px) {
-            body {
-                padding: 15px;
-                margin-left: 210px;
-            }
-
             .container {
                 padding: 15px;
             }
@@ -217,176 +216,175 @@
             }
         }
     </style>
-</head>
+@endpush
 
-<body>
+@section('content')
+    <div class="schedule-page">
+        <div class="card shadow-sm border-0 p-4">
+            <div class="header">
+                <div>
+                    <h1>Jadwal Pelajaran</h1>
+                    <p>Daftar jadwal pelajaran yang berlaku.</p>
+                </div>
+            </div>
 
-    @include('layouts.sidebar-siswa')
+            <div class="toolbar">
+                <div>
+                    <a href="{{ route('admin.jadwal_pelajaran.export_excel') }}" class="download-button">Download Excel</a>
+                    <a href="{{ route('admin.jadwal_pelajaran.export_pdf') }}" class="download-button download-pdf">Download
+                        PDF</a>
+                </div>
+            </div>
 
-    <div class="header">
-        <div>
-            <h1>Jadwal Pelajaran</h1>
-            <p>Daftar jadwal pelajaran yang berlaku.</p>
+            <main class="container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="identity">Kelas</th>
+                            <th class="row-labels">Info</th>
+                            @foreach ($hari as $namaHari)
+                                <th class="day">
+                                    <span class="day-header">
+                                        {{ $namaHari }}
+                                        <span class="jp-numbers"
+                                            style="grid-template-columns: repeat({{ $jumlahJpPerHari[$namaHari] ?? 10 }}, minmax(22px, 1fr));">
+                                            @for ($jp = 1; $jp <= ($jumlahJpPerHari[$namaHari] ?? 10); $jp++)
+                                                <span class="jp-number">{{ $jp }}</span>
+                                            @endfor
+                                        </span>
+                                    </span>
+                                </th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="identity">
+                                <div class="identity-row">
+                                    <strong>
+                                        {{ $kelas->tingkat ?? '-' }}
+                                        {{ optional($kelas->jurusan)->kode_jurusan ?? '' }}
+                                        {{ $kelas->nama_kelas ?? '' }}
+                                    </strong>
+                                </div>
+                            </td>
+
+                            <td class="row-labels">
+                                <div class="row-label">Mapel</div>
+                                <div class="row-label">Guru</div>
+                                <div class="row-label">Ruang</div>
+                            </td>
+
+                            @foreach ($hari as $namaHari)
+                                <td class="day">
+
+                                    @php
+                                        $jadwalHari = $jadwal
+                                            ->filter(
+                                                fn($item) =>
+                                                    strtolower($item->hari) === strtolower($namaHari)
+                                            )
+                                            ->values();
+                                        $jumlahJpHari = $jumlahJpPerHari[$namaHari] ?? 10;
+
+                                        // Tentukan posisi setiap jadwal berdasarkan urutan JP
+                                        $posisiJadwal = [];
+                                        $jpPosisi = 1;
+
+                                        foreach ($jadwalHari as $item) {
+                                            $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), $jumlahJpHari);
+
+                                            $jumlahJpTampil = min(
+                                                $jumlahJp,
+                                                $jumlahJpHari + 1 - $jpPosisi
+                                            );
+
+                                            if ($jumlahJpTampil > 0) {
+                                                $posisiJadwal[] = [
+                                                    'item' => $item,
+                                                    'mulai' => $jpPosisi,
+                                                    'jumlah' => $jumlahJpTampil,
+                                                ];
+
+                                                $jpPosisi += $jumlahJpTampil;
+                                            }
+
+                                            if ($jpPosisi > $jumlahJpHari) {
+                                                break;
+                                            }
+                                        }
+                                    @endphp
+
+                                    <div class="schedule-list">
+
+                                        {{-- BARIS MAPEL --}}
+                                        <div class="schedule-row"
+                                            style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
+                                            @forelse ($posisiJadwal as $data)
+                                                @php
+                                                    $item = $data['item'];
+                                                @endphp
+
+                                                <div class="schedule-value mapel" style="
+                                                                    background-color: {{ optional($item->mapel)->warna ?? '#d3d3d3' }};
+                                                                    grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
+                                                                " title="{{ optional($item->mapel)->nama_mapel ?? '-' }}">
+                                                    {{ optional($item->mapel)->kode_mapel ?? '-' }}
+                                                </div>
+                                            @empty
+                                                <div class="schedule-value empty" style="grid-column: 1 / -1;">
+                                                    -
+                                                </div>
+                                            @endforelse
+                                        </div>
+
+                                        {{-- BARIS GURU --}}
+                                        <div class="schedule-row"
+                                            style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
+                                            @forelse ($posisiJadwal as $data)
+                                                @php
+                                                    $item = $data['item'];
+                                                @endphp
+
+                                                <div class="schedule-value" style="
+                                                                    grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
+                                                                " title="{{ optional($item->guru)->nama ?? '-' }}">
+                                                    {{ optional($item->guru)->kode_guru ?? '-' }}
+                                                </div>
+                                            @empty
+                                                <div class="schedule-value empty" style="grid-column: 1 / -1;">
+                                                    -
+                                                </div>
+                                            @endforelse
+                                        </div>
+
+                                        {{-- BARIS RUANG --}}
+                                        <div class="schedule-row"
+                                            style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
+                                            @forelse ($posisiJadwal as $data)
+                                                @php
+                                                    $item = $data['item'];
+                                                @endphp
+
+                                                <div class="schedule-value" style="
+                                                                    grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
+                                                                " title="{{ optional($item->ruangan)->nama_ruang ?? '-' }}">
+                                                    {{ optional($item->ruangan)->kode_ruang ?? '-' }}
+                                                </div>
+                                            @empty
+                                                <div class="schedule-value empty" style="grid-column: 1 / -1;">
+                                                    -
+                                                </div>
+                                            @endforelse
+                                        </div>
+
+                                    </div>
+                                </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+            </main>
         </div>
     </div>
-
-    <div class="toolbar">
-        <div>
-            <a href="{{ route('admin.jadwal_pelajaran.export_excel') }}" class="download-button">Download Excel</a>
-            <a href="{{ route('admin.jadwal_pelajaran.export_pdf') }}" class="download-button download-pdf">Download
-                PDF</a>
-        </div>
-    </div>
-
-    <main class="container">
-        <table>
-            <thead>
-                <tr>
-                    <th class="identity">Kelas</th>
-                    <th class="row-labels">Info</th>
-                    @foreach ($hari as $namaHari)
-                        <th class="day">
-                            <span class="day-header">
-                                {{ $namaHari }}
-                                <span class="jp-numbers"
-                                    style="grid-template-columns: repeat({{ $jumlahJpPerHari[$namaHari] ?? 10 }}, minmax(22px, 1fr));">
-                                    @for ($jp = 1; $jp <= ($jumlahJpPerHari[$namaHari] ?? 10); $jp++)
-                                        <span class="jp-number">{{ $jp }}</span>
-                                    @endfor
-                                </span>
-                            </span>
-                        </th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="identity">
-                        <div class="identity-row">
-                            <strong>
-                                {{ $kelas->tingkat ?? '-' }}
-                                {{ optional($kelas->jurusan)->kode_jurusan ?? '' }}
-                                {{ $kelas->nama_kelas ?? '' }}
-                            </strong>
-                        </div>
-                    </td>
-
-                    <td class="row-labels">
-                        <div class="row-label">Mapel</div>
-                        <div class="row-label">Guru</div>
-                        <div class="row-label">Ruang</div>
-                    </td>
-
-                    @foreach ($hari as $namaHari)
-                        <td class="day">
-
-                            @php
-                                $jadwalHari = $jadwal
-                                    ->filter(
-                                        fn($item) =>
-                                        strtolower($item->hari) === strtolower($namaHari)
-                                    )
-                                    ->values();
-                                $jumlahJpHari = $jumlahJpPerHari[$namaHari] ?? 10;
-
-                                // Tentukan posisi setiap jadwal berdasarkan urutan JP
-                                $posisiJadwal = [];
-                                $jpPosisi = 1;
-
-                                foreach ($jadwalHari as $item) {
-                                    $jumlahJp = min(max((int) ($item->jumlah_jp ?? 1), 1), $jumlahJpHari);
-
-                                    $jumlahJpTampil = min(
-                                        $jumlahJp,
-                                        $jumlahJpHari + 1 - $jpPosisi
-                                    );
-
-                                    if ($jumlahJpTampil > 0) {
-                                        $posisiJadwal[] = [
-                                            'item' => $item,
-                                            'mulai' => $jpPosisi,
-                                            'jumlah' => $jumlahJpTampil,
-                                        ];
-
-                                        $jpPosisi += $jumlahJpTampil;
-                                    }
-
-                                    if ($jpPosisi > $jumlahJpHari) {
-                                        break;
-                                    }
-                                }
-                            @endphp
-
-                            <div class="schedule-list">
-
-                                {{-- BARIS MAPEL --}}
-                                <div class="schedule-row"
-                                    style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
-                                    @forelse ($posisiJadwal as $data)
-                                        @php
-                                            $item = $data['item'];
-                                        @endphp
-
-                                        <div class="schedule-value mapel" style="
-                                            background-color: {{ optional($item->mapel)->warna ?? '#d3d3d3' }};
-                                            grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
-                                        " title="{{ optional($item->mapel)->nama_mapel ?? '-' }}">
-                                            {{ optional($item->mapel)->kode_mapel ?? '-' }}
-                                        </div>
-                                    @empty
-                                        <div class="schedule-value empty" style="grid-column: 1 / -1;">
-                                            -
-                                        </div>
-                                    @endforelse
-                                </div>
-
-                                {{-- BARIS GURU --}}
-                                <div class="schedule-row"
-                                    style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
-                                    @forelse ($posisiJadwal as $data)
-                                        @php
-                                            $item = $data['item'];
-                                        @endphp
-
-                                        <div class="schedule-value" style="
-                                            grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
-                                        " title="{{ optional($item->guru)->nama ?? '-' }}">
-                                            {{ optional($item->guru)->kode_guru ?? '-' }}
-                                        </div>
-                                    @empty
-                                        <div class="schedule-value empty" style="grid-column: 1 / -1;">
-                                            -
-                                        </div>
-                                    @endforelse
-                                </div>
-
-                                {{-- BARIS RUANG --}}
-                                <div class="schedule-row"
-                                    style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
-                                    @forelse ($posisiJadwal as $data)
-                                        @php
-                                            $item = $data['item'];
-                                        @endphp
-
-                                        <div class="schedule-value" style="
-                                            grid-column: {{ $data['mulai'] }} / span {{ $data['jumlah'] }};
-                                        " title="{{ optional($item->ruangan)->nama_ruang ?? '-' }}">
-                                            {{ optional($item->ruangan)->kode_ruang ?? '-' }}
-                                        </div>
-                                    @empty
-                                        <div class="schedule-value empty" style="grid-column: 1 / -1;">
-                                            -
-                                        </div>
-                                    @endforelse
-                                </div>
-
-                            </div>
-                        </td>
-                    @endforeach
-                </tr>
-            </tbody>
-        </table>
-    </main>
-</body>
-
-</html>
+@endsection

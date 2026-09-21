@@ -6,12 +6,12 @@
     </div>
 
     <div class="menu">
-@php
-    $waliKelasPertama = null;
-    if (auth()->check() && auth()->user()->guru_id) {
+        @php
+        $waliKelasPertama = null;
+        if (auth()->check() && auth()->user()->guru_id) {
         $waliKelasPertama = \App\Models\WaliKelas::where('guru_id', auth()->user()->guru_id)->first();
-    }
-@endphp
+        }
+        @endphp
 
         {{-- MENU UTAMA --}}
         <div class="menu-title">Menu Utama</div>
@@ -44,45 +44,53 @@
             Rapor Siswa
         </a>
 
+        <a href="{{ route('wali-kelas.izin-keluar.index') }}">
+            Izin Keluar Siswa
+        </a>
+
+        <a href="{{ route('wali-kelas.izin-pulang.index') }}">
+            Izin Pulang Siswa
+        </a>
+
 
         {{-- GURU MATA PELAJARAN --}}
-@php
-    $jadwalSaya = collect();
+        @php
+        $jadwalSaya = collect();
 
-    if (auth()->check() && auth()->user()->guru_id) {
+        if (auth()->check() && auth()->user()->guru_id) {
         $jadwalSaya = \App\Models\Jadwal_pelajaran::with([
-            'kelas',
-            'mataPelajaran'
+        'kelas',
+        'mataPelajaran'
         ])
         ->where('guru_id', auth()->user()->guru_id)
         ->orderBy('hari')
         ->orderBy('jam_mulai')
         ->get();
-    }
-@endphp
+        }
+        @endphp
 
-@if($jadwalSaya->isNotEmpty())
+        @if($jadwalSaya->isNotEmpty())
 
-    <div class="menu-title">Guru Mata Pelajaran</div>
+        <div class="menu-title">Guru Mata Pelajaran</div>
 
-    <a href="{{ route('wali-kelas.kelas-mengajar') }}">
-        Kelas Mengajar
-    </a>
+        <a href="{{ route('wali-kelas.kelas-mengajar') }}">
+            Kelas Mengajar
+        </a>
 
 
-    <a href="{{ route('wali-kelas.kelas-mengajar') }}">
-        Input Nilai
-    </a>
+        <a href="{{ route('wali-kelas.kelas-mengajar') }}">
+            Input Nilai
+        </a>
 
-    <a href="{{ route('wali-kelas.kelas-mengajar') }}">
-        Nilai Harian
-    </a>
+        <a href="{{ route('wali-kelas.kelas-mengajar') }}">
+            Nilai Harian
+        </a>
 
-    <a href="#">
-        Nilai PJBL
-    </a>
+        <a href="#">
+            Nilai PJBL
+        </a>
 
-@endif
+        @endif
 
     </div>
 

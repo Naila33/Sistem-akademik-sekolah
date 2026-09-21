@@ -144,6 +144,13 @@ Route::post(
     [WaliKelasController::class, 'simpanNilai']
 )->name('wali-kelas.simpan-nilai');
 
+Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(function () {
+    Route::get('/izin-keluar', [WaliKelasController::class, 'izinKeluar'])->name('izin-keluar.index');
+    Route::patch('/izin-keluar/{id}/verifikasi', [WaliKelasController::class, 'verifikasiIzinKeluar'])->name('izin-keluar.verifikasi');
+    Route::get('/izin-pulang', [WaliKelasController::class, 'izinPulang'])->name('izin-pulang.index');
+    Route::patch('/izin-pulang/{id}/verifikasi', [WaliKelasController::class, 'verifikasiIzinPulang'])->name('izin-pulang.verifikasi');
+});
+
 // SPMB - CALON SISWA
 Route::prefix('admin')->group(function () {
     Route::get('/spmb/calon-siswa', [SpmbController::class, 'index'])->name('admin.spmb.index');

@@ -2,10 +2,18 @@
 
 @section('content')
 
+@push('styles')
+    <style>
+        body {
+            font-family: 'poppins', sans-serif;
+            color: #212529;
+        }
+    </style>
+
     <div class="container-fluid">
 
         <div class="mb-4">
-            <h4 class="fw-bold mb-1">
+            <h4 class="fw-500 mb-1">
                 {{ isset($sakit) ? 'Edit Pengajuan Sakit' : 'Ajukan Izin Sakit' }}
             </h4>
             <p class="text-muted mb-0">

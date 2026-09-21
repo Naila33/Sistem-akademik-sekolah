@@ -1,109 +1,135 @@
-<!DOCTYPE html>
+@extends('layouts.app')
 
-<html lang="id">
+@section('title', 'Penilaian')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penilaian</title>
-
-```
-<link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-
-<style>
-    body {
-        margin: 0;
-        background: #f5f6fa;
-        color: #333;
-        font-family: Arial, sans-serif;
-    }
-
-    .content {
-        margin-left: 250px;
-        min-height: 100vh;
-        padding: 30px;
-    }
-
-    .cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-    }
-
-    .card {
-        padding: 22px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-    }
-
-    .card h2 {
-        margin: 0 0 10px;
-        font-size: 18px;
-    }
-
-    .card p {
-        margin: 0 0 20px;
-        color: #64748b;
-    }
-
-    .empty-state {
-        padding: 22px;
-        background: white;
-        border-radius: 10px;
-        color: #64748b;
-    }
-
-    @media (max-width: 768px) {
-        .content {
-            margin-left: 210px;
+@push('styles')
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #212529;
         }
-    }
-</style>
-```
 
-</head>
+        .page-wrap {
+            width: 100%;
+        }
 
-<body>
+        .page-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+            padding: 24px;
+        }
 
-```
-@include('layouts.sidebar-guru')
+        .page-title {
+            margin: 0 0 8px;
+            font-size: 25px;
+            font-weight: 500;
+        }
 
-<main class="content">
-    <h1>Penilaian</h1>
+        .page-subtitle {
+            margin: 0 0 20px;
+            color: #6b7280;
+        }
 
-    <div class="cards">
-        @forelse ($jadwal as $item)
-            <article class="card">
+        .table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 0.82rem;
+            vertical-align: middle;
+        }
 
-                <h2>
-                    {{ $item->mapel?->nama_mapel ?? 'Mata pelajaran tidak tersedia' }}
-                </h2>
+        .table td {
+            vertical-align: middle;
+        }
 
-                <p>
-                    <p>
-                        {{ $item->kelas?->tingkat ?? '' }}
-                        {{ $item->kelas?->jurusan?->kode_jurusan ?? '' }}
-                        {{ $item->kelas?->nama_kelas ?? '' }}
-                    </p>
-                </p>
+        .btn-action {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-right: 8px;
+        }
 
-                <a href="{{ route('guru.penilaian.create', $item->id) }}" class="btn">
-                    Input Nilai
-                </a>
-                <a href="{{ route('guru.penilaian.detail', $item->id) }}">
-                    Detail
-                </a>
+        .btn-primary {
+            background: #2449A4;
+            color: #fff;
+        }
 
-            </article>
-        @empty
-            <div class="empty-state">
-                Belum ada jadwal pelajaran untuk Anda.
+        .btn-outline-secondary {
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            background: #fff;
+        }
+
+        .btn-primary:hover,
+        .btn-outline-secondary:hover {
+            text-decoration: none;
+        }
+
+        .empty-state {
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #64748b;
+        }
+
+        .fs-12 {
+    font-size: 13px;
+}
+    </style>
+    </style>
+@endpush
+
+@section('content')
+    <div class="page-wrap">
+        <div class="page-card">
+            <h1 class="page-title">Penilaian</h1>
+            <p class="page-subtitle">Daftar jadwal pelajaran yang dapat dinilai.</p>
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th width="60" >No</th>
+                            <th>Mata Pelajaran</th>
+                            <th>Kelas</th>
+                            <th width="220">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($jadwal as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->mapel?->nama_mapel ?? 'Mata pelajaran tidak tersedia' }}</td>
+                                <td>
+                                    {{ $item->kelas?->tingkat ?? '' }}
+                                    {{ $item->kelas?->jurusan?->kode_jurusan ?? '' }}
+                                    {{ $item->kelas?->nama_kelas ?? '' }}
+                                </td>
+                                <td>
+                                    <a href="{{ route('guru.penilaian.create', $item->id) }}" class="btn-action btn-primary fs-12">
+                                        Input Nilai
+                                    </a>
+                                    <a href="{{ route('guru.penilaian.detail', $item->id) }}"
+                                        class="btn-action btn-outline-secondary fs-12">
+                                        Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4">
+                                    <div class="empty-state mb-0">
+                                        Belum ada jadwal pelajaran untuk Anda.
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-        @endforelse
+        </div>
     </div>
-</main>
-```
-
-</body>
-</html>
+@endsection

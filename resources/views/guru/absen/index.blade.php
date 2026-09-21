@@ -1,120 +1,127 @@
-<!DOCTYPE html>
+﻿@extends('layouts.app')
 
-<html lang="id">
+@section('title', 'Absensi')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi</title>
-
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-
+@push('styles')
     <style>
-        body {
-            margin: 0;
-            background: #f5f6fa;
-            color: #333;
-            font-family: Arial, sans-serif;
-        }
-
-        .content {
-            margin-left: 250px;
-            min-height: 100vh;
-            padding: 30px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            padding: 22px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-        }
-
-        .card h2 {
-            margin: 0 0 10px;
-            font-size: 18px;
-        }
-
-        .card p {
-            margin: 0 0 20px;
-            color: #64748b;
-        }
-
-        .card form button {
+        .page-wrap {
             width: 100%;
-            padding: 10px;
-            background: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
         }
 
-        .card form button:hover {
-            background: #0b5ed7;
+        .page-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+            padding: 24px;
+        }
+
+        .page-title {
+            margin: 0 0 8px;
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        .page-subtitle {
+            margin: 0 0 20px;
+            color: #6b7280;
+        }
+
+        .table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 0.82rem;
+            vertical-align: middle;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #2449A4;
+            border: none;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            color: #fff;
+            text-decoration: none;
         }
 
         .empty-state {
-            padding: 22px;
-            background: white;
+            padding: 20px;
             border-radius: 10px;
+            background: #f8fafc;
             color: #64748b;
         }
 
-        @media (max-width: 768px) {
-            .content {
-                margin-left: 210px;
-            }
+        .fs-12 {
+            font-size: 13px;
         }
     </style>
+@endpush
 
-</head>
+@section('content')
+    <div class="page-wrap">
+        <div class="page-card">
+            <h1 class="page-title">Absensi</h1>
+            <p class="page-subtitle">Daftar jadwal pelajaran yang dapat dibuka untuk absensi.</p>
 
-<body>
-
-    @include('layouts.sidebar-guru')
-
-    <main class="content">
-        <h1>Absensi</h1>
-
-        <div class="cards">
-            @forelse ($jadwal as $item)
-                <article class="card">
-
-                    <h2>
-                        {{ $item->mapel?->nama_mapel ?? 'Mata pelajaran tidak tersedia' }}
-                    </h2>
-
-                    <p>
-                        {{ $item->kelas?->tingkat ?? '' }}
-                        {{ $item->kelas?->jurusan?->kode_jurusan ?? '' }}
-                        {{ $item->kelas?->nama_kelas ?? '' }}
-                    </p>
-
-                    <form action="{{ route('absensi.buka', $item->id) }}" method="POST">
-                        @csrf
-
-                        <button type="submit" class="btn btn-primary">
-                            Buka Absensi
-                        </button>
-                    </form>
-
-                </article>
-            @empty
-                <div class="empty-state">
-                    Belum ada jadwal pelajaran untuk Anda.
-                </div>
-            @endforelse
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th width="60">No</th>
+                            <th>Hari</th>
+                            <th>Kelas</th>
+                            <th>Mata Pelajaran</th>
+                            <th>JP</th>
+                            <th width="180">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($jadwal as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->hari ?? '-' }}</td>
+                                <td>
+                                    {{ $item->kelas?->tingkat ?? '' }}
+                                    {{ $item->kelas?->jurusan?->kode_jurusan ?? '' }}
+                                    {{ $item->kelas?->nama_kelas ?? '' }}
+                                </td>
+                                <td>{{ $item->mapel?->nama_mapel ?? 'Mata pelajaran tidak tersedia' }}</td>
+                                <td>
+                                    {{ $item->jamPelajaran?->jp ?? '-' }}
+                                    - {{ ($item->jamPelajaran?->jp ?? 0) + ($item->jumlah_jp ?? 1) - 1 }}
+                                </td>
+                                <td>
+                                    <form action="{{ route('absensi.buka', $item->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary w-100 fs-12">
+                                            Buka Absensi
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state mb-0">
+                                        Belum ada jadwal pelajaran untuk Anda.
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </main>
-
-</body>
-
-</html>
+    </div>
+@endsection
