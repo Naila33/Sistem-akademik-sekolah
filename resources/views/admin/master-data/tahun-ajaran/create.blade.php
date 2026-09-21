@@ -4,20 +4,26 @@
 
 @push('styles')
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #212529;
+            background: #f5f6fa;
+        }
+
         .academic-form {
-            color: 
+            color: #1f2937;
         }
 
         .academic-panel {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #e4eaf2;
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
             padding: 24px;
         }
 
         .academic-form h1 {
-            color: 
+            color: #1e293b;
             font-size: 24px;
             font-weight: 600;
             margin: 0 0 6px;
@@ -25,14 +31,14 @@
 
         .academic-subtitle {
             margin: 0 0 20px;
-            color: 
+            color: #64748b;
         }
 
         .academic-errors {
-            background: 
-            border: 1px solid 
+            background: #fef2f2;
+            border: 1px solid #fecaca;
             border-radius: 8px;
-            color: 
+            color: #b91c1c;
             margin: 0 0 18px;
             padding: 12px 16px;
         }
@@ -47,7 +53,7 @@
         }
 
         .academic-field label {
-            color: 
+            color: #334155;
             display: block;
             font-size: 13px;
             font-weight: 600;
@@ -56,11 +62,11 @@
 
         .academic-field input,
         .academic-field select {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #cbd5e1;
             border-radius: 7px;
             box-sizing: border-box;
-            color: 
+            color: #1e293b;
             font: inherit;
             padding: 10px 12px;
             width: 100%;
@@ -68,7 +74,7 @@
 
         .academic-field input:focus,
         .academic-field select:focus {
-            border-color: 
+            border-color: #2449a4;
             box-shadow: 0 0 0 3px rgba(36, 73, 164, 0.12);
             outline: none;
         }
@@ -94,38 +100,39 @@
         }
 
         .academic-save {
-            background: 
-            border-color: 
-            color: 
+            background: #2449a4;
+            border-color: #2449a4;
+            color: #fff;
         }
 
         .academic-save:hover {
-            background: 
+            background: #1e3a8a;
         }
 
         .academic-back {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #cbd5e1;
             border-radius: 7px;
-            color: 
+            color: #475569;
             display: inline-flex;
             padding: 10px 15px;
             text-decoration: none;
         }
 
         .academic-back:hover {
-            background: 
-            border-color: 
-            color: 
+            background: #f8fafc;
+            border-color: #94a3b8;
+            color: #1e293b;
         }
+
         .custom-checkbox {
-    width: 18px;                  
-    height: 18px;
-    border: 2px solid 
-    border-radius: 4px;           
-    cursor: pointer;
-    accent-color: 
-}
+            width: 18px;
+            height: 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            cursor: pointer;
+            accent-color: #2449a4;
+        }
     </style>
 
 @endpush
@@ -165,11 +172,11 @@
                 </div>
 
                 <div class="form-check my-3">
-    <input type="checkbox" id="is_active" name="is_active" class="custom-checkbox">
-    <label class="form-check-label" for="is_active">
-        Aktif
-    </label>
-</div>
+                    <input type="checkbox" id="is_active" name="is_active" class="custom-checkbox">
+                    <label class="form-check-label" for="is_active">
+                        Aktif
+                    </label>
+                </div>
 
                 <div class="academic-actions">
                     <button class="academic-save" type="submit">

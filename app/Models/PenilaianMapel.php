@@ -23,6 +23,11 @@ class PenilaianMapel extends Model
         'siswa_id',
         'jenis_nilai',
         'nilai',
+        'tanggal_penilaian',
+    ];
+
+    protected $casts = [
+        'tanggal_penilaian' => 'date',
     ];
 
     public function siswa()

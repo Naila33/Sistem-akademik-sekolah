@@ -6,23 +6,24 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
-            background: 
+            color: #212529;
+            background: #f5f6fa;
         }
+
         .room-form {
-            color: 
+            color: #1f2937;
         }
 
         .room-panel {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #e4eaf2;
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
             padding: 24px;
         }
 
         .room-form h1 {
-            color: 
+            color: #1e293b;
             font-size: 24px;
             font-weight: 600;
             margin: 0 0 6px;
@@ -30,14 +31,14 @@
 
         .room-subtitle {
             margin: 0 0 20px;
-            color: 
+            color: #64748b;
         }
 
         .room-errors {
-            background: 
-            border: 1px solid 
+            background: #fef2f2;
+            border: 1px solid #fecaca;
             border-radius: 8px;
-            color: 
+            color: #b91c1c;
             margin: 0 0 18px;
             padding: 12px 16px;
         }
@@ -52,7 +53,7 @@
         }
 
         .room-field label {
-            color: 
+            color: #334155;
             display: block;
             font-size: 13px;
             font-weight: 600;
@@ -61,11 +62,11 @@
 
         .room-field input[type="text"],
         .room-field select {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #cbd5e1;
             border-radius: 7px;
             box-sizing: border-box;
-            color: 
+            color: #1e293b;
             font: inherit;
             padding: 10px 12px;
             width: 100%;
@@ -73,11 +74,11 @@
 
         .room-field input:focus,
         .room-field select:focus {
-            border-color: 
+            border-color: #2449a4;
             box-shadow: 0 0 0 3px rgba(36, 73, 164, 0.2);
         }
 
-        
+
         .checkbox-label {
             display: inline-flex !important;
             align-items: center;
@@ -88,13 +89,13 @@
         .checkbox-input {
             width: 18px !important;
             height: 18px !important;
-            border: 2px solid 
+            border: 2px solid #cbd5e1;
             border-radius: 4px;
             cursor: pointer;
-            accent-color: 
+            accent-color: #2449a4;
         }
 
-         .academic-actions {
+        .academic-actions {
             display: flex;
             gap: 10px;
             margin-top: 22px;
@@ -115,62 +116,64 @@
         }
 
         .academic-save {
-            background: 
-            border-color: 
-            color: 
+            background: #2449a4;
+            border-color: #2449a4;
+            color: #fff;
         }
 
-         .academic-save:hover {
-            background: 
+        .academic-save:hover {
+            background: #1e3a8a;
         }
     </style>
 @endpush
 
 @section('content')
-<div class="room-form">
-    <div class="room-panel">
-        <h1>Edit Tahun Ajaran</h1>
-        <p class="room-subtitle">Ubah informasi tahun ajaran di bawah ini.</p>
+    <div class="room-form">
+        <div class="room-panel">
+            <h1>Edit Tahun Ajaran</h1>
+            <p class="room-subtitle">Ubah informasi tahun ajaran di bawah ini.</p>
 
-        @if ($errors->any())
-            <div class="room-errors">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+            @if ($errors->any())
+                <div class="room-errors">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <form action="{{ route('tahun-ajaran.update', $tahunAjaran->id) }}" method="POST">
-            @csrf 
-            @method('PUT')
+            <form action="{{ route('tahun-ajaran.update', $tahunAjaran->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-            <div class="room-field">
-                <label for="tahun_ajaran">Tahun Ajaran</label>
-                <input type="text" id="tahun_ajaran" name="tahun_ajaran" value="{{ old('tahun_ajaran', $tahunAjaran->tahun_ajaran) }}" maxlength="9" required>
-            </div>
+                <div class="room-field">
+                    <label for="tahun_ajaran">Tahun Ajaran</label>
+                    <input type="text" id="tahun_ajaran" name="tahun_ajaran"
+                        value="{{ old('tahun_ajaran', $tahunAjaran->tahun_ajaran) }}" maxlength="9" required>
+                </div>
 
-            <div class="room-field">
-                <label for="semester">Semester</label>
-                <select id="semester" name="semester" required>
-                    <option value="Ganjil" @selected(old('semester', $tahunAjaran->semester) === 'Ganjil')>Ganjil</option>
-                    <option value="Genap" @selected(old('semester', $tahunAjaran->semester) === 'Genap')>Genap</option>
-                </select>
-            </div>
+                <div class="room-field">
+                    <label for="semester">Semester</label>
+                    <select id="semester" name="semester" required>
+                        <option value="Ganjil" @selected(old('semester', $tahunAjaran->semester) === 'Ganjil')>Ganjil</option>
+                        <option value="Genap" @selected(old('semester', $tahunAjaran->semester) === 'Genap')>Genap</option>
+                    </select>
+                </div>
 
-            <div class="room-field">
-                <label class="checkbox-label">
-                    <input type="checkbox" name="status" value="1" class="checkbox-input" @checked(old('status', $tahunAjaran->status))>
-                    <span>Aktif</span>
-                </label>
-            </div>
+                <div class="room-field">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="status" value="1" class="checkbox-input" @checked(old('status', $tahunAjaran->status))>
+                        <span>Aktif</span>
+                    </label>
+                </div>
 
-            <div class="academic-actions">
-                <button type="submit" class="academic-save">Simpan</button>
-                <a href="{{ route('tahun-ajaran.index') }}" class="btn btn-secondary" style="text-decoration: none; margin-left: 10px;">Kembali</a>
-            </div>
-        </form>
+                <div class="academic-actions">
+                    <button type="submit" class="academic-save">Simpan</button>
+                    <a href="{{ route('tahun-ajaran.index') }}" class="btn btn-secondary"
+                        style="text-decoration: none; margin-left: 10px;">Kembali</a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 @endsection

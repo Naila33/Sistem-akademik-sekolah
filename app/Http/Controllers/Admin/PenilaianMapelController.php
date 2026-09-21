@@ -19,9 +19,9 @@ class PenilaianMapelController extends Controller
             'jurusan',
             'tahunAjaran'
         ])
-        ->orderBy('tingkat')
-        ->orderBy('nama_kelas')
-        ->get();
+            ->orderBy('tingkat')
+            ->orderBy('nama_kelas')
+            ->get();
 
         return view(
             'admin.penilaian.mapel.index',
@@ -30,81 +30,78 @@ class PenilaianMapelController extends Controller
     }
 
     public function kelas($kelasId)
-{
-    $kelas = Kelas::with([
-        'jurusan',
-        'tahunAjaran'
-    ])->findOrFail($kelasId);
+    {
+        $kelas = Kelas::with([
+            'jurusan',
+            'tahunAjaran'
+        ])->findOrFail($kelasId);
 
-    $mataPelajaran = MataPelajaran::whereHas('jadwal', function ($query) use ($kelasId) {
-        $query->where('kelas_id', $kelasId);
-    })
-    ->orderBy('nama_mapel')
-    ->get();
+        $mataPelajaran = MataPelajaran::whereHas('jadwal', function ($query) use ($kelasId) {
+            $query->where('kelas_id', $kelasId);
+        })
+            ->orderBy('nama_mapel')
+            ->get();
 
-    return view(
-        'admin.penilaian.mapel.kelas',
-        compact('kelas', 'mataPelajaran')
-    );
-}
+        return view(
+            'admin.penilaian.mapel.kelas',
+            compact('kelas', 'mataPelajaran')
+        );
+    }
 
 
     public function mapel(Request $request, $kelasId, $mapelId)
-{
-    $kelas = Kelas::with([
-        'jurusan',
-        'tahunAjaran'
-    ])->findOrFail($kelasId);
+    {
+        $kelas = Kelas::with([
+            'jurusan',
+            'tahunAjaran'
+        ])->findOrFail($kelasId);
 
-    $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+        $mataPelajaran = MataPelajaran::findOrFail($mapelId);
 
-    $query = PenilaianMapel::with([
-        'siswa',
-        'jadwal.guru',
-        'jadwal.mataPelajaran',
-    ])
-    ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
+        $query = PenilaianMapel::with([
+            'siswa',
+            'jadwal.guru',
+            'jadwal.mataPelajaran',
+        ])
+            ->whereHas('jadwal', function ($q) use ($kelasId, $mapelId) {
 
-        $q->where('kelas_id', $kelasId)
-          ->where('mata_pelajaran_id', $mapelId);
+                $q->where('kelas_id', $kelasId)
+                    ->where('mata_pelajaran_id', $mapelId);
+            });
 
-    });
+        if ($request->filled('search')) {
 
-    if ($request->filled('search')) {
+            $search = $request->search;
 
-        $search = $request->search;
+            $query->whereHas('siswa', function ($q) use ($search) {
 
-        $query->whereHas('siswa', function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nis', 'like', "%{$search}%")
+                    ->orWhere('nisn', 'like', "%{$search}%");
+            });
+        }
 
-            $q->where('nama', 'like', "%{$search}%")
-              ->orWhere('nis', 'like', "%{$search}%")
-              ->orWhere('nisn', 'like', "%{$search}%");
+        if ($request->filled('jenis_nilai')) {
 
-        });
-    }
+            $query->where(
+                'jenis_nilai',
+                $request->jenis_nilai
+            );
+        }
 
-    if ($request->filled('jenis_nilai')) {
+        $penilaian = $query
+            ->latest()
+            ->get();
 
-        $query->where(
-            'jenis_nilai',
-            $request->jenis_nilai
+        return view(
+            'admin.penilaian.mapel.mapel',
+            compact(
+                'kelas',
+                'mataPelajaran',
+                'penilaian'
+            )
         );
-
     }
-
-    $penilaian = $query
-        ->latest()
-        ->get();
-
-    return view(
-        'admin.penilaian.mapel.mapel',
-        compact(
-            'kelas',
-            'mataPelajaran',
-            'penilaian'
-        )
-    );
-}
 
 
     public function nilai(Request $request, $kelasId, $mapelId)
@@ -122,18 +119,17 @@ class PenilaianMapelController extends Controller
             'jadwal.kelas',
             'jadwal.guru'
         ])
-        ->whereHas('jadwal', function ($q) use (
-            $kelasId,
-            $mapelId
-        ) {
+            ->whereHas('jadwal', function ($q) use (
+                $kelasId,
+                $mapelId
+            ) {
 
-            $q->where('kelas_id', $kelasId)
-              ->where(
-                  'mata_pelajaran_id',
-                  $mapelId
-              );
-
-        });
+                $q->where('kelas_id', $kelasId)
+                    ->where(
+                        'mata_pelajaran_id',
+                        $mapelId
+                    );
+            });
 
 
         if ($request->filled('search')) {
@@ -143,11 +139,9 @@ class PenilaianMapelController extends Controller
             $query->whereHas('siswa', function ($q) use ($search) {
 
                 $q->where('nama', 'like', '%' . $search . '%')
-                  ->orWhere('nis', 'like', '%' . $search . '%')
-                  ->orWhere('nisn', 'like', '%' . $search . '%');
-
+                    ->orWhere('nis', 'like', '%' . $search . '%')
+                    ->orWhere('nisn', 'like', '%' . $search . '%');
             });
-
         }
 
         if ($request->filled('jenis_nilai')) {
@@ -156,7 +150,6 @@ class PenilaianMapelController extends Controller
                 'jenis_nilai',
                 $request->jenis_nilai
             );
-
         }
 
 
@@ -179,22 +172,29 @@ class PenilaianMapelController extends Controller
     {
         $kelas = Kelas::with([
             'jurusan',
-            'tahunAjaran'
+            'tahunAjaran',
+            'siswaKelas.siswa'
         ])->findOrFail($kelasId);
 
         $mataPelajaran = MataPelajaran::findOrFail($mapelId);
+
+        $siswa = $kelas->siswaKelas
+            ->pluck('siswa')
+            ->filter()
+            ->sortBy('nama')
+            ->values();
 
         $jadwal = Jadwal_Pelajaran::with([
             'kelas',
             'mataPelajaran',
             'guru'
         ])
-        ->where('kelas_id', $kelasId)
-        ->where(
-            'mata_pelajaran_id',
-            $mapelId
-        )
-        ->get();
+            ->where('kelas_id', $kelasId)
+            ->where(
+                'mata_pelajaran_id',
+                $mapelId
+            )
+            ->get();
 
 
         return view(
@@ -202,7 +202,8 @@ class PenilaianMapelController extends Controller
             compact(
                 'kelas',
                 'mataPelajaran',
-                'jadwal'
+                'jadwal',
+                'siswa'
             )
         );
     }
@@ -219,7 +220,6 @@ class PenilaianMapelController extends Controller
         if (strlen($search) < 2) {
 
             return response()->json([]);
-
         }
 
 
@@ -231,36 +231,34 @@ class PenilaianMapelController extends Controller
                     'kelas_id',
                     $kelasId
                 );
-
             }
         )
-        ->where(function ($query) use ($search) {
+            ->where(function ($query) use ($search) {
 
-            $query->where(
-                'nama',
-                'like',
-                '%' . $search . '%'
-            )
-            ->orWhere(
+                $query->where(
+                    'nama',
+                    'like',
+                    '%' . $search . '%'
+                )
+                    ->orWhere(
+                        'nis',
+                        'like',
+                        '%' . $search . '%'
+                    )
+                    ->orWhere(
+                        'nisn',
+                        'like',
+                        '%' . $search . '%'
+                    );
+            })
+            ->orderBy('nama')
+            ->limit(20)
+            ->get([
+                'id',
                 'nis',
-                'like',
-                '%' . $search . '%'
-            )
-            ->orWhere(
                 'nisn',
-                'like',
-                '%' . $search . '%'
-            );
-
-        })
-        ->orderBy('nama')
-        ->limit(20)
-        ->get([
-            'id',
-            'nis',
-            'nisn',
-            'nama'
-        ]);
+                'nama'
+            ]);
 
 
         return response()->json($siswa);
@@ -276,16 +274,19 @@ class PenilaianMapelController extends Controller
         $request->validate([
 
             'jadwal_pelajaran_id' =>
-                'required|exists:jadwal_pelajaran,id',
+            'required|exists:jadwal_pelajaran,id',
 
             'siswa_id' =>
-                'required|exists:datasiswa,id',
+            'required|exists:datasiswa,id',
 
             'jenis_nilai' =>
-                'required|in:harian,ujian',
+            'required|in:harian,ujian',
+
+            'tanggal_penilaian' =>
+            'required|date',
 
             'nilai' =>
-                'required|numeric|min:0|max:100',
+            'required|numeric|min:0|max:100',
 
         ]);
 
@@ -293,16 +294,19 @@ class PenilaianMapelController extends Controller
         PenilaianMapel::create([
 
             'jadwal_pelajaran_id' =>
-                $request->jadwal_pelajaran_id,
+            $request->jadwal_pelajaran_id,
 
             'siswa_id' =>
-                $request->siswa_id,
+            $request->siswa_id,
 
             'jenis_nilai' =>
-                $request->jenis_nilai,
+            $request->jenis_nilai,
+
+            'tanggal_penilaian' =>
+            $request->tanggal_penilaian,
 
             'nilai' =>
-                $request->nilai,
+            $request->nilai,
 
         ]);
 
@@ -331,11 +335,18 @@ class PenilaianMapelController extends Controller
 
         $kelas = Kelas::with([
             'jurusan',
-            'tahunAjaran'
+            'tahunAjaran',
+            'siswaKelas.siswa'
         ])->findOrFail($kelasId);
 
         $mataPelajaran =
             MataPelajaran::findOrFail($mapelId);
+
+        $siswa = $kelas->siswaKelas
+            ->pluck('siswa')
+            ->filter()
+            ->sortBy('nama')
+            ->values();
 
 
         $penilaian =
@@ -352,12 +363,12 @@ class PenilaianMapelController extends Controller
             'mataPelajaran',
             'guru'
         ])
-        ->where('kelas_id', $kelasId)
-        ->where(
-            'mata_pelajaran_id',
-            $mapelId
-        )
-        ->get();
+            ->where('kelas_id', $kelasId)
+            ->where(
+                'mata_pelajaran_id',
+                $mapelId
+            )
+            ->get();
 
 
         return view(
@@ -366,7 +377,8 @@ class PenilaianMapelController extends Controller
                 'kelas',
                 'mataPelajaran',
                 'penilaian',
-                'jadwal'
+                'jadwal',
+                'siswa'
             )
         );
     }
@@ -387,16 +399,19 @@ class PenilaianMapelController extends Controller
         $request->validate([
 
             'jadwal_pelajaran_id' =>
-                'required|exists:jadwal_pelajaran,id',
+            'required|exists:jadwal_pelajaran,id',
 
             'siswa_id' =>
-                'required|exists:datasiswa,id',
+            'required|exists:datasiswa,id',
 
             'jenis_nilai' =>
-                'required|in:harian,ujian',
+            'required|in:harian,ujian',
+
+            'tanggal_penilaian' =>
+            'required|date',
 
             'nilai' =>
-                'required|numeric|min:0|max:100',
+            'required|numeric|min:0|max:100',
 
         ]);
 
@@ -404,16 +419,19 @@ class PenilaianMapelController extends Controller
         $penilaian->update([
 
             'jadwal_pelajaran_id' =>
-                $request->jadwal_pelajaran_id,
+            $request->jadwal_pelajaran_id,
 
             'siswa_id' =>
-                $request->siswa_id,
+            $request->siswa_id,
 
             'jenis_nilai' =>
-                $request->jenis_nilai,
+            $request->jenis_nilai,
+
+            'tanggal_penilaian' =>
+            $request->tanggal_penilaian,
 
             'nilai' =>
-                $request->nilai,
+            $request->nilai,
 
         ]);
 

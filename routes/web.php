@@ -211,6 +211,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         'kelas'
     ])->name('penilaian.mapel.kelas');
 
+    Route::get('/penilaian/mapel/kelas/{kelasId}/siswa/search', [
+        \App\Http\Controllers\Admin\PenilaianMapelController::class,
+        'searchSiswa'
+    ])->name('penilaian.mapel.siswa.search');
+
     Route::get('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
         'mapel'
@@ -226,17 +231,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         'store'
     ])->name('penilaian.mapel.store');
 
-    Route::get('/penilaian/mapel/{id}/edit', [
+    Route::get('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}/edit', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
         'edit'
     ])->name('penilaian.mapel.edit');
 
-    Route::put('/penilaian/mapel/{id}', [
+    Route::put('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
         'update'
     ])->name('penilaian.mapel.update');
 
-    Route::delete('/penilaian/mapel/{id}', [
+    Route::delete('/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
         'destroy'
     ])->name('penilaian.mapel.destroy');

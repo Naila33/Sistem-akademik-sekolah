@@ -9,8 +9,8 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: 
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f6fa;
             margin: 0;
             padding: 30px;
         }
@@ -29,7 +29,7 @@
         }
 
         .info {
-            background-color: 
+            background-color: #f8fafc;
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
@@ -52,7 +52,7 @@
         select {
             width: 100%;
             padding: 10px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             box-sizing: border-box;
         }
@@ -66,12 +66,12 @@
         }
 
         .btn-simpan {
-            background-color: 
+            background-color: #2449a4;
             color: white;
         }
 
         .btn-kembali {
-            background-color: 
+            background-color: #64748b;
             color: white;
             margin-left: 5px;
         }
@@ -98,8 +98,6 @@
                 </ul>
             </div>
         @endif
-
-        
         <div class="info">
 
             <p>

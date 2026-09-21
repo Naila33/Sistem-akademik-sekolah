@@ -6,24 +6,24 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
-            background: 
+            color: #212529;
+            background: #f5f6fa;
         }
 
         .room-form {
-            color: 
+            color: #1f2937;
         }
 
         .room-panel {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #e4eaf2;
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
             padding: 24px;
         }
 
         .room-form h1 {
-            color: 
+            color: #1e293b;
             font-size: 24px;
             font-weight: 600;
             margin: 0 0 6px;
@@ -31,14 +31,14 @@
 
         .room-subtitle {
             margin: 0 0 20px;
-            color: 
+            color: #64748b;
         }
 
         .room-errors {
-            background: 
-            border: 1px solid 
+            background: #fef2f2;
+            border: 1px solid #fecaca;
             border-radius: 8px;
-            color: 
+            color: #b91c1c;
             margin: 0 0 18px;
             padding: 12px 16px;
         }
@@ -53,7 +53,7 @@
         }
 
         .room-field label {
-            color: 
+            color: #334155;
             display: block;
             font-size: 13px;
             font-weight: 600;
@@ -62,11 +62,11 @@
 
         .room-field input,
         .room-field select {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #cbd5e1;
             border-radius: 7px;
             box-sizing: border-box;
-            color: 
+            color: #1e293b;
             font: inherit;
             padding: 10px 12px;
             width: 100%;
@@ -74,7 +74,7 @@
 
         .room-field input:focus,
         .room-field select:focus {
-            border-color: 
+            border-color: #2449a4;
             box-shadow: 0 0 0 3px rgba(36, 73, 164, 0.12);
             outline: none;
         }
@@ -99,25 +99,25 @@
         }
 
         .room-save {
-            background: 
-            border-color: 
-            color: 
+            background: #2449a4;
+            border-color: #2449a4;
+            color: #fff;
         }
 
         .room-save:hover {
-            background: 
+            background: #1e3a8a;
         }
 
         .room-back {
-            background: 
-            border-color: 
-            color: 
+            background: #fff;
+            border-color: #cbd5e1;
+            color: #475569;
         }
 
         .room-back:hover {
-            background: 
-            border-color: 
-            color: 
+            background: #f8fafc;
+            border-color: #94a3b8;
+            color: #1e293b;
         }
     </style>
 @endpush
@@ -168,11 +168,11 @@
 
                 <div class="room-actions">
                     <button class="room-save" type="submit">
-                        
+
                         Simpan Perubahan
                     </button>
                     <a class="btn btn-secondary" href="{{ route('ruangan.index') }}">
-                       
+
                         Kembali
                     </a>
                 </div>

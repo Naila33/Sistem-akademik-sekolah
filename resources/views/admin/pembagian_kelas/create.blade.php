@@ -12,8 +12,8 @@
             margin: 0;
             padding: 30px;
             margin-left: 250px;
-            background: 
-            color: 
+            background: #f5f6fa;
+            color: #212529;
             font-family: Arial, sans-serif;
         }
 
@@ -32,7 +32,7 @@
 
         .description {
             margin: 0 0 25px;
-            color: 
+            color: #64748b;
         }
 
         .form-group {
@@ -48,7 +48,7 @@
         select {
             width: 100%;
             padding: 10px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             background: white;
             box-sizing: border-box;
@@ -58,8 +58,8 @@
             margin-bottom: 20px;
             padding: 12px 15px;
             border-radius: 6px;
-            background: 
-            color: 
+            background: #fef2f2;
+            color: #b91c1c;
         }
 
         .actions {
@@ -79,11 +79,11 @@
         }
 
         .btn-simpan {
-            background: 
+            background: #2449a4;
         }
 
         .btn-kembali {
-            background: 
+            background: #64748b;
         }
 
         @media (max-width: 768px) {

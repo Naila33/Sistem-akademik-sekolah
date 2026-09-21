@@ -6,17 +6,17 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: 
-            background: 
+            color: #212529;
+            background: #f5f6fa;
         }
 
         .academic-page {
-            color: 
+            color: #1f2937;
         }
 
         .academic-panel {
-            background: 
-            border: 1px solid 
+            background: #fff;
+            border: 1px solid #e4eaf2;
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
             padding: 24px;
@@ -30,32 +30,32 @@
         }
 
         .academic-title {
-            color: 
+            color: #1e293b;
             font-size: 24px;
             font-weight: 600;
             margin: 0;
         }
 
         .academic-add {
-            background: 
+            background: #2449a4;
             border-radius: 8px;
-            color: 
+            color: #fff;
             font-size: 14px;
             font-weight: 600;
             padding: 10px 14px;
         }
 
         .academic-add:hover {
-            background: 
-            color: 
+            background: #2449a4;
+            color: #fff;
             text-decoration: none;
         }
 
         .academic-alert {
-            background: 
-            border: 1px solid 
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
             border-radius: 8px;
-            color: 
+            color: #047857;
             margin-bottom: 18px;
             padding: 11px 14px;
         }
@@ -74,35 +74,35 @@
         .academic-table td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid 
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .academic-table th {
-            background: 
-            color: 
+            background: #f1f5fb;
+            color: #475569;
             font-size: 12px;
             text-transform: uppercase;
             white-space: nowrap;
         }
 
         .academic-table td {
-            color: 
+            color: #374151;
             font-size: 14px;
         }
 
         .academic-table tbody tr:hover {
-            background: 
+            background: #f8fbff;
         }
 
         .academic-code {
-            color: 
+            color: #2449a4;
             font-weight: 600;
         }
 
         .academic-status {
-            background: 
+            background: #ecfdf5;
             border-radius: 10px;
-            color: 
+            color: #047857;
             display: inline-block;
             font-size: 12px;
             font-weight: 600;
@@ -110,8 +110,8 @@
         }
 
         .academic-status.is-inactive {
-            background: 
-            color: 
+            background: #f1f5f9;
+            color: #64748b;
         }
 
         .academic-action {
@@ -131,29 +131,29 @@
         }
 
         .academic-edit {
-            background: 
-            border-color: 
-            color: 
+            background: #eff6ff;
+            border-color: #93c5fd !important;
+            color: #1d4ed8;
         }
 
         .academic-delete {
-            background: 
-            border-color: 
-            color: 
+            background: #fef2f2;
+            border-color: #fca5a5 !important;
+            color: #b91c1c;
         }
 
         .academic-edit:hover {
-            background: 
-            color: 
+            background: #dbeafe;
+            color: #1e40af;
         }
 
         .academic-delete:hover {
-            background: 
-            color: 
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .academic-empty {
-            color: 
+            color: #64748b;
             padding: 28px !important;
             text-align: center !important;
         }

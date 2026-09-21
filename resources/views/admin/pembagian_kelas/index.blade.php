@@ -11,11 +11,12 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             margin-left: 250px;
             padding: 60px;
-            color: 
+            color: #212529;
+            background-color: #f5f6fa;
         }
 
         .container {
@@ -33,29 +34,29 @@
         }
 
         .header p {
-            color: 
+            color: #64748b;
             margin: 0;
         }
 
         .success {
-            background-color: 
-            color: 
+            background-color: #ecfdf5;
+            color: #047857;
             padding: 10px 15px;
             border-radius: 6px;
             margin-bottom: 20px;
         }
 
         .error {
-            background-color: 
-            color: 
+            background-color: #fef2f2;
+            color: #b91c1c;
             padding: 10px 15px;
             border-radius: 6px;
             margin-bottom: 20px;
         }
 
         .import-box {
-            background-color: 
-            border: 1px solid 
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 25px;
@@ -67,7 +68,7 @@
         }
 
         .import-box p {
-            color: 
+            color: #64748b;
             margin-top: 0;
         }
 
@@ -80,13 +81,13 @@
 
         .import-form input[type="file"] {
             padding: 8px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 5px;
             background-color: white;
         }
 
         .btn-import {
-            background-color: 
+            background-color: #2449a4;
             color: white;
             border: none;
             padding: 9px 15px;
@@ -95,11 +96,11 @@
         }
 
         .btn-import:hover {
-            background-color: 
+            background-color: #1e3a8a;
         }
 
         .btn-manual {
-            background-color: 
+            background-color: #475569;
             color: white;
             text-decoration: none;
             padding: 9px 15px;
@@ -107,12 +108,12 @@
         }
 
         .btn-manual:hover {
-            background-color: 
+            background-color: #334155;
         }
 
         .import-error {
-            background-color: 
-            color: 
+            background-color: #fff7ed;
+            color: #c2410c;
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
@@ -129,17 +130,17 @@
 
         th,
         td {
-            border: 1px solid 
+            border: 1px solid #e5e7eb;
             padding: 12px;
             text-align: left;
         }
 
         th {
-            background-color: 
+            background-color: #f1f5fb;
         }
 
         .btn-edit {
-            color: 
+            color: #1d4ed8;
             text-decoration: none;
         }
 
@@ -162,21 +163,21 @@
         .pagination a,
         .pagination span {
             padding: 8px 12px;
-            border: 1px solid 
+            border: 1px solid #cbd5e1;
             border-radius: 5px;
             text-decoration: none;
-            color: 
+            color: #475569;
         }
 
         .pagination .active {
-            background-color: 
+            background-color: #2449a4;
             color: white;
-            border-color: 
+            border-color: #2449a4;
         }
 
         .pagination .disabled {
-            color: 
-            background-color: 
+            color: #94a3b8;
+            background-color: #f8fafc;
         }
     </style>
 </head>
@@ -193,7 +194,7 @@
         </div>
 
 
-        
+
         @if (session('success'))
             <div class="success">
                 {{ session('success') }}
@@ -201,7 +202,7 @@
         @endif
 
 
-        
+
         @if (session('error'))
             <div class="error">
                 {{ session('error') }}
@@ -209,7 +210,7 @@
         @endif
 
 
-        
+
         @if (session('gagal_import'))
             <div class="import-error">
 
@@ -225,7 +226,7 @@
         @endif
 
 
-        
+
         <div class="import-box">
 
             <h3>Import Pembagian Kelas</h3>
@@ -255,7 +256,7 @@
         </div>
 
 
-        
+
         <table>
 
             <thead>
@@ -340,7 +341,7 @@
         </table>
 
 
-        
+
         @if ($pembagian->hasPages())
 
             <div class="pagination">

@@ -2,663 +2,244 @@
 
 @section('title', 'Tambah Penilaian')
 
+@push('styles')
+    <style>
+        .academic-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .academic-header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .academic-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 4px 0;
+        }
+
+        .academic-header p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        .btn-back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .btn-back-link:hover {
+            color: #2563eb;
+        }
+
+        /* Form Controls Styling */
+        .form-group-custom {
+            margin-bottom: 18px;
+        }
+
+        .form-group-custom label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .form-group-custom .form-control,
+        .form-group-custom .form-select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 14px;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-group-custom .form-control:focus,
+        .form-group-custom .form-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        /* Buttons Biru #2563eb */
+        .btn-action-primary {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: 1px solid #2563eb;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-action-primary:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #ffffff;
+        }
+
+        .btn-action-secondary {
+            background-color: #ffffff;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-action-secondary:hover {
+            background-color: #f8fafc;
+            color: #1e293b;
+            border-color: #94a3b8;
+        }
+    </style>
+@endpush
+
 @section('content')
+    <div class="academic-container">
+        <div class="academic-card">
 
-<div class="container-fluid py-4">
+            {{-- BACK LINK --}}
+            <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
+                class="btn-back-link">
+                <i class="bi bi-arrow-left"></i> Kembali ke Penilaian
+            </a>
 
-    
-    
-    
+            {{-- HEADER --}}
+            <div class="academic-header">
+                <h1>Tambah Penilaian</h1>
+                <p>{{ $kelas->tingkat }} {{ $kelas->nama_kelas }} — {{ $mataPelajaran->nama_mapel }}</p>
+            </div>
 
-    <div class="mb-4">
+            {{-- ERROR VALIDATION ALERT --}}
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    <div class="fw-bold mb-1">Terjadi kesalahan input:</div>
+                    <ul class="mb-0 ps-3">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-        <a href="{{ route(
-            'admin.penilaian.mapel.mapel',
-            [
-                'kelasId' => $kelas->id,
-                'mapelId' => $mataPelajaran->id
-            ]
-        ) }}"
-           class="text-decoration-none text-muted">
-
-            <i class="bi bi-arrow-left me-1"></i>
-            Kembali
-
-        </a>
-
-    </div>
-
-
-    <div class="mb-4">
-
-        <h3 class="fw-bold mb-1">
-            Tambah Penilaian
-        </h3>
-
-        <p class="text-muted mb-0">
-
-            {{ $kelas->tingkat }}
-            {{ $kelas->nama_kelas }}
-
-            <span class="mx-1">—</span>
-
-            {{ $mataPelajaran->nama_mapel }}
-
-        </p>
-
-    </div>
-
-
-    
-    
-    
-
-    <div class="card border-0 shadow-sm">
-
-        <div class="card-body p-4">
-
+            {{-- FORM --}}
             <form method="POST"
-                  action="{{ route(
-                      'admin.penilaian.mapel.store',
-                      [
-                          'kelasId' => $kelas->id,
-                          'mapelId' => $mataPelajaran->id
-                      ]
-                  ) }}">
-
+                action="{{ route('admin.penilaian.mapel.store', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}">
                 @csrf
 
-
-                
-                
-                
-
-                <div class="mb-4">
-
-                    <label for="jadwal_pelajaran_id"
-                           class="form-label fw-semibold">
-
-                        Guru / Jadwal
-
-                    </label>
-
-                    <select name="jadwal_pelajaran_id"
-                            id="jadwal_pelajaran_id"
-                            class="form-select"
-                            required>
-
-                        <option value="">
-                            -- Pilih Guru --
-                        </option>
-
+                {{-- GURU / JADWAL --}}
+                <div class="form-group-custom">
+                    <label for="jadwal_pelajaran_id">Guru / Jadwal <span class="text-danger">*</span></label>
+                    <select name="jadwal_pelajaran_id" id="jadwal_pelajaran_id" class="form-select" required>
+                        <option value="">-- Pilih Guru / Jadwal --</option>
                         @foreach($jadwal as $j)
-
-                            <option value="{{ $j->id }}"
-                                {{ old('jadwal_pelajaran_id') == $j->id
-                                    ? 'selected'
-                                    : '' }}>
-
-                                {{ $j->guru?->nama ?? '-' }}
-
-                                @if($j->hari)
-                                    — {{ $j->hari }}
-                                @endif
-
+                            <option value="{{ $j->id }}" @selected(old('jadwal_pelajaran_id') == $j->id)>
+                                {{ $j->guru?->nama ?? '-' }} @if($j->hari) ({{ $j->hari }}) @endif
                             </option>
-
                         @endforeach
-
                     </select>
-
                     @error('jadwal_pelajaran_id')
-
-                        <div class="text-danger small mt-1">
-                            {{ $message }}
-                        </div>
-
+                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
                     @enderror
-
                 </div>
 
-
-                
-                
-                
-
-                <div class="mb-4">
-
-                    <label for="searchSiswa"
-                           class="form-label fw-semibold">
-
-                        Siswa
-
-                    </label>
-
-
-                    
-                    <input type="hidden"
-                           name="siswa_id"
-                           id="siswa_id"
-                           value="{{ old('siswa_id') }}"
-                           required>
-
-
-                    
-                    <div class="input-group">
-
-                        <span class="input-group-text">
-                            <i class="bi bi-search"></i>
-                        </span>
-
-                        <input type="text"
-                               id="searchSiswa"
-                               class="form-control"
-                               placeholder="Ketik nama, NIS, atau NISN..."
-                               autocomplete="off">
-
-                    </div>
-
-
-                    <small class="text-muted">
-                        Ketik minimal 2 karakter untuk mencari siswa di kelas ini.
-                    </small>
-
-
-                    
-                    <div id="loadingSiswa"
-                         class="text-muted small mt-2 d-none">
-
-                        <span class="spinner-border spinner-border-sm me-1"></span>
-
-                        Mencari siswa...
-
-                    </div>
-
-
-                    
-                    <div id="hasilSiswa"
-                         class="list-group mt-2"
-                         style="max-height: 250px; overflow-y: auto;">
-                    </div>
-
-
-                    
-                    <div id="siswaTidakDitemukan"
-                         class="alert alert-light border mt-2 d-none">
-
-                        <i class="bi bi-person-x me-1"></i>
-
-                        Siswa tidak ditemukan di kelas ini.
-
-                    </div>
-
-
-                    
-                    <div id="siswaTerpilih"
-                         class="alert alert-success mt-3 mb-0 d-none">
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div>
-
-                                <div class="fw-bold"
-                                     id="namaSiswaTerpilih">
-                                </div>
-
-                                <small class="text-muted"
-                                       id="detailSiswaTerpilih">
-                                </small>
-
-                            </div>
-
-
-                            <button type="button"
-                                    id="hapusSiswa"
-                                    class="btn btn-sm btn-outline-danger"
-                                    title="Ganti siswa">
-
-                                <i class="bi bi-x-lg"></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    @error('siswa_id')
-
-                        <div class="text-danger small mt-1">
-                            {{ $message }}
-                        </div>
-
-                    @enderror
-
-                </div>
-
-
-                
-                
-                
-
-                <div class="mb-4">
-
-                    <label for="jenis_nilai"
-                           class="form-label fw-semibold">
-
-                        Jenis Nilai
-
-                    </label>
-
-                    <select name="jenis_nilai"
-                            id="jenis_nilai"
-                            class="form-select"
-                            required>
-
-                        <option value="">
-                            -- Pilih Jenis Nilai --
-                        </option>
-
-                        <option value="harian"
-                            {{ old('jenis_nilai') == 'harian'
-                                ? 'selected'
-                                : '' }}>
-
-                            Harian
-
-                        </option>
-
-                        <option value="ujian"
-                            {{ old('jenis_nilai') == 'ujian'
-                                ? 'selected'
-                                : '' }}>
-
-                            Ujian
-
-                        </option>
-
+                {{-- SISWA --}}
+                <div class="form-group-custom">
+                    <label for="siswa_id">Siswa <span class="text-danger">*</span></label>
+                    <select name="siswa_id" id="siswa_id" class="form-select" required>
+                        <option value="">-- Pilih Siswa --</option>
+                        @foreach($siswa as $item)
+                            <option value="{{ $item->id }}" @selected(old('siswa_id') == $item->id)>
+                                {{ $item->nama }} — NIS: {{ $item->nis ?? '-' }}
+                            </option>
+                        @endforeach
                     </select>
+                    @error('siswa_id')
+                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+                </div>
 
+                {{-- JENIS NILAI --}}
+                <div class="form-group-custom">
+                    <label for="jenis_nilai">Jenis Nilai <span class="text-danger">*</span></label>
+                    <select name="jenis_nilai" id="jenis_nilai" class="form-select" required>
+                        <option value="">-- Pilih Jenis Nilai --</option>
+                        <option value="harian" @selected(old('jenis_nilai') === 'harian')>Harian</option>
+                        <option value="ujian" @selected(old('jenis_nilai') === 'ujian')>Ujian</option>
+                    </select>
                     @error('jenis_nilai')
-
-                        <div class="text-danger small mt-1">
-                            {{ $message }}
-                        </div>
-
+                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
                     @enderror
-
                 </div>
 
+                <div class="form-group-custom">
+                    <label for="tanggal_penilaian">Tanggal Penilaian <span class="text-danger">*</span></label>
+                    <input type="date" name="tanggal_penilaian" id="tanggal_penilaian" class="form-control"
+                        value="{{ old('tanggal_penilaian', date('Y-m-d')) }}" required>
+                    @error('tanggal_penilaian')
+                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+                </div>
 
-                
-                
-                
-
-                <div class="mb-4">
-
-                    <label for="nilai"
-                           class="form-label fw-semibold">
-
-                        Nilai
-
-                    </label>
-
-                    <input type="number"
-                           name="nilai"
-                           id="nilai"
-                           class="form-control"
-                           min="0"
-                           max="100"
-                           step="0.01"
-                           value="{{ old('nilai') }}"
-                           placeholder="Masukkan nilai 0 - 100"
-                           required>
-
+                {{-- NILAI --}}
+                <div class="form-group-custom mb-4">
+                    <label for="nilai">Nilai <span class="text-danger">*</span></label>
+                    <input type="number" name="nilai" id="nilai" class="form-control" min="0" max="100" step="0.01"
+                        value="{{ old('nilai') }}" placeholder="Masukkan nilai 0 - 100" required>
                     @error('nilai')
-
-                        <div class="text-danger small mt-1">
-                            {{ $message }}
-                        </div>
-
+                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
                     @enderror
-
                 </div>
 
-
-                
-                
-                
-
-                <div class="d-flex gap-2">
-
-                    <a href="{{ route(
-                        'admin.penilaian.mapel.mapel',
-                        [
-                            'kelasId' => $kelas->id,
-                            'mapelId' => $mataPelajaran->id
-                        ]
-                    ) }}"
-                       class="btn btn-secondary">
-
-                        <i class="bi bi-x-lg me-1"></i>
+                {{-- BUTTONS --}}
+                <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                    <a href="{{ route('admin.penilaian.mapel.mapel', ['kelasId' => $kelas->id, 'mapelId' => $mataPelajaran->id]) }}"
+                        class="btn btn-secondary">
                         Batal
-
                     </a>
-
-
-                    <button type="submit"
-                            class="btn btn-success">
-
-                        <i class="bi bi-save me-1"></i>
+                    <button type="submit" class="btn-action-primary">
                         Simpan Penilaian
-
                     </button>
-
                 </div>
 
             </form>
 
         </div>
-
     </div>
-
-</div>
-
 @endsection
-
-
-
-
-
-
-<script>
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    const searchInput = document.getElementById('searchSiswa');
-    const hasilSiswa = document.getElementById('hasilSiswa');
-    const loadingSiswa = document.getElementById('loadingSiswa');
-    const siswaTidakDitemukan =
-        document.getElementById('siswaTidakDitemukan');
-
-    const siswaId = document.getElementById('siswa_id');
-
-    const siswaTerpilih =
-        document.getElementById('siswaTerpilih');
-
-    const namaSiswaTerpilih =
-        document.getElementById('namaSiswaTerpilih');
-
-    const detailSiswaTerpilih =
-        document.getElementById('detailSiswaTerpilih');
-
-    const hapusSiswa =
-        document.getElementById('hapusSiswa');
-
-
-    
-
-    const siswaSearchUrl = @json(
-        route(
-            'admin.penilaian.mapel.siswa.search',
-            ['kelasId' => $kelas->id]
-        )
-    );
-
-
-    let searchTimeout = null;
-
-
-    
-
-    searchInput.addEventListener('input', function () {
-
-        const keyword = this.value.trim();
-
-
-        clearTimeout(searchTimeout);
-
-
-        
-        if (keyword.length === 0) {
-
-            hasilSiswa.innerHTML = '';
-
-            hasilSiswa.classList.add('d-none');
-
-            siswaTidakDitemukan.classList.add('d-none');
-
-            loadingSiswa.classList.add('d-none');
-
-            return;
-        }
-
-
-        
-        if (keyword.length < 2) {
-
-            hasilSiswa.innerHTML = '';
-
-            hasilSiswa.classList.add('d-none');
-
-            siswaTidakDitemukan.classList.add('d-none');
-
-            return;
-        }
-
-
-        searchTimeout = setTimeout(function () {
-
-            cariSiswa(keyword);
-
-        }, 400);
-
-    });
-
-
-    
-
-    function cariSiswa(keyword) {
-
-        loadingSiswa.classList.remove('d-none');
-
-        hasilSiswa.classList.add('d-none');
-
-        siswaTidakDitemukan.classList.add('d-none');
-
-
-        fetch(
-            siswaSearchUrl +
-            '?search=' +
-            encodeURIComponent(keyword),
-            {
-                method: 'GET',
-
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            }
-        )
-
-        .then(function (response) {
-
-            if (!response.ok) {
-                throw new Error('Gagal mengambil data siswa.');
-            }
-
-            return response.json();
-
-        })
-
-        .then(function (data) {
-
-            loadingSiswa.classList.add('d-none');
-
-            hasilSiswa.innerHTML = '';
-
-
-            
-
-            if (!data.length) {
-
-                hasilSiswa.classList.add('d-none');
-
-                siswaTidakDitemukan.classList.remove('d-none');
-
-                return;
-            }
-
-
-            siswaTidakDitemukan.classList.add('d-none');
-
-            hasilSiswa.classList.remove('d-none');
-
-
-            
-
-            data.forEach(function (siswa) {
-
-                const button =
-                    document.createElement('button');
-
-                button.type = 'button';
-
-                button.className =
-                    'list-group-item list-group-item-action';
-
-
-                button.innerHTML = `
-
-                    <div class="fw-semibold">
-                        ${escapeHtml(siswa.nama)}
-                    </div>
-
-                    <small class="text-muted">
-
-                        NIS:
-                        ${escapeHtml(siswa.nis ?? '-')}
-
-                        ${
-                            siswa.nisn
-                                ? '| NISN: ' +
-                                  escapeHtml(siswa.nisn)
-                                : ''
-                        }
-
-                    </small>
-
-                `;
-
-
-                
-
-                button.addEventListener('click', function () {
-
-                    pilihSiswa(siswa);
-
-                });
-
-
-                hasilSiswa.appendChild(button);
-
-            });
-
-        })
-
-        .catch(function (error) {
-
-            console.error(error);
-
-            loadingSiswa.classList.add('d-none');
-
-            hasilSiswa.innerHTML = `
-
-                <div class="alert alert-danger mb-0">
-
-                    <i class="bi bi-exclamation-triangle me-1"></i>
-
-                    Gagal mengambil data siswa.
-
-                </div>
-
-            `;
-
-            hasilSiswa.classList.remove('d-none');
-
-        });
-
-    }
-
-
-    
-
-    function pilihSiswa(siswa) {
-
-        siswaId.value = siswa.id;
-
-
-        namaSiswaTerpilih.textContent =
-            siswa.nama;
-
-
-        detailSiswaTerpilih.textContent =
-            'NIS: ' + (siswa.nis ?? '-') +
-            (
-                siswa.nisn
-                    ? ' | NISN: ' + siswa.nisn
-                    : ''
-            );
-
-
-        siswaTerpilih.classList.remove('d-none');
-
-        hasilSiswa.classList.add('d-none');
-
-        siswaTidakDitemukan.classList.add('d-none');
-
-        searchInput.value = siswa.nama;
-
-        searchInput.readOnly = true;
-
-    }
-
-
-    
-
-    hapusSiswa.addEventListener('click', function () {
-
-        siswaId.value = '';
-
-        searchInput.value = '';
-
-        searchInput.readOnly = false;
-
-        siswaTerpilih.classList.add('d-none');
-
-        hasilSiswa.innerHTML = '';
-
-        hasilSiswa.classList.add('d-none');
-
-        siswaTidakDitemukan.classList.add('d-none');
-
-        searchInput.focus();
-
-    });
-
-
-    
-
-    function escapeHtml(value) {
-
-        const div = document.createElement('div');
-
-        div.textContent = value ?? '';
-
-        return div.innerHTML;
-
-    }
-
-});
-
-</script>
