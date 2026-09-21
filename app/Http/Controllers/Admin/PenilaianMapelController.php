@@ -12,11 +12,6 @@ use Illuminate\Http\Request;
 
 class PenilaianMapelController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | INDEX KELAS
-    |--------------------------------------------------------------------------
-    */
 
     public function index()
     {
@@ -54,12 +49,6 @@ class PenilaianMapelController extends Controller
 }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | HALAMAN MAPEL BERDASARKAN KELAS
-    |--------------------------------------------------------------------------
-    */
-
     public function mapel(Request $request, $kelasId, $mapelId)
 {
     $kelas = Kelas::with([
@@ -67,7 +56,6 @@ class PenilaianMapelController extends Controller
         'tahunAjaran'
     ])->findOrFail($kelasId);
 
-    // SATU mata pelajaran
     $mataPelajaran = MataPelajaran::findOrFail($mapelId);
 
     $query = PenilaianMapel::with([
@@ -82,7 +70,6 @@ class PenilaianMapelController extends Controller
 
     });
 
-    // SEARCH SISWA
     if ($request->filled('search')) {
 
         $search = $request->search;
@@ -96,7 +83,6 @@ class PenilaianMapelController extends Controller
         });
     }
 
-    // FILTER JENIS NILAI
     if ($request->filled('jenis_nilai')) {
 
         $query->where(
@@ -120,12 +106,6 @@ class PenilaianMapelController extends Controller
     );
 }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | TABEL PENILAIAN BERDASARKAN KELAS + MAPEL
-    |--------------------------------------------------------------------------
-    */
 
     public function nilai(Request $request, $kelasId, $mapelId)
     {
@@ -156,12 +136,6 @@ class PenilaianMapelController extends Controller
         });
 
 
-        /*
-        |----------------------------------------------------------------------
-        | SEARCH SISWA
-        |----------------------------------------------------------------------
-        */
-
         if ($request->filled('search')) {
 
             $search = $request->search;
@@ -175,13 +149,6 @@ class PenilaianMapelController extends Controller
             });
 
         }
-
-
-        /*
-        |----------------------------------------------------------------------
-        | FILTER JENIS NILAI
-        |----------------------------------------------------------------------
-        */
 
         if ($request->filled('jenis_nilai')) {
 
@@ -208,13 +175,6 @@ class PenilaianMapelController extends Controller
         );
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE
-    |--------------------------------------------------------------------------
-    */
-
     public function create($kelasId, $mapelId)
     {
         $kelas = Kelas::with([
@@ -223,11 +183,6 @@ class PenilaianMapelController extends Controller
         ])->findOrFail($kelasId);
 
         $mataPelajaran = MataPelajaran::findOrFail($mapelId);
-
-
-        /*
-        | Ambil jadwal mapel pada kelas tersebut
-        */
 
         $jadwal = Jadwal_Pelajaran::with([
             'kelas',
@@ -253,12 +208,6 @@ class PenilaianMapelController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | SEARCH SISWA VIA AJAX
-    |--------------------------------------------------------------------------
-    */
-
     public function searchSiswa(Request $request, $kelasId)
     {
         $search = trim(
@@ -266,9 +215,6 @@ class PenilaianMapelController extends Controller
         );
 
 
-        /*
-        | Jangan query kalau kurang dari 2 karakter
-        */
 
         if (strlen($search) < 2) {
 
@@ -276,10 +222,6 @@ class PenilaianMapelController extends Controller
 
         }
 
-
-        /*
-        | Cari siswa yang terdaftar pada kelas tersebut
-        */
 
         $siswa = Siswa::whereHas(
             'siswaKelas',
@@ -324,12 +266,6 @@ class PenilaianMapelController extends Controller
         return response()->json($siswa);
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | STORE
-    |--------------------------------------------------------------------------
-    */
 
     public function store(
         Request $request,
@@ -386,11 +322,6 @@ class PenilaianMapelController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | EDIT
-    |--------------------------------------------------------------------------
-    */
 
     public function edit(
         $kelasId,
@@ -441,11 +372,6 @@ class PenilaianMapelController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE
-    |--------------------------------------------------------------------------
-    */
 
     public function update(
         Request $request,
@@ -507,11 +433,6 @@ class PenilaianMapelController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | DESTROY
-    |--------------------------------------------------------------------------
-    */
 
     public function destroy(
         $kelasId,

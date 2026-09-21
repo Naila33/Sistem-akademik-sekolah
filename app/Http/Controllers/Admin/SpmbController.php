@@ -13,17 +13,13 @@ use Illuminate\Support\Str;
 
 class SpmbController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | DAFTAR CALON SISWA
-    |--------------------------------------------------------------------------
-    */
+   
 
     public function index(Request $request)
 {
     $query = CalonSiswa::with('jurusan');
 
-    // Live search
+  
     if ($request->filled('search')) {
         $search = $request->search;
 
@@ -35,12 +31,12 @@ class SpmbController extends Controller
         });
     }
 
-    // Filter jurusan
+
     if ($request->filled('jurusan_id')) {
         $query->where('jurusan_id', $request->jurusan_id);
     }
 
-    // Filter jalur
+ 
     if ($request->filled('jalur_pendaftaran')) {
         $query->where(
             'jalur_pendaftaran',
@@ -48,7 +44,7 @@ class SpmbController extends Controller
         );
     }
 
-    // Filter status
+
     if ($request->filled('status_daftar_ulang')) {
         $query->where(
             'status_daftar_ulang',
@@ -59,7 +55,7 @@ class SpmbController extends Controller
     $calonSiswa = $query
         ->latest('id')
         ->paginate(10)
-        ->withQueryString();
+        ->appends($request->query());
 
     $jurusan = Jurusan::orderBy('nama_jurusan')->get();
 
@@ -76,11 +72,7 @@ class SpmbController extends Controller
     ));
 }
 
-    /*
-    |--------------------------------------------------------------------------
-    | FORM TAMBAH
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function create()
     {
@@ -92,12 +84,7 @@ class SpmbController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | SIMPAN CALON SISWA
-    |--------------------------------------------------------------------------
-    */
-
+   
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -205,11 +192,7 @@ class SpmbController extends Controller
             );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | DETAIL
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function show($id)
     {
@@ -224,12 +207,7 @@ class SpmbController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | FORM EDIT
-    |--------------------------------------------------------------------------
-    */
-
+    
     public function edit($id)
     {
         $calonSiswa = CalonSiswa::with('jurusan')
@@ -244,12 +222,7 @@ class SpmbController extends Controller
         ));
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE
-    |--------------------------------------------------------------------------
-    */
-
+    
     public function update(Request $request, $id)
     {
         $calonSiswa = CalonSiswa::findOrFail($id);
@@ -372,12 +345,7 @@ class SpmbController extends Controller
             );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | HAPUS
-    |--------------------------------------------------------------------------
-    */
-
+    
     public function destroy($id)
     {
         $calonSiswa = CalonSiswa::with('dokumen')
@@ -408,12 +376,7 @@ class SpmbController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | VERIFIKASI DOKUMEN
-    |--------------------------------------------------------------------------
-    */
-
+ 
     public function verifikasiDokumen(
         Request $request,
         $id,
@@ -446,12 +409,7 @@ class SpmbController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | VERIFIKASI DAFTAR ULANG
-    |--------------------------------------------------------------------------
-    */
-
+   
     public function verifikasiDaftarUlang($id)
     {
         $calonSiswa = CalonSiswa::with('dokumen')
@@ -489,11 +447,7 @@ class SpmbController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE STATUS DAFTAR ULANG
-    |--------------------------------------------------------------------------
-    */
+   
 
     private function updateStatusDaftarUlang(
         CalonSiswa $calonSiswa

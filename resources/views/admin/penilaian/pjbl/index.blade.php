@@ -4,218 +4,226 @@
 
 @section('content')
 
-<div class="container-fluid py-4">
+    <div class="container-fluid py-4">
 
-{{-- ========================================================= --}}
-{{-- HEADER --}}
-{{-- ========================================================= --}}
+        <div class="mb-4">
 
-<div class="mb-4">
+            <h3 class="fw-bold mb-1">
+                Penilaian PJBL
+            </h3>
 
-    <h3 class="fw-bold mb-1">
-        Penilaian PJBL
-    </h3>
+            <p class="text-muted mb-0">
+                Pilih kelas untuk melihat penilaian Project Based Learning.
+            </p>
 
-    <p class="text-muted mb-0">
-        Pilih kelas untuk melihat penilaian Project Based Learning.
-    </p>
+            <a href="{{ route('admin.penilaian.pjbl.waktu.edit') }}" class="btn btn-primary mt-3">
+                <i class="bi bi-clock me-1"></i>
+                Atur Batas Waktu Semua PJBL
+            </a>
 
-</div>
+        </div>
 
 
-{{-- ========================================================= --}}
-{{-- SEARCH & FILTER --}}
-{{-- ========================================================= --}}
+        <div class="card border-0 shadow-sm mb-4">
 
-<div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
 
-    <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-7">
 
-        <div class="row g-3 align-items-end">
+                        <label for="searchKelas" class="form-label fw-semibold">
 
-            {{-- SEARCH KELAS --}}
-            <div class="col-md-7">
+                            Cari Kelas
 
-                <label for="searchKelas"
-                       class="form-label fw-semibold">
+                        </label>
 
-                    Cari Kelas
+                        <div class="input-group">
 
-                </label>
+                            <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                            </span>
 
-                <div class="input-group">
+                            <input type="text" id="searchKelas" class="form-control"
+                                placeholder="Cari tingkat, jurusan, atau nama kelas..." autocomplete="off">
 
-                    <span class="input-group-text">
-                        <i class="bi bi-search"></i>
-                    </span>
+                        </div>
 
-                    <input type="text"
-                           id="searchKelas"
-                           class="form-control"
-                           placeholder="Cari tingkat, jurusan, atau nama kelas..."
-                           autocomplete="off">
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <label for="filterTingkat" class="form-label fw-semibold">
+
+                            Jenjang
+
+                        </label>
+
+                        <select id="filterTingkat" class="form-select">
+
+                            <option value="">
+                                Semua Jenjang
+                            </option>
+
+                            @foreach(
+                                    $kelas
+                                        ->pluck('tingkat')
+                                        ->filter()
+                                        ->unique()
+                                        ->sort()
+                                    as $tingkat
+                                )
+
+                                <option value="{{ $tingkat }}">
+                                    {{ $tingkat }}
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
 
                 </div>
 
             </div>
 
-
-            {{-- FILTER JENJANG --}}
-            <div class="col-md-3">
-
-                <label for="filterTingkat"
-                       class="form-label fw-semibold">
-
-                    Jenjang
-
-                </label>
-
-                <select id="filterTingkat"
-                        class="form-select">
-
-                    <option value="">
-                        Semua Jenjang
-                    </option>
-
-                    @foreach(
-                        $kelas
-                            ->pluck('tingkat')
-                            ->filter()
-                            ->unique()
-                            ->sort()
-                        as $tingkat
-                    )
-
-                        <option value="{{ $tingkat }}">
-                            {{ $tingkat }}
-                        </option>
-
-                    @endforeach
-
-                </select>
-
-            </div>
+        </div>
 
 
-            
+        {{-- ========================================================= --}}
+        {{-- HASIL --}}
+        {{-- ========================================================= --}}
+
+        <div class="mb-3">
+
+            <small class="text-muted">
+
+                Menampilkan
+                <span id="jumlahKelas" class="fw-semibold text-dark">
+                    {{ $kelas->count() }}
+                </span>
+                kelas
+
+            </small>
 
         </div>
 
-    </div>
 
-</div>
+        {{-- ========================================================= --}}
+        {{-- CARD KELAS --}}
+        {{-- ========================================================= --}}
 
+        <div class="row g-4" id="kelasContainer">
 
-{{-- ========================================================= --}}
-{{-- HASIL --}}
-{{-- ========================================================= --}}
+            @forelse($kelas as $k)
 
-<div class="mb-3">
+                    @php
 
-    <small class="text-muted">
+                        $searchText = strtolower(
+                            $k->tingkat . ' ' .
+                            ($k->jurusan?->nama_jurusan ?? '') . ' ' .
+                            $k->nama_kelas
+                        );
 
-        Menampilkan
-        <span id="jumlahKelas"
-              class="fw-semibold text-dark">
-            {{ $kelas->count() }}
-        </span>
-        kelas
-
-    </small>
-
-</div>
+                    @endphp
 
 
-{{-- ========================================================= --}}
-{{-- CARD KELAS --}}
-{{-- ========================================================= --}}
+                    <div class="col-xl-3 col-lg-4 col-md-6 kelas-card" data-search="{{ $searchText }}"
+                        data-tingkat="{{ $k->tingkat }}">
 
-<div class="row g-4"
-     id="kelasContainer">
+                        <a href="{{ route(
+                    'admin.penilaian.pjbl.kelas',
+                    $k->id
+                ) }}" class="text-decoration-none">
 
-    @forelse($kelas as $k)
+                            <div class="card border-0 shadow-sm h-100">
 
-        @php
+                                <div class="card-body p-4">
 
-            $searchText = strtolower(
-                $k->tingkat . ' ' .
-                ($k->jurusan?->nama_jurusan ?? '') . ' ' .
-                $k->nama_kelas
-            );
+                                    {{-- ICON --}}
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
 
-        @endphp
+                                        <div class="rounded-circle
+                                                    bg-success
+                                                    bg-opacity-10
+                                                    text-success
+                                                    d-flex
+                                                    align-items-center
+                                                    justify-content-center" style="width:50px;height:50px;">
+
+                                            <i class="bi bi-mortarboard-fill fs-4"></i>
+
+                                        </div>
+
+                                        <i class="bi bi-arrow-right text-muted"></i>
+
+                                    </div>
 
 
-        <div class="col-xl-3 col-lg-4 col-md-6 kelas-card"
-             data-search="{{ $searchText }}"
-             data-tingkat="{{ $k->tingkat }}">
+                                    {{-- NAMA KELAS --}}
+                                    <h5 class="fw-bold text-dark mb-1">
 
-            <a href="{{ route(
-                'admin.penilaian.pjbl.kelas',
-                $k->id
-            ) }}"
-               class="text-decoration-none">
+                                        {{ $k->tingkat }}
+                                        {{ $k->nama_kelas }}
 
-                <div class="card border-0 shadow-sm h-100">
+                                    </h5>
 
-                    <div class="card-body p-4">
 
-                        {{-- ICON --}}
-                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                    {{-- JURUSAN --}}
+                                    <p class="text-muted mb-3">
 
-                            <div class="rounded-circle
-                                        bg-success
-                                        bg-opacity-10
-                                        text-success
-                                        d-flex
-                                        align-items-center
-                                        justify-content-center"
-                                 style="width:50px;height:50px;">
+                                        {{ $k->jurusan?->nama_jurusan ?? 'Umum' }}
 
-                                <i class="bi bi-mortarboard-fill fs-4"></i>
+                                    </p>
+
+
+                                    {{-- JUMLAH SISWA --}}
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <small class="text-muted">
+
+                                            <i class="bi bi-people me-1"></i>
+
+                                            {{ $k->siswa_kelas_count }}
+                                            Siswa
+
+                                        </small>
+
+
+                                        <span class="text-success fw-semibold">
+
+                                            Lihat PJBL
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
-                            <i class="bi bi-arrow-right text-muted"></i>
+                        </a>
 
-                        </div>
+                    </div>
 
+            @empty
 
-                        {{-- NAMA KELAS --}}
-                        <h5 class="fw-bold text-dark mb-1">
+                <div class="col-12">
 
-                            {{ $k->tingkat }}
-                            {{ $k->nama_kelas }}
+                    <div class="card border-0 shadow-sm">
 
-                        </h5>
+                        <div class="card-body text-center py-5">
 
+                            <i class="bi bi-mortarboard fs-1 text-muted"></i>
 
-                        {{-- JURUSAN --}}
-                        <p class="text-muted mb-3">
+                            <h5 class="mt-3">
+                                Belum ada data kelas
+                            </h5>
 
-                            {{ $k->jurusan?->nama_jurusan ?? 'Umum' }}
-
-                        </p>
-
-
-                        {{-- JUMLAH SISWA --}}
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <small class="text-muted">
-
-                                <i class="bi bi-people me-1"></i>
-
-                                {{ $k->siswa_kelas_count }}
-                                Siswa
-
-                            </small>
-
-
-                            <span class="text-success fw-semibold">
-
-                                Lihat PJBL
-
-                            </span>
+                            <p class="text-muted mb-0">
+                                Data kelas belum tersedia.
+                            </p>
 
                         </div>
 
@@ -223,218 +231,188 @@
 
                 </div>
 
-            </a>
+            @endforelse
 
         </div>
 
-    @empty
 
-        <div class="col-12">
+        {{-- ========================================================= --}}
+        {{-- DATA TIDAK DITEMUKAN --}}
+        {{-- ========================================================= --}}
 
-            <div class="card border-0 shadow-sm">
+        <div id="kelasEmpty" class="card border-0 shadow-sm mt-4" style="display: none;">
 
-                <div class="card-body text-center py-5">
+            <div class="card-body text-center py-5">
 
-                    <i class="bi bi-mortarboard fs-1 text-muted"></i>
+                <i class="bi bi-search fs-1 text-muted"></i>
 
-                    <h5 class="mt-3">
-                        Belum ada data kelas
-                    </h5>
+                <h5 class="mt-3">
+                    Kelas tidak ditemukan
+                </h5>
 
-                    <p class="text-muted mb-0">
-                        Data kelas belum tersedia.
-                    </p>
-
-                </div>
+                <p class="text-muted mb-0">
+                    Coba gunakan kata pencarian atau jenjang yang berbeda.
+                </p>
 
             </div>
 
         </div>
 
-    @endforelse
+        {{-- ========================================================= --}}
+        {{-- LIVE SEARCH & FILTER --}}
+        {{-- ========================================================= --}}
 
-</div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
 
+                const searchInput = document.getElementById('searchKelas');
+                const filterTingkat = document.getElementById('filterTingkat');
+                const resetButton = document.getElementById('resetFilter');
 
-{{-- ========================================================= --}}
-{{-- DATA TIDAK DITEMUKAN --}}
-{{-- ========================================================= --}}
+                const cards = document.querySelectorAll('.kelas-card');
+                const emptyMessage = document.getElementById('kelasEmpty');
+                const jumlahKelas = document.getElementById('jumlahKelas');
 
-<div id="kelasEmpty"
-     class="card border-0 shadow-sm mt-4"
-     style="display: none;">
 
-<div class="card-body text-center py-5">
+                /*
+                |--------------------------------------------------------------------------
+                | FILTER KELAS
+                |--------------------------------------------------------------------------
+                */
 
-    <i class="bi bi-search fs-1 text-muted"></i>
+                function filterKelas() {
 
-    <h5 class="mt-3">
-        Kelas tidak ditemukan
-    </h5>
+                    const keyword = searchInput.value
+                        .trim()
+                        .toLowerCase();
 
-    <p class="text-muted mb-0">
-        Coba gunakan kata pencarian atau jenjang yang berbeda.
-    </p>
+                    const tingkat = filterTingkat.value
+                        .trim()
+                        .toLowerCase();
 
-</div>
+                    let jumlahTampil = 0;
 
-</div>
 
-{{-- ========================================================= --}}
-{{-- LIVE SEARCH & FILTER --}}
-{{-- ========================================================= --}}
+                    cards.forEach(function (card) {
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
+                        const searchText = (
+                            card.dataset.search || ''
+                        ).toLowerCase();
 
-    const searchInput = document.getElementById('searchKelas');
-    const filterTingkat = document.getElementById('filterTingkat');
-    const resetButton = document.getElementById('resetFilter');
+                        const cardTingkat = (
+                            card.dataset.tingkat || ''
+                        ).toLowerCase();
 
-    const cards = document.querySelectorAll('.kelas-card');
-    const emptyMessage = document.getElementById('kelasEmpty');
-    const jumlahKelas = document.getElementById('jumlahKelas');
 
+                        // Cek pencarian
+                        const cocokSearch =
+                            keyword === '' ||
+                            searchText.includes(keyword);
 
-    /*
-    |--------------------------------------------------------------------------
-    | FILTER KELAS
-    |--------------------------------------------------------------------------
-    */
 
-    function filterKelas() {
+                        // Cek jenjang
+                        const cocokTingkat =
+                            tingkat === '' ||
+                            cardTingkat === tingkat;
 
-        const keyword = searchInput.value
-            .trim()
-            .toLowerCase();
 
-        const tingkat = filterTingkat.value
-            .trim()
-            .toLowerCase();
+                        // Tentukan tampil / sembunyi
+                        if (cocokSearch && cocokTingkat) {
 
-        let jumlahTampil = 0;
+                            card.style.display = '';
 
+                            jumlahTampil++;
 
-        cards.forEach(function (card) {
+                        } else {
 
-            const searchText = (
-                card.dataset.search || ''
-            ).toLowerCase();
+                            card.style.display = 'none';
 
-            const cardTingkat = (
-                card.dataset.tingkat || ''
-            ).toLowerCase();
+                        }
 
+                    });
 
-            // Cek pencarian
-            const cocokSearch =
-                keyword === '' ||
-                searchText.includes(keyword);
 
+                    /*
+                    |--------------------------------------------------------------------------
+                    | UPDATE JUMLAH
+                    |--------------------------------------------------------------------------
+                    */
 
-            // Cek jenjang
-            const cocokTingkat =
-                tingkat === '' ||
-                cardTingkat === tingkat;
+                    jumlahKelas.textContent = jumlahTampil;
 
 
-            // Tentukan tampil / sembunyi
-            if (cocokSearch && cocokTingkat) {
+                    /*
+                    |--------------------------------------------------------------------------
+                    | PESAN TIDAK DITEMUKAN
+                    |--------------------------------------------------------------------------
+                    */
 
-                card.style.display = '';
+                    if (jumlahTampil === 0) {
 
-                jumlahTampil++;
+                        emptyMessage.style.display = 'block';
 
-            } else {
+                    } else {
 
-                card.style.display = 'none';
+                        emptyMessage.style.display = 'none';
 
-            }
+                    }
 
-        });
+                }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATE JUMLAH
-        |--------------------------------------------------------------------------
-        */
+                /*
+                |--------------------------------------------------------------------------
+                | LIVE SEARCH
+                |--------------------------------------------------------------------------
+                */
 
-        jumlahKelas.textContent = jumlahTampil;
+                searchInput.addEventListener('input', function () {
 
+                    filterKelas();
 
-        /*
-        |--------------------------------------------------------------------------
-        | PESAN TIDAK DITEMUKAN
-        |--------------------------------------------------------------------------
-        */
+                });
 
-        if (jumlahTampil === 0) {
 
-            emptyMessage.style.display = 'block';
+                /*
+                |--------------------------------------------------------------------------
+                | FILTER JENJANG
+                |--------------------------------------------------------------------------
+                */
 
-        } else {
+                filterTingkat.addEventListener('change', function () {
 
-            emptyMessage.style.display = 'none';
+                    filterKelas();
 
-        }
+                });
 
-    }
 
+                /*
+                |--------------------------------------------------------------------------
+                | RESET
+                |--------------------------------------------------------------------------
+                */
 
-    /*
-    |--------------------------------------------------------------------------
-    | LIVE SEARCH
-    |--------------------------------------------------------------------------
-    */
+                resetButton.addEventListener('click', function () {
 
-    searchInput.addEventListener('input', function () {
+                    searchInput.value = '';
 
-        filterKelas();
+                    filterTingkat.value = '';
 
-    });
+                    filterKelas();
 
+                    searchInput.focus();
 
-    /*
-    |--------------------------------------------------------------------------
-    | FILTER JENJANG
-    |--------------------------------------------------------------------------
-    */
+                });
 
-    filterTingkat.addEventListener('change', function () {
 
-        filterKelas();
+                /*
+                |--------------------------------------------------------------------------
+                | JALANKAN SAAT HALAMAN DIBUKA
+                |--------------------------------------------------------------------------
+                */
 
-    });
+                filterKelas();
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | RESET
-    |--------------------------------------------------------------------------
-    */
-
-    resetButton.addEventListener('click', function () {
-
-        searchInput.value = '';
-
-        filterTingkat.value = '';
-
-        filterKelas();
-
-        searchInput.focus();
-
-    });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | JALANKAN SAAT HALAMAN DIBUKA
-    |--------------------------------------------------------------------------
-    */
-
-    filterKelas();
-
-});
-</script>
+            });
+        </script>
 @endsection

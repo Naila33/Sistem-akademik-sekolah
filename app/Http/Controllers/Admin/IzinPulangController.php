@@ -47,7 +47,7 @@ class IzinPulangController extends Controller
         $izinPulang = $query
             ->latest('id')
             ->paginate(20)
-            ->withQueryString();
+            ->appends($request->query());
 
 
         return view(

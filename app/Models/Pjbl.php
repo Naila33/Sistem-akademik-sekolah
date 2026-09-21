@@ -16,6 +16,14 @@ class Pjbl extends Model
         'tahun_ajaran_id',
         'tanggal',
         'periode',
+        'mulai_penilaian',
+        'batas_penilaian',
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
+        'mulai_penilaian' => 'datetime',
+        'batas_penilaian' => 'datetime',
     ];
 
     public function kelas()
@@ -40,11 +48,6 @@ class Pjbl extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | NAMA PERIODE PJBL
-    |--------------------------------------------------------------------------
-    */
 
     public function getNamaPeriodeAttribute()
     {
@@ -63,7 +66,7 @@ class Pjbl extends Model
             2 => 'PJBL Genap Smt 2',
 
             default =>
-                'PJBL ' .
+            'PJBL ' .
                 ucfirst(
                     str_replace(
                         '_',

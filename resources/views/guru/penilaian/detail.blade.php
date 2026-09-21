@@ -131,7 +131,7 @@
 
         .btn-primary,
         .btn-action.btn-primary {
-            background: #176b87;
+            background: #2449a4;
             color: #fff;
         }
 
@@ -166,6 +166,12 @@
             padding: 9px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .filter-form button,
+        .filter-form a {
+            font-size: 13px;
         }
 
         .table-responsive {
@@ -225,11 +231,11 @@
             border: 1px solid #cbd5e1;
             border-radius: 4px;
             text-decoration: none;
-            color: #176b87;
+            color: #2449a4;
         }
 
         .pagination .active span {
-            background: #176b87;
+            background: #2449a4;
             color: #fff;
         }
 
@@ -247,12 +253,12 @@
         }
 
         .shadow-medium {
-    box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.12);
-}
+            box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.12);
+        }
 
-.fs-12 {
-    font-size: 13px;
-}
+        .fs-12 {
+            font-size: 13px;
+        }
     </style>
 @endpush
 
@@ -373,10 +379,8 @@
                                                     ->first();
                                             @endphp
 
-                                            <td class="nilai-cell">
-                                                <input type="number" min="0" max="100" class="form-control nilai-input"
-                                                    name="nilai[{{ $item->id }}][{{ $jenis->id }}]"
-                                                    value="{{ $nilai->nilai ?? '' }}" placeholder="-">
+                                            <td class="nilai-cell text-center">
+                                                {{ $nilai->nilai ?? '-' }}
                                             </td>
                                         @endforeach
 

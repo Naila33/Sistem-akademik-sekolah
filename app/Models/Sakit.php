@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use app\Models\Siswa;
 
 class Sakit extends Model
 {
@@ -28,7 +29,7 @@ class Sakit extends Model
     public function siswa()
     {
         return $this->belongsTo(
-            DataSiswa::class,
+            Siswa::class,
             'siswa_id'
         );
     }

@@ -49,6 +49,16 @@
             border-radius: 8px;
         }
 
+        .penilaian-filter {
+            font-size: 13px;
+        }
+
+        .penilaian-filter .form-label,
+        .penilaian-filter .form-control,
+        .penilaian-filter .form-select {
+            font-size: 13px;
+        }
+
         .form-select {
             max-width: 220px;
             width: 100%;
@@ -98,8 +108,8 @@
         }
 
         .fs-12 {
-    font-size: 13px;
-}
+            font-size: 13px;
+        }
     </style>
     </style>
 @endpush
@@ -118,19 +128,13 @@
                     </p>
                 </div>
 
-                
-            </div>
 
-            @if (session('success'))
-                <div class="alert alert-success mb-3">
-                    {{ session('success') }}
-                </div>
-            @endif
+            </div>
 
             <form action="{{ route('guru.penilaian.store', $jadwal->id) }}" method="POST">
                 @csrf
 
-                <div class="mb-3" style="max-width: 220px;">
+                <div class="penilaian-filter mb-3" style="max-width: 220px;">
                     <label class="form-label fw-semibold">Jenis Nilai</label>
                     <select name="jenis_nilai" class="form-select" required>
                         <option value="">-- Pilih --</option>
@@ -139,7 +143,7 @@
                     </select>
                 </div>
 
-                <div class="mb-4">
+                <div class="penilaian-filter mb-4">
                     <label for="tanggal_penilaian" class="form-label fw-semibold">Tanggal Penilaian</label>
                     <input type="date" name="tanggal_penilaian" id="tanggal_penilaian" class="form-control"
                         value="{{ old('tanggal_penilaian', date('Y-m-d')) }}" required>

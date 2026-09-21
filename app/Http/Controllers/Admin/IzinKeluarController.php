@@ -32,7 +32,7 @@ class IzinKeluarController extends Controller
         $izinKeluar = $query
             ->latest('id')
             ->paginate(20)
-            ->withQueryString();
+            ->appends($request->query());
 
         return view(
             'admin.izin-keluar.index',

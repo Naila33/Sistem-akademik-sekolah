@@ -16,9 +16,11 @@
         <a href="{{ route('siswa.absensi.index') }}"><i class="bi bi-check2-square" aria-hidden="true"></i>Absensi</a>
 
         <div class="menu-title">Perizinan</div>
-        <a href="{{ route('siswa.perizinan.sakit') }}">Izin</a>
         <a href="{{ route('siswa.absensi.index') }}">Absensi</a>
+        <a href="{{ route('siswa.perizinan.sakit') }}">Izin</a>
         <a href="{{ route('siswa.dispen.index') }}">Dispensasi</a>
+
+    
 
         <form action="{{ route('logout') }}" method="POST" class="logout-form">
             @csrf

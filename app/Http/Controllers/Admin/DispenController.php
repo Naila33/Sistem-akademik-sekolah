@@ -47,7 +47,7 @@ class DispenController extends Controller
         $dispen = $query
             ->latest('id')
             ->paginate(20)
-            ->withQueryString();
+            ->appends($request->query());
 
 
         return view(

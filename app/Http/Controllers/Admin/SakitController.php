@@ -16,11 +16,7 @@ class SakitController extends Controller
             'guru.jadwal'
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | LIVE SEARCH
-        |--------------------------------------------------------------------------
-        */
+       
 
         if ($request->filled('search')) {
 
@@ -40,11 +36,6 @@ class SakitController extends Controller
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTER STATUS
-        |--------------------------------------------------------------------------
-        */
 
         if ($request->filled('status')) {
 
@@ -55,17 +46,11 @@ class SakitController extends Controller
 
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | PAGINATION
-        |--------------------------------------------------------------------------
-        */
-
         $sakit = $query
             ->latest('id')
             ->paginate(20)
-            ->withQueryString();
+            ->appends($request->query());
+
 
 
         return view(

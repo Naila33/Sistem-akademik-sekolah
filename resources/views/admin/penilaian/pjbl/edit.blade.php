@@ -4,141 +4,127 @@
 
 @section('content')
 
-<div class="container-fluid py-4">
+    <div class="container-fluid py-4">
 
-    <div class="mb-4">
-        <h3 class="fw-bold">Edit Penilaian PJBL</h3>
-        <p class="text-muted">
-            Perbarui nilai PJBL siswa
-        </p>
-    </div>
+        <div class="mb-4">
+            <h3 class="fw-bold">Edit Penilaian PJBL</h3>
+            <p class="text-muted">
+                Perbarui nilai PJBL siswa
+            </p>
+        </div>
 
-    <div class="card border-0 shadow-sm">
+        <div class="card border-0 shadow-sm">
 
-        <div class="card-body">
+            <div class="card-body">
 
-            <form action="{{ route('admin.penilaian.pjbl.update', $penilaian->id) }}"
-                  method="POST">
+                <form action="{{ route('admin.penilaian.pjbl.update', [
+        'kelasId' => $kelas->id,
+        'pjblId' => $pjbl->id,
+        'id' => $penilaian->id,
+    ]) }}" method="POST">
 
-                @csrf
-                @method('PUT')
-
-
-                <div class="mb-3">
-
-                    <label class="form-label fw-semibold">
-                        Siswa
-                    </label>
-
-                    <select name="siswa_id"
-                            class="form-select"
-                            required>
-
-                        @foreach($siswa as $item)
-
-                            <option value="{{ $item->id }}"
-                                {{ $penilaian->siswa_id == $item->id ? 'selected' : '' }}>
-
-                                {{ $item->nama }}
-                                ({{ $item->nis }})
-
-                            </option>
-
-                        @endforeach
-
-                    </select>
-
-                </div>
+                    @csrf
+                    @method('PUT')
 
 
-                <div class="mb-3">
+                    <div class="mb-3">
 
-                    <label class="form-label fw-semibold">
-                        PJBL
-                    </label>
+                        <label class="form-label fw-semibold">
+                            Siswa
+                        </label>
 
-                    <select name="pjbl_id"
-                            class="form-select"
-                            required>
+                        <select name="siswa_id" class="form-select" required>
 
-                        @foreach($pjbl as $item)
+                            @foreach($siswa as $item)
 
-                            <option value="{{ $item->id }}"
-                                {{ $penilaian->pjbl_id == $item->id ? 'selected' : '' }}>
+                                <option value="{{ $item->id }}" {{ $penilaian->siswa_id == $item->id ? 'selected' : '' }}>
 
-                                PJBL #{{ $item->id }}
+                                    {{ $item->nama }}
+                                    ({{ $item->nis }})
 
-                                @if($item->kelas)
-                                    - {{ $item->kelas->tingkat }}
-                                    {{ $item->kelas->nama_kelas }}
-                                @endif
+                                </option>
 
-                            </option>
+                            @endforeach
 
-                        @endforeach
+                        </select>
 
-                    </select>
-
-                </div>
+                    </div>
 
 
-                <div class="mb-3">
+                    <div class="mb-3">
 
-                    <label class="form-label fw-semibold">
-                        ID Penguji
-                    </label>
+                        <label class="form-label fw-semibold">
+                            PJBL
+                        </label>
 
-                    <input type="number"
-                           name="pjbl_penguji_id"
-                           class="form-control"
-                           value="{{ $penilaian->pjbl_penguji_id }}"
-                           required>
+                        <select name="pjbl_id" class="form-select" required>
 
-                </div>
+                            @foreach($pjbl as $item)
 
+                                <option value="{{ $item->id }}" {{ $penilaian->pjbl_id == $item->id ? 'selected' : '' }}>
 
-                <div class="mb-4">
+                                    PJBL #{{ $item->id }}
 
-                    <label class="form-label fw-semibold">
-                        Nilai
-                    </label>
+                                    @if($item->kelas)
+                                        - {{ $item->kelas->tingkat }}
+                                        {{ $item->kelas->nama_kelas }}
+                                    @endif
 
-                    <input type="number"
-                           name="nilai"
-                           class="form-control"
-                           min="0"
-                           max="100"
-                           step="0.01"
-                           value="{{ $penilaian->nilai }}"
-                           required>
+                                </option>
 
-                </div>
+                            @endforeach
+
+                        </select>
+
+                    </div>
 
 
-                <div class="d-flex gap-2">
+                    <div class="mb-3">
 
-                    <a href="{{ route('admin.penilaian.pjbl.index') }}"
-                       class="btn btn-secondary">
+                        <label class="form-label fw-semibold">
+                            ID Penguji
+                        </label>
 
-                        Kembali
+                        <input type="number" name="pjbl_penguji_id" class="form-control"
+                            value="{{ $penilaian->pjbl_penguji_id }}" required>
 
-                    </a>
+                    </div>
 
-                    <button type="submit"
-                            class="btn btn-success">
 
-                        Update
+                    <div class="mb-4">
 
-                    </button>
+                        <label class="form-label fw-semibold">
+                            Nilai
+                        </label>
 
-                </div>
+                        <input type="number" name="nilai" class="form-control" min="0" max="100" step="0.01"
+                            value="{{ $penilaian->nilai }}" required>
 
-            </form>
+                    </div>
+
+
+                    <div class="d-flex gap-2">
+
+                        <a href="{{ route('admin.penilaian.pjbl.index') }}" class="btn btn-secondary">
+
+                            Kembali
+
+                        </a>
+
+                        <button type="submit" class="btn btn-success">
+
+                            Update
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 @endsection

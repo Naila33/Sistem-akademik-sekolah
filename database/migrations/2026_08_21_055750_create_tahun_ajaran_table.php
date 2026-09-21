@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('tahun_ajaran')) {
+            return;
+        }
+
         Schema::create('tahun_ajaran', function (Blueprint $table) {
             $table->id();
             $table->string('tahun_ajaran', 9); // Contoh: "2025/2026" (pas 9 karakter)

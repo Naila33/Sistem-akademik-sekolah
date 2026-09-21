@@ -17,16 +17,9 @@ use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
-    /**
-     * Dashboard Admin
-     */
+  
     public function index()
     {
-        /*
-        |--------------------------------------------------------------------------
-        | DATA MASTER
-        |--------------------------------------------------------------------------
-        */
 
         $totalSiswa = Siswa::count();
 
@@ -36,16 +29,6 @@ class DashboardController extends Controller
 
         $totalMapel = MataPelajaran::count();
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | TAHUN AJARAN AKTIF
-        |--------------------------------------------------------------------------
-        |
-        | Berdasarkan tabel tahun_ajaran:
-        | status = 1 berarti aktif.
-        |
-        */
 
         $tahunAjaran = TahunAjaran::where('status', 1)
             ->orderByDesc('id')
@@ -59,13 +42,6 @@ class DashboardController extends Controller
         } else {
             $tahunAjaranAktif = '-';
         }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | PRESENSI HARI INI
-        |--------------------------------------------------------------------------
-        */
 
         $hariIni = Carbon::today();
 
@@ -95,11 +71,6 @@ class DashboardController extends Controller
             ->count();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | TOTAL PENGAJUAN
-        |--------------------------------------------------------------------------
-        */
 
         $totalPengajuanSakit = Sakit::count();
 
@@ -110,11 +81,7 @@ class DashboardController extends Controller
         $totalDispen = Dispen::count();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | DISPENSASI
-        |--------------------------------------------------------------------------
-        */
+
 
         $dispenDenganSurat = Dispen::whereNotNull('surat')
             ->where('surat', '!=', '')
@@ -126,19 +93,6 @@ class DashboardController extends Controller
             $hariIni
         )->count();
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | PENGAJUAN TERBARU
-        |--------------------------------------------------------------------------
-        |
-        | Tidak menggunakan tabel aktivitas karena database kamu
-        | tidak mempunyai tabel log aktivitas.
-        |
-        | Kita mengambil beberapa data pengajuan terbaru dari
-        | sakit, izin keluar, izin pulang, dan dispen.
-        |
-        */
 
         $pengajuanSakit = Sakit::with('siswa')
             ->latest('created_at')
@@ -200,12 +154,6 @@ class DashboardController extends Controller
             });
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | GABUNGKAN PENGAJUAN
-        |--------------------------------------------------------------------------
-        */
-
         $pengajuanTerbaru = $pengajuanSakit
             ->concat($pengajuanIzinKeluar)
             ->concat($pengajuanIzinPulang)
@@ -215,11 +163,7 @@ class DashboardController extends Controller
             ->values();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | KIRIM DATA KE VIEW
-        |--------------------------------------------------------------------------
-        */
+
 
         return view('admin.dashboard', compact(
             'totalSiswa',

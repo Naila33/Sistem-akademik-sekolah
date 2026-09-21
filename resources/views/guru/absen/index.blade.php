@@ -4,6 +4,12 @@
 
 @push('styles')
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #212529;
+            background: #f5f6fa;
+        }
+        
         .page-wrap {
             width: 100%;
         }

@@ -71,8 +71,7 @@ Route::middleware(['auth'])
             AdminDashboardController::class,
             'index'
         ])->name('dashboard');
-
-    }); 
+    });
 
 // ADMIN MASTER DATA ROUTES
 Route::get('/admin/ruangan', [RuanganController::class, 'index'])->name('ruangan.index');
@@ -114,6 +113,10 @@ Route::patch('/admin/jadwal-pelajaran/publish', [JadwalPelajaranController::clas
     ->name('admin.jadwal_pelajaran.publish');
 
 // RESOURCE ROUTES
+Route::get('/admin/master-data', function () {
+    return view('admin.master-data.index');
+})->name('master-data.index');
+
 Route::resource('tahun-ajaran', TahunAjaranController::class)->except(['show']);
 Route::resource('jurusan', JurusanController::class)->except(['show']);
 Route::resource('siswa', SiswaController::class)->except(['show']);
@@ -281,17 +284,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/create',
         [
-           PenilaianPjblController::class,
+            PenilaianPjblController::class,
             'create'
         ]
     )->name('penilaian.pjbl.create');
+
+    Route::get(
+        '/penilaian/pjbl/waktu/edit',
+        [PenilaianPjblController::class, 'waktuEdit']
+    )->name('penilaian.pjbl.waktu.edit');
+
+    Route::put(
+        '/penilaian/pjbl/waktu',
+        [PenilaianPjblController::class, 'waktuUpdate']
+    )->name('penilaian.pjbl.waktu.update');
 
 
     // Simpan
     Route::post(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
-           PenilaianPjblController::class,
+            PenilaianPjblController::class,
             'store'
         ]
     )->name('penilaian.pjbl.store');
@@ -488,24 +501,6 @@ Route::delete(
     [\App\Http\Controllers\Admin\PenilaianMapelController::class, 'destroy']
 )->name('penilaian.mapel.destroy');
 
-Route::get('/penilaian/pjbl', [PenilaianPjblController::class, 'index'])
-    ->name('penilaian.pjbl.index');
-
-Route::get('/penilaian/pjbl/create', [PenilaianPjblController::class, 'create'])
-    ->name('penilaian.pjbl.create');
-
-Route::post('/penilaian/pjbl', [PenilaianPjblController::class, 'store'])
-    ->name('penilaian.pjbl.store');
-
-Route::get('/penilaian/pjbl/{id}/edit', [PenilaianPjblController::class, 'edit'])
-    ->name('penilaian.pjbl.edit');
-
-Route::put('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'update'])
-    ->name('penilaian.pjbl.update');
-
-Route::delete('/penilaian/pjbl/{id}', [PenilaianPjblController::class, 'destroy'])
-    ->name('penilaian.pjbl.destroy');
-
 Route::get('/guru/jadwal', [JadwalController::class, 'index'])
     ->middleware('auth')
     ->name('guru.jadwal.index');
@@ -521,6 +516,16 @@ Route::middleware(['auth'])->group(function () {
         '/guru/penilaian-pjbl/{pjbl}/nilai',
         [GuruPenilaianPjblController::class, 'nilai']
     )->name('guru.penilaian-pjbl.nilai');
+
+    Route::get(
+        '/guru/penilaian-pjbl/riwayat',
+        [GuruPenilaianPjblController::class, 'riwayat']
+    )->name('guru.penilaian-pjbl.riwayat');
+
+    Route::get(
+        '/guru/penilaian-pjbl/riwayat/{penguji}/detail',
+        [GuruPenilaianPjblController::class, 'riwayatDetail']
+    )->name('guru.penilaian-pjbl.riwayat.detail');
 
     Route::post(
         '/guru/penilaian-pjbl/{pjbl}/nilai',
@@ -606,5 +611,4 @@ Route::middleware(['auth'])
             '/dispen/{id}',
             [SiswaDispenController::class, 'show']
         )->name('dispen.show');
-
     });

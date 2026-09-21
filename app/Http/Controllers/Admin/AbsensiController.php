@@ -15,7 +15,7 @@ class AbsensiController extends Controller
             'sesi.jadwal'
         ]);
 
-        // Live search nama siswa
+
         if ($request->filled('search')) {
             $search = $request->search;
 
@@ -24,7 +24,6 @@ class AbsensiController extends Controller
             });
         }
 
-        // Filter status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }

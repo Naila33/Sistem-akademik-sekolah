@@ -2,6 +2,16 @@
 
 @section('content')
 
+@push('styles')
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #212529; 
+            background: #f5f6fa;
+        }
+    </style>
+@endpush
+
     <div class="container py-4">
 
         <div class="card shadow-sm">

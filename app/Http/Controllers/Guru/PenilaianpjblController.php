@@ -11,7 +11,7 @@ class PenilaianPjblController extends Controller
 {
     public function index()
     {
-        
+
         // Ambil data guru yang sedang login
         $guru = auth()->user()?->guru;
 
@@ -23,10 +23,21 @@ class PenilaianPjblController extends Controller
         // Ambil PjBL yang ditugaskan kepada guru ini sebagai penguji
         $pjblPenguji = PjblPenguji::with([
             'pjbl.kelas',
+            'pjbl.kelas.siswaKelas',
             'pjbl.tahunAjaran',
+            'penilaian' => function ($query) {
+                $query->latest('updated_at');
+            },
         ])
             ->where('guru_id', $guru->id)
-            ->get();
+            ->whereHas('pjbl', function ($query) {
+                $query->whereDate('tanggal', now()->toDateString());
+            })
+            ->get()
+            ->filter(function ($penguji) {
+                return !$this->diLuarWaktuPenilaian($penguji->pjbl);
+            })
+            ->values();
 
         return view('guru.penilaian.pjbl.index', compact(
             'pjblPenguji',
@@ -46,23 +57,89 @@ class PenilaianPjblController extends Controller
         $penguji = PjblPenguji::with([
             'pjbl.kelas',
             'pjbl.tahunAjaran',
+            'penilaian',
         ])
             ->where('pjbl_id', $pjblId)
             ->where('guru_id', $guru->id)
             ->firstOrFail();
 
         $pjbl = $penguji->pjbl;
+
+        if ($this->diLuarWaktuPenilaian($pjbl)) {
+            return redirect()
+                ->route('guru.penilaian-pjbl.index')
+                ->with('error', 'Waktu pengisian nilai PJBL belum dibuka atau sudah ditutup.');
+        }
+
         $siswaKelas = $pjbl->kelas
             ->siswaKelas()
             ->with('siswa')
+            ->join('datasiswa', 'siswa_kelas.siswa_id', '=', 'datasiswa.id')
+            ->orderBy('datasiswa.nama')
+            ->select('siswa_kelas.*')
             ->get();
+
+        $nilaiSiswa = $penguji->penilaian->pluck('nilai', 'siswa_id');
 
         return view('guru.penilaian.pjbl.nilai', compact(
             'pjbl',
             'penguji',
             'guru',
-            'siswaKelas'
+            'siswaKelas',
+            'nilaiSiswa'
         ));
+    }
+
+    public function riwayat()
+    {
+        $guru = auth()->user()?->guru;
+
+        if (!$guru) {
+            abort(403, 'Akun Anda belum terhubung dengan data guru.');
+        }
+
+        $riwayat = PjblPenguji::with([
+            'pjbl.kelas.jurusan',
+            'pjbl.tahunAjaran',
+            'penilaian' => function ($query) {
+                $query->latest('updated_at');
+            },
+        ])
+            ->where('guru_id', $guru->id)
+            ->whereHas('penilaian')
+            ->latest('updated_at')
+            ->get();
+
+        return view('guru.penilaian.pjbl.riwayat', compact('riwayat', 'guru'));
+    }
+
+    public function riwayatDetail($pengujiId)
+    {
+        $guru = auth()->user()?->guru;
+
+        if (!$guru) {
+            abort(403, 'Akun Anda belum terhubung dengan data guru.');
+        }
+
+        $penguji = PjblPenguji::with([
+            'pjbl.kelas.jurusan',
+            'pjbl.tahunAjaran',
+            'penilaian' => function ($query) {
+                $query->with('siswa')->latest('updated_at');
+            },
+        ])
+            ->where('id', $pengujiId)
+            ->where('guru_id', $guru->id)
+            ->firstOrFail();
+
+        $penguji->setRelation(
+            'penilaian',
+            $penguji->penilaian
+                ->sortBy(fn($item) => mb_strtolower($item->siswa?->nama ?? ''))
+                ->values()
+        );
+
+        return view('guru.penilaian.pjbl.riwayat-detail', compact('penguji', 'guru'));
     }
 
     public function simpan(Request $request, $pjblId)
@@ -77,6 +154,12 @@ class PenilaianPjblController extends Controller
             ->where('pjbl_id', $pjblId)
             ->where('guru_id', $guru->id)
             ->firstOrFail();
+
+        if ($this->diLuarWaktuPenilaian($penguji->pjbl)) {
+            return redirect()
+                ->route('guru.penilaian-pjbl.index')
+                ->with('error', 'Waktu pengisian nilai PJBL belum dibuka atau sudah ditutup.');
+        }
 
         $validated = $request->validate([
             'nilai' => 'required|array',
@@ -106,5 +189,17 @@ class PenilaianPjblController extends Controller
         return redirect()
             ->route('guru.penilaian-pjbl.index')
             ->with('success', 'Penilaian PJBL berhasil disimpan.');
+    }
+
+    private function diLuarWaktuPenilaian($pjbl): bool
+    {
+        if (!$pjbl) {
+            return true;
+        }
+
+        $sekarang = now();
+
+        return ($pjbl->mulai_penilaian && $sekarang->lt($pjbl->mulai_penilaian))
+            || ($pjbl->batas_penilaian && $sekarang->gt($pjbl->batas_penilaian));
     }
 }

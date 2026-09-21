@@ -74,23 +74,31 @@
         }
 
         .fs-12 {
-    font-size: 13px;
-}
+            font-size: 13px;
+        }
     </style>
 @endpush
 
 @section('content')
     <div class="page-wrap">
         <div class="page-card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
             <h2 class="page-title">Penilaian PjBL</h2>
-            <p class="page-subtitle">Guru: {{ $guru->nama ?? '-' }}</p>
 
+            <a href="{{ route('guru.penilaian-pjbl.riwayat') }}" class="btn-nilai fs-12">
+                <i class="bi bi-clock-history me-1"></i>
+                Riwayat Penilaian
+            </a>
+</div>
+
+ <p class="page-subtitle">Guru: {{ $guru->nama ?? '-' }}</p>
             @forelse ($pjblPenguji as $item)
                 <div class="pjbl-card">
-                    <h3>{{ $item->pjbl->periode ?? '-' }}</h3>
+                    <h3>{{ $item->pjbl->periode ? ucwords(str_replace('_', ' ', $item->pjbl->periode)) : '-' }}</h3>
 
                     <p class="pjbl-meta">
-                        Kelas: {{ $item->pjbl->kelas->nama_kelas ?? '-' }}
+                        Kelas: {{ $item->pjbl->kelas->tingkat ?? '-' }} {{ $item->pjbl->kelas->jurusan->kode_jurusan ?? '-' }}
+                        {{ $item->pjbl->kelas->nama_kelas ?? '-' }}
                     </p>
 
                     <p class="pjbl-meta">
@@ -99,7 +107,7 @@
                     </p>
 
                     <p class="pjbl-meta">
-                        Jenis Penguji: {{ ucwords(str_replace('_', ' ', $item->jenis_penguji)) }}
+                        Jenis Penguji: {{ $item->jenis_peguji ? ucwords(str_replace('_', ' ', $item->jenis_peguji)) : '-' }}
                     </p>
 
                     <a href="{{ route('guru.penilaian-pjbl.nilai', $item->pjbl_id) }}" class="btn-nilai fs-12">

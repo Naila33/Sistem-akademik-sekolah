@@ -14,7 +14,7 @@ class PjblPenguji extends Model
     protected $fillable = [
         'pjbl_id',
         'guru_id',
-        'jenis_penguji',
+        'jenis_peguji',
     ];
 
     /**
@@ -31,5 +31,10 @@ class PjblPenguji extends Model
     public function guru()
     {
         return $this->belongsTo(Guru::class, 'guru_id');
+    }
+
+    public function penilaian()
+    {
+        return $this->hasMany(PenilaianPjbl::class, 'pjbl_penguji_id');
     }
 }

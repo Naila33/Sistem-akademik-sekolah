@@ -1,51 +1,184 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru</title>
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+@section('title', 'Dashboard Guru')
+
+@push('styles')
+
     <style>
         body {
             margin: 0;
-            background: #f5f6fa;
-            color: #333;
-            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .content {
-            margin-left: 250px;
-            min-height: 100vh;
-            padding: 30px;
+        .page-wrap {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
         }
 
-        .card {
-            max-width: 700px;
-            padding: 25px;
-            background: white;
+        .page-card {
+            background: #fff;
+            border: 1px solid #e4eaf2;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(30, 64, 102, 0.06);
+            padding: 24px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #2449a4, #3267c7);
+            border: 0;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .info-item {
+            background: #f7f9fc;
+            border: 1px solid #e7edf5;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+            padding: 14px 16px;
+        }
+
+        .info-label {
+            color: #64748b;
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .schedule-card h2 {
+            color: #1e293b;
+            font-size: 19px;
+            font-weight: 600;
+        }
+
+        .schedule-table {
+            margin-bottom: 0;
+            min-width: 680px;
+        }
+
+        .schedule-table thead th {
+            background: #f1f5fb;
+            border-bottom: 2px solid #dbe5f1;
+            color: #475569;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .schedule-table tbody td {
+            color: #334155;
+            font-size: 14px;
+            padding-bottom: 14px;
+            padding-top: 14px;
+        }
+
+        .schedule-table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .empty-schedule {
+            color: #64748b;
+            padding: 28px !important;
+            text-align: center;
+        }
+
+        .page-title {
+            margin: 0 0 8px;
+            font-size: 25px;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .page-subtitle {
+            margin: 0 0 22px;
+            color: #fff;
         }
 
         @media (max-width: 768px) {
-            .content {
-                margin-left: 210px;
+            .page-card {
+                padding: 18px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
-</head>
+@endpush
 
-<body>
-    @include('layouts.sidebar-guru')
-
-    <main class="content">
-        <div class="card">
-            <h1>Dashboard Guru</h1>
-            <p>Selamat datang, {{ auth()->user()->username }}</p>
-            <a href="{{ route('password.change') }}">Ganti Password</a>
+@section('content')
+    <div class="page-wrap">
+        <div class="page-card welcome-card mb-3">
+            <h1 class="page-title">Dashboard Guru</h1>
+            <p class="page-subtitle">Selamat datang, {{ $guru->nama ?? 'Guru' }}</p>
         </div>
-    </main>
-</body>
+        <div class="page-card mb-3">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">NIP</span>
+                    <span class="info-value">{{ $guru->nip ?? 'NIP tidak tersedia' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Jenis Kelamin</span>
+                    <span class="info-value">{{ $guru->jk ?? 'Jenis kelamin tidak tersedia' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Mata Pelajaran</span>
+                    <span class="info-value">{{ $guru->mataPelajaran?->nama_mapel ?? 'Mapel tidak tersedia' }}</span>
+                </div>
+            </div>
+        </div>
 
-</html>
+        <div class="page-card schedule-card">
+            <h2 class="mb-3">Jadwal Mengajar</h2>
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered align-middle schedule-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Hari</th>
+                            <th>Kelas</th>
+                            <th>Mata Pelajaran</th>
+                            <th>Ruangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($jadwal as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->hari ?? '-' }}</td>
+                                <td>
+                                    {{ $item->kelas?->tingkat ?? '' }}
+                                    {{ $item->kelas?->jurusan?->kode_jurusan ?? '' }}
+                                    {{ $item->kelas?->nama_kelas ?? '-' }}
+                                </td>
+                                <td>{{ $item->mapel?->nama_mapel ?? '-' }}</td>
+                                <td>{{ $item->ruangan?->nama_ruang ?? '-' }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="empty-schedule">Belum ada jadwal mengajar yang dipublikasikan.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection

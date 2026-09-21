@@ -103,8 +103,8 @@
         }
 
         .fs-12 {
-    font-size: 13px;
-}
+            font-size: 13px;
+        }
     </style>
 @endpush
 
@@ -117,7 +117,8 @@
             <div class="info-card">
                 <p><strong>PjBL:</strong> {{ ucwords(str_replace('_', ' ', $pjbl->periode)) }}</p>
                 <p><strong>Guru Penguji:</strong> {{ $guru->nama }}</p>
-                <p><strong>Jenis Penguji:</strong> {{ ucwords(str_replace('_', ' ', $penguji->jenis_penguji)) }}</p>
+                <p><strong>Jenis Penguji:</strong>
+                    {{ $penguji?->jenis_peguji ? ucwords(str_replace('_', ' ', $penguji->jenis_peguji)) : '-' }}</p>
             </div>
 
             <form action="{{ route('guru.penilaian-pjbl.simpan', $pjbl->id) }}" method="POST">
@@ -134,7 +135,9 @@
                             <div>
                                 <label for="nilai_{{ $siswaKelasItem->siswa_id }}">Nilai</label>
                                 <input id="nilai_{{ $siswaKelasItem->siswa_id }}" class="nilai-input" type="number"
-                                    name="nilai[{{ $siswaKelasItem->siswa_id }}]" min="0" max="100" required>
+                                    name="nilai[{{ $siswaKelasItem->siswa_id }}]" min="0" max="100"
+                                    value="{{ old('nilai.' . $siswaKelasItem->siswa_id, $nilaiSiswa->get($siswaKelasItem->siswa_id)) }}"
+                                    required>
                             </div>
                         </div>
                     </div>
@@ -144,7 +147,7 @@
 
                 <div class="mt-3">
                     <button type="submit" class="btn-primary fs-12">Simpan Penilaian</button>
-                    <a href="{{ route('guru.penilaian-pjbl.index') }}" class="btn-secondary fs-12" >Kembali</a>
+                    <a href="{{ route('guru.penilaian-pjbl.index') }}" class="btn-secondary fs-12">Kembali</a>
                 </div>
             </form>
         </div>
