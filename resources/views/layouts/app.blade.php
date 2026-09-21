@@ -493,6 +493,7 @@
         @else
             @include('layouts.sidebar')
         @endif
+
     @if(request()->is('siswa/*'))
         @include('layouts.sidebar-siswa')
     @else
@@ -500,6 +501,7 @@
     @endif
 
         <main class="main">
+    <main class="main">
 
 
             {{-- NAVBAR --}}
