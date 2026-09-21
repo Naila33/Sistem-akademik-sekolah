@@ -494,13 +494,7 @@
             @include('layouts.sidebar')
         @endif
 
-    @if(request()->is('siswa/*'))
-        @include('layouts.sidebar-siswa')
-    @else
-        @include('layouts.sidebar')
-    @endif
-
-        <main class="main">
+   
     <main class="main">
 
 

@@ -28,16 +28,10 @@ class DispenController extends Controller
             abort(401);
         }
 
-        $siswa = Siswa::where(
-            'nis',
-            $user->username
-        )->first();
+        $siswa = Siswa::where('nis', $user->username)->first();
 
         if (!$siswa) {
-            abort(
-                403,
-                'Data siswa tidak ditemukan.'
-            );
+            abort(403, 'Data siswa tidak ditemukan.');
         }
 
         return $siswa;
@@ -54,11 +48,7 @@ class DispenController extends Controller
     {
         $siswa = $this->siswaLogin();
 
-        $query = Dispen::where(
-            'siswa_id',
-            $siswa->id
-        );
-
+        $query = Dispen::where('siswa_id', $siswa->id);
 
         /*
         |--------------------------------------------------------------------------
@@ -72,19 +62,10 @@ class DispenController extends Controller
 
             $query->where(function ($q) use ($search) {
 
-                $q->where(
-                    'alasan',
-                    'like',
-                    "%{$search}%"
-                )
-                ->orWhere(
-                    'status',
-                    'like',
-                    "%{$search}%"
-                );
+                $q->where('alasan', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
 
             });
-
         }
 
 
@@ -96,10 +77,7 @@ class DispenController extends Controller
 
         if ($request->filled('status')) {
 
-            $query->where(
-                'status',
-                $request->status
-            );
+            $query->where('status', $request->status);
 
         }
 
@@ -150,97 +128,105 @@ class DispenController extends Controller
     */
 
     public function store(Request $request)
-{
-    $siswa = $this->siswaLogin();
+    {
+        $siswa = $this->siswaLogin();
 
-    $data = $request->validate([
-        'nama_siswa' => [
-            'required',
-            'string',
-        ],
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDASI
+        |--------------------------------------------------------------------------
+        */
 
-        'nis' => [
-            'required',
-            'string',
-        ],
+        $data = $request->validate([
 
-        'tanggal_mulai' => [
-            'required',
-            'date',
-        ],
+            'tanggal_mulai' => [
+                'required',
+                'date',
+            ],
 
-        'tanggal_selesai' => [
-            'required',
-            'date',
-            'after_or_equal:tanggal_mulai',
-        ],
+            'tanggal_selesai' => [
+                'required',
+                'date',
+                'after_or_equal:tanggal_mulai',
+            ],
 
-        'alasan' => [
-            'required',
-            'string',
-        ],
+            'alasan' => [
+                'required',
+                'string',
+                'max:1000',
+            ],
 
-        'surat' => [
-            'required',
-            'file',
-            'mimes:pdf,jpg,jpeg,png',
-            'max:2048',
-        ],
-    ]);
+            'surat' => [
+                'required',
+                'file',
+                'mimes:pdf,jpg,jpeg,png',
+                'max:2048',
+            ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPLOAD SURAT DISPENSASI DARI KESISWAAN
-    |--------------------------------------------------------------------------
-    */
+        ]);
 
-    $namaSurat = null;
 
-    if ($request->hasFile('surat')) {
+        /*
+        |--------------------------------------------------------------------------
+        | UPLOAD SURAT
+        |--------------------------------------------------------------------------
+        */
 
-        $namaSurat = $request->file('surat')
-            ->store('dispen', 'public');
+        $namaSurat = null;
+
+        if ($request->hasFile('surat')) {
+
+            $namaSurat = $request->file('surat')
+                ->store('dispen', 'public');
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SIMPAN DATA DISPENSASI
+        |--------------------------------------------------------------------------
+        |
+        | siswa_id diambil langsung dari siswa yang sedang login.
+        | Jadi siswa tidak bisa mengajukan atas nama siswa lain.
+        |
+        */
+
+        $dispen = new Dispen();
+
+        $dispen->siswa_id = $siswa->id;
+
+        $dispen->tanggal_mulai =
+            $data['tanggal_mulai'];
+
+        $dispen->tanggal_selesai =
+            $data['tanggal_selesai'];
+
+        $dispen->alasan =
+            $data['alasan'];
+
+        $dispen->surat =
+            $namaSurat;
+
+        $dispen->status =
+            'disetujui';
+
+        $dispen->save();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | REDIRECT
+        |--------------------------------------------------------------------------
+        */
+
+        return redirect()
+            ->route('siswa.dispen.index')
+            ->with(
+                'success',
+                'Pengajuan dispensasi berhasil disimpan.'
+            );
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SIMPAN PENGAJUAN
-    |--------------------------------------------------------------------------
-    |
-    | Karena surat sudah berasal dari kesiswaan,
-    | pengajuan otomatis dianggap disetujui.
-    |
-    */
-
-    Dispen::create([
-
-        'siswa_id' =>
-            $siswa->id,
-
-        'tanggal_mulai' =>
-            $data['tanggal_mulai'],
-
-        'tanggal_selesai' =>
-            $data['tanggal_selesai'],
-
-        'alasan' =>
-            $data['alasan'],
-
-        'surat' =>
-            $namaSurat,
-
-        'status' =>
-            'disetujui',
-
-    ]);
-
-    return redirect()
-        ->route('siswa.dispen.index')
-        ->with(
-            'success',
-            'Pengajuan dispensasi berhasil disimpan.'
-        );
-}
 
 
     /*
@@ -253,6 +239,9 @@ class DispenController extends Controller
     {
         $siswa = $this->siswaLogin();
 
+        /*
+        | Pastikan siswa hanya bisa melihat data dispensasinya sendiri.
+        */
 
         $dispen = Dispen::where(
             'siswa_id',

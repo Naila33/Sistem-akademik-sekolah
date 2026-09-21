@@ -26,15 +26,11 @@ use App\Http\Controllers\Guru\PenilaianPjblController as GuruPenilaianPjblContro
 use App\Http\Controllers\Guru\JadwalController;
 use App\Http\Controllers\Admin\JamPelajaranController;
 use App\Http\Controllers\Guru\SesiAbsensiController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\Siswa\PerizinanController;
 use App\Http\Controllers\Siswa\DispenController as SiswaDispenController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
-=======
-use App\Http\Controllers\Siswa\DispenController as SiswaDispenController;
->>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
@@ -285,10 +281,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/create',
         [
-<<<<<<< Updated upstream
-            PenilaianPjblController::class,
-=======
->>>>>>> Stashed changes
            PenilaianPjblController::class,
             'create'
         ]
@@ -299,10 +291,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
-<<<<<<< Updated upstream
-            PenilaianPjblController::class,
-=======
->>>>>>> Stashed changes
            PenilaianPjblController::class,
             'store'
         ]
@@ -572,7 +560,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('siswa.absensi.submit');
 });
 
-<<<<<<< Updated upstream
 Route::middleware(['auth'])->prefix('siswa')->name('siswa.')->group(function () {
 
     // Perizinan sakit
@@ -595,8 +582,6 @@ Route::middleware(['auth'])->prefix('siswa')->name('siswa.')->group(function () 
         ->name('perizinan.sakit.destroy');
 });
 
-=======
->>>>>>> Stashed changes
 Route::middleware(['auth'])
     ->prefix('siswa')
     ->name('siswa.')
