@@ -6,7 +6,7 @@
         <style>
             body {
                 font-family: 'poppins', sans-serif;
-                color: #212529;
+                color: 
             }
 
         .dispen-page {
@@ -22,7 +22,7 @@
         }
 
         .dispen-header h1 {
-            color: #1f2937;
+            color: 
             font-size: 25px;
             font-weight: 500;
             margin-bottom: .35rem;
@@ -30,12 +30,12 @@
 
         .dispen-card {
             border: 0;
-            border-top: 4px solid #2449a4;
+            border-top: 4px solid 
         }
 
         .dispen-table th {
-            background: #f1f5f9;
-            color: #475569;
+            background: 
+            color: 
             font-size: .82rem;
             white-space: nowrap;
         }
@@ -85,7 +85,7 @@
         </div>
 
 
-        {{-- ========================================================= --}}
+        
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="bi bi-check-circle me-1"></i>{{ session('success') }}
@@ -150,7 +150,7 @@
 
                                                             <tr>
 
-                                                                {{-- NO --}}
+                                                                
                                                                 <td class="text-center">
 
                                                                     {{ $dispensasi->firstItem() + $index }}
@@ -158,7 +158,7 @@
                                                                 </td>
 
 
-                                                                {{-- TANGGAL --}}
+                                                                
                                                                 <td>
 
                                                                     <div class="fw-semibold">
@@ -182,7 +182,7 @@
                                                                 </td>
 
 
-                                                                {{-- ALASAN --}}
+                                                                
                                                                 <td>
 
                                                                     <div class="reason-cell">
@@ -197,7 +197,7 @@
                                                                 </td>
 
 
-                                                                {{-- STATUS --}}
+                                                                
                                                                 <td class="text-center">
                                                                     @if ($item->status === 'disetujui')
                                                                         <span class="badge bg-success">Disetujui</span>
@@ -210,7 +210,7 @@
                                                                     @endif
                                                                 </td>
 
-                                                                {{-- SURAT --}}
+                                                                
                                                                 <td class="text-center">
 
                                                                     @if($item->surat)
@@ -237,7 +237,7 @@
                                                                 </td>
 
 
-                                                                {{-- AKSI --}}
+                                                                
                                                                 <td class="text-center">
 
                                                                     <a href="{{ route(
@@ -280,9 +280,9 @@
                     </div>
 
 
-                    {{-- ================================================= --}}
-                    {{-- PAGINATION --}}
-                    {{-- ================================================= --}}
+                    
+                    
+                    
 
                     @if($dispensasi->hasPages())
 

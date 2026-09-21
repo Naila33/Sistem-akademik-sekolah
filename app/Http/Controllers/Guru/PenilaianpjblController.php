@@ -12,15 +12,15 @@ class PenilaianPjblController extends Controller
     public function index()
     {
 
-        // Ambil data guru yang sedang login
+        
         $guru = auth()->user()?->guru;
 
-        // Kalau akun belum terhubung ke data guru
+        
         if (!$guru) {
             abort(403, 'Akun Anda belum terhubung dengan data guru.');
         }
 
-        // Ambil PjBL yang ditugaskan kepada guru ini sebagai penguji
+        
         $pjblPenguji = PjblPenguji::with([
             'pjbl.kelas',
             'pjbl.kelas.siswaKelas',
@@ -53,7 +53,7 @@ class PenilaianPjblController extends Controller
             abort(403, 'Akun Anda belum terhubung dengan data guru.');
         }
 
-        // Pastikan guru memang ditugaskan sebagai penguji PjBL ini
+        
         $penguji = PjblPenguji::with([
             'pjbl.kelas',
             'pjbl.tahunAjaran',

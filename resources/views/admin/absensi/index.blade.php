@@ -13,7 +13,7 @@
         </p>
     </div>
 
-    {{-- FILTER --}}
+    
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
 
@@ -56,7 +56,7 @@
     </div>
 
 
-    {{-- AREA TABEL --}}
+    
     <div id="absensiContent">
 
         <div class="card border-0 shadow-sm">
@@ -164,7 +164,7 @@
 
                 </div>
 
-                {{-- PAGINATION --}}
+                
                 <div class="mt-3" id="absensiPagination">
                     {{ $absensi->links() }}
                 </div>
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // LIVE SEARCH
+    
     searchInput.addEventListener('input', function () {
 
         clearTimeout(timer);
@@ -259,13 +259,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    // FILTER STATUS
+    
     statusInput.addEventListener('change', function () {
         loadAbsensi();
     });
 
 
-    // RESET
+    
     resetButton.addEventListener('click', function () {
 
         searchInput.value = '';
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    // PAGINATION AJAX
+    
     document.addEventListener('click', function (event) {
 
         const link = event.target.closest(

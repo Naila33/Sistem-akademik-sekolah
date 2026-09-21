@@ -19,7 +19,7 @@
     </h3>
 
 
-    {{-- DATA SISWA --}}
+    
 
     <div class="card border-0 shadow-sm mb-4">
 
@@ -93,7 +93,7 @@
     </div>
 
 
-    {{-- VERIFIKASI --}}
+    
 
     <div class="row g-4">
 

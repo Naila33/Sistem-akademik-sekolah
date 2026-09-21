@@ -83,14 +83,14 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        // Cek password lama
+        
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors([
                 'current_password' => 'Password lama salah.',
             ]);
         }
 
-        // Simpan password baru
+        
         $user = auth()->user();
 
         if (!$user instanceof User) {

@@ -47,7 +47,7 @@
             @csrf
 
 
-            {{-- DATA PRIBADI --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -199,7 +199,7 @@
             </div>
 
 
-            {{-- DATA SPMB --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -304,7 +304,7 @@
             </div>
 
 
-            {{-- DATA ORANG TUA --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -361,7 +361,7 @@
             </div>
 
 
-            {{-- DOKUMEN --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -418,7 +418,7 @@
             </div>
 
 
-            {{-- BUTTON --}}
+            
 
             <div class="d-flex justify-content-end gap-2">
 

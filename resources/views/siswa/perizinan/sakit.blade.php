@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'poppins', sans-serif;
-            color: #212529;
+            color: 
         }
         .sick-leave-page {
             width: 100%;
@@ -21,7 +21,7 @@
         }
 
         .sick-leave-header h1 {
-            color: #1f2937;
+            color: 
             font-size: 25px;
             font-weight: 500;
             margin-bottom: .35rem;
@@ -29,12 +29,12 @@
 
         .sick-leave-card {
             border: 0;
-            border-top: 4px solid #2449a4;
+            border-top: 4px solid 
         }
 
         .sick-leave-table th {
-            background: #f1f5f9;
-            color: #475569;
+            background: 
+            color: 
             font-size: .82rem;
             white-space: nowrap;
         }

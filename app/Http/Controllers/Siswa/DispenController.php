@@ -11,14 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DispenController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | MENCARI DATA SISWA YANG LOGIN
-    |--------------------------------------------------------------------------
-    |
-    | users.username = datasiswa.nis
-    |
-    */
+    
 
     private function siswaLogin()
     {
@@ -38,11 +31,7 @@ class DispenController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | INDEX
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function index(Request $request)
     {
@@ -50,11 +39,7 @@ class DispenController extends Controller
 
         $query = Dispen::where('siswa_id', $siswa->id);
 
-        /*
-        |--------------------------------------------------------------------------
-        | SEARCH
-        |--------------------------------------------------------------------------
-        */
+        
 
         if ($request->filled('search')) {
 
@@ -69,11 +54,7 @@ class DispenController extends Controller
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTER STATUS
-        |--------------------------------------------------------------------------
-        */
+        
 
         if ($request->filled('status')) {
 
@@ -82,11 +63,7 @@ class DispenController extends Controller
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | PAGINATION
-        |--------------------------------------------------------------------------
-        */
+        
 
         $dispensasi = $query
             ->latest('created_at')
@@ -104,11 +81,7 @@ class DispenController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function create()
     {
@@ -121,21 +94,13 @@ class DispenController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | STORE
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function store(Request $request)
     {
         $siswa = $this->siswaLogin();
 
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDASI
-        |--------------------------------------------------------------------------
-        */
+        
 
         $data = $request->validate([
 
@@ -166,11 +131,7 @@ class DispenController extends Controller
         ]);
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPLOAD SURAT
-        |--------------------------------------------------------------------------
-        */
+        
 
         $namaSurat = null;
 
@@ -182,15 +143,7 @@ class DispenController extends Controller
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN DATA DISPENSASI
-        |--------------------------------------------------------------------------
-        |
-        | siswa_id diambil langsung dari siswa yang sedang login.
-        | Jadi siswa tidak bisa mengajukan atas nama siswa lain.
-        |
-        */
+        
 
         $dispen = new Dispen();
 
@@ -214,11 +167,7 @@ class DispenController extends Controller
         $dispen->save();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
+        
 
         return redirect()
             ->route('siswa.dispen.index')
@@ -229,19 +178,13 @@ class DispenController extends Controller
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | SHOW
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function show($id)
     {
         $siswa = $this->siswaLogin();
 
-        /*
-        | Pastikan siswa hanya bisa melihat data dispensasinya sendiri.
-        */
+        
 
         $dispen = Dispen::where(
             'siswa_id',

@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'poppins', sans-serif;
-            color: #212529;
+            color: 
         }
 
         .schedule-page {
@@ -16,7 +16,7 @@
         .container {
             background-color: white;
             padding: 24px;
-            border: 1px solid #dfe5e8;
+            border: 1px solid 
             border-radius: 8px;
             overflow-x: auto;
             margin-top: 25px;
@@ -37,7 +37,7 @@
         }
 
         .header p {
-            color: #666;
+            color: 
             margin: 0;
         }
 
@@ -52,14 +52,14 @@
             margin-left: 6px;
             border-radius: 4px;
             padding: 8px 12px;
-            background: #217346;
+            background: 
             color: white;
             font-size: 13px;
             text-decoration: none;
         }
 
         .download-pdf {
-            background: #b42318;
+            background: 
         }
 
         table {
@@ -71,20 +71,20 @@
 
         th,
         td {
-            border: 1px solid #cbd5da;
+            border: 1px solid 
             padding: 8px;
             vertical-align: top;
             box-sizing: border-box;
         }
 
         th {
-            background-color: #e8f0f3;
+            background-color: 
             text-align: center;
         }
 
         .identity {
             width: 95px;
-            background-color: #f7fafb;
+            background-color: 
             padding: 0;
             text-align: center;
             vertical-align: middle;
@@ -92,7 +92,7 @@
 
         .row-labels {
             width: 55px;
-            background-color: #f7fafb;
+            background-color: 
             padding: 0;
             text-align: center;
             vertical-align: middle;
@@ -103,7 +103,7 @@
             min-height: 24px;
             padding: 4px 6px;
             box-sizing: border-box;
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
             text-align: center;
         }
 
@@ -116,7 +116,7 @@
             min-height: 30px;
             align-items: center;
             justify-content: center;
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
             font-size: 11px;
         }
 
@@ -134,7 +134,7 @@
             display: block;
             margin: -8px -8px 8px;
             padding: 4px;
-            border-bottom: 1px solid #cbd5da;
+            border-bottom: 1px solid 
             box-sizing: border-box;
             width: calc(100% + 16px);
         }
@@ -151,12 +151,12 @@
         .jp-numbers {
             margin-top: 8px;
             padding-top: 4px;
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
         }
 
         .jp-number {
-            border-right: 1px solid #cbd5da;
-            color: #176b87;
+            border-right: 1px solid 
+            color: 
             font-size: 10px;
             font-weight: normal;
             text-align: center;
@@ -176,14 +176,14 @@
         }
 
         .schedule-row+.schedule-row {
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
         }
 
         .schedule-value {
             min-width: 0;
             overflow: hidden;
             padding: 4px 2px;
-            border-right: 1px solid #cbd5da;
+            border-right: 1px solid 
             text-align: center;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -287,7 +287,7 @@
                                             ->values();
                                         $jumlahJpHari = $jumlahJpPerHari[$namaHari] ?? 10;
 
-                                        // Tentukan posisi setiap jadwal berdasarkan urutan JP
+                                        
                                         $posisiJadwal = [];
                                         $jpPosisi = 1;
 
@@ -317,7 +317,7 @@
 
                                     <div class="schedule-list">
 
-                                        {{-- BARIS MAPEL --}}
+                                        
                                         <div class="schedule-row"
                                             style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                             @forelse ($posisiJadwal as $data)
@@ -338,7 +338,7 @@
                                             @endforelse
                                         </div>
 
-                                        {{-- BARIS GURU --}}
+                                        
                                         <div class="schedule-row"
                                             style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                             @forelse ($posisiJadwal as $data)
@@ -358,7 +358,7 @@
                                             @endforelse
                                         </div>
 
-                                        {{-- BARIS RUANG --}}
+                                        
                                         <div class="schedule-row"
                                             style="grid-template-columns: repeat({{ $jumlahJpHari }}, minmax(22px, 1fr));">
                                             @forelse ($posisiJadwal as $data)

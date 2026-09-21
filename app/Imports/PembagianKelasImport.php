@@ -16,10 +16,10 @@ class PembagianKelasImport implements ToCollection
 
     public function collection(Collection $rows)
     {
-        // Ambil baris pertama sebagai header
+        
         $header = $rows->first();
 
-        // Cari posisi kolom berdasarkan nama header
+        
         $nisIndex = $header->search(function ($value) {
             return strtolower(trim($value)) === 'nis';
         });
@@ -28,19 +28,19 @@ class PembagianKelasImport implements ToCollection
             return strtolower(trim($value)) === 'kelas';
         });
 
-        // Kalau kolom NIS tidak ditemukan
+        
         if ($nisIndex === false) {
             $this->gagal[] = 'Kolom NIS tidak ditemukan di Excel.';
             return;
         }
 
-        // Kalau kolom Kelas tidak ditemukan
+        
         if ($kelasIndex === false) {
             $this->gagal[] = 'Kolom Kelas tidak ditemukan di Excel.';
             return;
         }
 
-        // Proses data mulai dari baris kedua
+        
         foreach ($rows->skip(1) as $row) {
 
             $nis = trim((string) ($row[$nisIndex] ?? ''));
@@ -50,24 +50,24 @@ class PembagianKelasImport implements ToCollection
                 trim((string) ($row[$kelasIndex] ?? ''))
             );
 
-            // Lewati baris kosong
+            
             if (!$nis && !$namaKelas) {
                 continue;
             }
 
-            // NIS kosong
+            
             if (!$nis) {
                 $this->gagal[] = 'Ada data dengan NIS kosong.';
                 continue;
             }
 
-            // Kelas kosong
+            
             if (!$namaKelas) {
                 $this->gagal[] = "NIS {$nis}: kelas kosong.";
                 continue;
             }
 
-            // Cari calon siswa berdasarkan NISN
+            
             $calonSiswa = CalonSiswa::where('nisn', $nis)->first();
 
             if (!$calonSiswa) {
@@ -76,8 +76,8 @@ class PembagianKelasImport implements ToCollection
                 continue;
             }
 
-            // Excel dapat berisi "X A", sedangkan database memisahkan
-            // tingkat dan nama_kelas.
+            
+            
             $kelas = Kelas::where('nama_kelas', $namaKelas)->first();
 
             if (!$kelas && str_contains($namaKelas, ' ')) {
@@ -94,10 +94,7 @@ class PembagianKelasImport implements ToCollection
                 continue;
             }
 
-            /*
-             * Otomatis membuat record siswa di tabel datasiswa
-             * jika belum ada
-             */
+            
             $siswa = Siswa::firstOrCreate(
                 ['nisn' => $calonSiswa->nisn],
                 [
@@ -112,7 +109,7 @@ class PembagianKelasImport implements ToCollection
                 ]
             );
 
-            // Cek apakah siswa sudah punya kelas
+            
             $sudahAda = SiswaKelas::where(
                 'siswa_id',
                 $siswa->id
@@ -124,7 +121,7 @@ class PembagianKelasImport implements ToCollection
                 continue;
             }
 
-            // Simpan pembagian kelas
+            
             SiswaKelas::create([
                 'siswa_id' => $siswa->id,
                 'kelas_id' => $kelas->id,

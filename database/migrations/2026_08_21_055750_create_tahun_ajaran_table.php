@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         if (Schema::hasTable('tahun_ajaran')) {
@@ -17,18 +15,16 @@ return new class extends Migration
 
         Schema::create('tahun_ajaran', function (Blueprint $table) {
             $table->id();
-            $table->string('tahun_ajaran', 9); // Contoh: "2025/2026" (pas 9 karakter)
+            $table->string('tahun_ajaran', 9); 
             $table->enum('semester', ['Ganjil', 'Genap']);
-            $table->boolean('status')->default(false); // true = Aktif, false = Nonaktif
+            $table->boolean('status')->default(false); 
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
-        Schema::dropIfExists('tahun_ajaran'); // Disesuaikan menjadi 'tahun_ajaran'
+        Schema::dropIfExists('tahun_ajaran'); 
     }
 };

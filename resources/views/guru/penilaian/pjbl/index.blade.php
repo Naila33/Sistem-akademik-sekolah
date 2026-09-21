@@ -6,8 +6,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: #212529;
-            background: #f5f6fa;
+            color: 
+            background: 
         }
 
         .page-wrap {
@@ -15,8 +15,8 @@
         }
 
         .page-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -30,15 +30,15 @@
 
         .page-subtitle {
             margin: 0 0 22px;
-            color: #6b7280;
+            color: 
         }
 
         .pjbl-card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid 
             padding: 18px 20px;
             border-radius: 12px;
             margin-bottom: 16px;
-            background: #fff;
+            background: 
         }
 
         .pjbl-card h3 {
@@ -48,7 +48,7 @@
 
         .pjbl-meta {
             margin: 6px 0;
-            color: #374151;
+            color: 
         }
 
         .btn-nilai {
@@ -56,15 +56,15 @@
             margin-top: 12px;
             padding: 9px 14px;
             border-radius: 8px;
-            background: #2449A4;
-            color: #fff;
+            background: 
+            color: 
             text-decoration: none;
             font-weight: 500;
         }
 
         .btn-nilai:hover {
-            color: #fff;
-            background: #1d3f8c;
+            color: 
+            background: 
         }
 
         @media (max-width: 768px) {

@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: 
             margin: 0;
             padding: 30px;
         }
@@ -29,7 +29,7 @@
         }
 
         .info {
-            background-color: #f5f5f5;
+            background-color: 
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
@@ -52,7 +52,7 @@
         select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid 
             border-radius: 6px;
             box-sizing: border-box;
         }
@@ -66,12 +66,12 @@
         }
 
         .btn-simpan {
-            background-color: #198754;
+            background-color: 
             color: white;
         }
 
         .btn-kembali {
-            background-color: #6c757d;
+            background-color: 
             color: white;
             margin-left: 5px;
         }
@@ -99,7 +99,7 @@
             </div>
         @endif
 
-        {{-- Informasi siswa --}}
+        
         <div class="info">
 
             <p>

@@ -12,9 +12,7 @@ use App\Imports\PembagianKelasImport;
 
 class PembagianKelasController extends Controller
 {
-    /**
-     * Menampilkan daftar pembagian kelas
-     */
+    
     public function index()
     {
         $pembagian = SiswaKelas::with(['siswa', 'kelas.jurusan'])
@@ -27,15 +25,10 @@ class PembagianKelasController extends Controller
     }
 
 
-    /**
-     * Form tambah pembagian kelas secara manual
-     */
+    
     public function create()
     {
-        /*
-         * Hanya mengambil siswa yang belum
-         * mempunyai pembagian kelas.
-         */
+        
         $siswa = CalonSiswa::whereDoesntHave('pembagianKelas')
             ->orderBy('nama_lengkap')
             ->get();
@@ -52,9 +45,7 @@ class PembagianKelasController extends Controller
     }
 
 
-    /**
-     * Menyimpan pembagian kelas secara manual
-     */
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -101,9 +92,7 @@ class PembagianKelasController extends Controller
     }
 
 
-    /**
-     * Form edit pembagian kelas
-     */
+    
     public function edit($id)
     {
         $pembagian = SiswaKelas::with(['siswa', 'kelas'])
@@ -121,9 +110,7 @@ class PembagianKelasController extends Controller
     }
 
 
-    /**
-     * Mengubah kelas siswa
-     */
+    
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -145,9 +132,7 @@ class PembagianKelasController extends Controller
     }
 
 
-    /**
-     * Import pembagian kelas dari Excel
-     */
+    
     public function import(Request $request)
     {
         $request->validate([
@@ -182,9 +167,7 @@ class PembagianKelasController extends Controller
     }
 
 
-    /**
-     * Mengeluarkan siswa dari kelas
-     */
+    
     public function destroy($id)
     {
         $pembagian = SiswaKelas::findOrFail($id);

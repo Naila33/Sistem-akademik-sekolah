@@ -38,7 +38,7 @@
 
     <div class="row g-4">
 
-        {{-- DATA PENGAJUAN --}}
+        
 
         <div class="col-lg-8">
 
@@ -164,7 +164,7 @@
         </div>
 
 
-        {{-- STATUS --}}
+        
 
         <div class="col-lg-4">
 

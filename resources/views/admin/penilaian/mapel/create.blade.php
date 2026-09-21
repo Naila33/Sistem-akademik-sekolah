@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Tambah Penilaian')
@@ -7,9 +6,9 @@
 
 <div class="container-fluid py-4">
 
-    {{-- ========================================================= --}}
-    {{-- HEADER --}}
-    {{-- ========================================================= --}}
+    
+    
+    
 
     <div class="mb-4">
 
@@ -50,9 +49,9 @@
     </div>
 
 
-    {{-- ========================================================= --}}
-    {{-- FORM --}}
-    {{-- ========================================================= --}}
+    
+    
+    
 
     <div class="card border-0 shadow-sm">
 
@@ -70,9 +69,9 @@
                 @csrf
 
 
-                {{-- ================================================= --}}
-                {{-- GURU / JADWAL --}}
-                {{-- ================================================= --}}
+                
+                
+                
 
                 <div class="mb-4">
 
@@ -122,9 +121,9 @@
                 </div>
 
 
-                {{-- ================================================= --}}
-                {{-- SISWA - AJAX SEARCH --}}
-                {{-- ================================================= --}}
+                
+                
+                
 
                 <div class="mb-4">
 
@@ -136,7 +135,7 @@
                     </label>
 
 
-                    {{-- Hidden ID siswa --}}
+                    
                     <input type="hidden"
                            name="siswa_id"
                            id="siswa_id"
@@ -144,7 +143,7 @@
                            required>
 
 
-                    {{-- Search siswa --}}
+                    
                     <div class="input-group">
 
                         <span class="input-group-text">
@@ -165,7 +164,7 @@
                     </small>
 
 
-                    {{-- Loading --}}
+                    
                     <div id="loadingSiswa"
                          class="text-muted small mt-2 d-none">
 
@@ -176,14 +175,14 @@
                     </div>
 
 
-                    {{-- Hasil pencarian --}}
+                    
                     <div id="hasilSiswa"
                          class="list-group mt-2"
                          style="max-height: 250px; overflow-y: auto;">
                     </div>
 
 
-                    {{-- Tidak ditemukan --}}
+                    
                     <div id="siswaTidakDitemukan"
                          class="alert alert-light border mt-2 d-none">
 
@@ -194,7 +193,7 @@
                     </div>
 
 
-                    {{-- Siswa terpilih --}}
+                    
                     <div id="siswaTerpilih"
                          class="alert alert-success mt-3 mb-0 d-none">
 
@@ -238,9 +237,9 @@
                 </div>
 
 
-                {{-- ================================================= --}}
-                {{-- JENIS NILAI --}}
-                {{-- ================================================= --}}
+                
+                
+                
 
                 <div class="mb-4">
 
@@ -291,9 +290,9 @@
                 </div>
 
 
-                {{-- ================================================= --}}
-                {{-- NILAI --}}
-                {{-- ================================================= --}}
+                
+                
+                
 
                 <div class="mb-4">
 
@@ -326,9 +325,9 @@
                 </div>
 
 
-                {{-- ================================================= --}}
-                {{-- BUTTON --}}
-                {{-- ================================================= --}}
+                
+                
+                
 
                 <div class="d-flex gap-2">
 
@@ -368,9 +367,9 @@
 @endsection
 
 
-{{-- ============================================================= --}}
-{{-- AJAX SEARCH SISWA --}}
-{{-- ============================================================= --}}
+
+
+
 
 <script>
 
@@ -397,11 +396,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('hapusSiswa');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | URL SEARCH SISWA
-    |--------------------------------------------------------------------------
-    */
+    
 
     const siswaSearchUrl = @json(
         route(
@@ -414,11 +409,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchTimeout = null;
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | SEARCH SISWA VIA AJAX
-    |--------------------------------------------------------------------------
-    */
+    
 
     searchInput.addEventListener('input', function () {
 
@@ -428,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function () {
         clearTimeout(searchTimeout);
 
 
-        // Reset jika input kosong
+        
         if (keyword.length === 0) {
 
             hasilSiswa.innerHTML = '';
@@ -443,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        // Minimal 2 karakter
+        
         if (keyword.length < 2) {
 
             hasilSiswa.innerHTML = '';
@@ -465,11 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTION AJAX SEARCH
-    |--------------------------------------------------------------------------
-    */
+    
 
     function cariSiswa(keyword) {
 
@@ -511,11 +498,7 @@ document.addEventListener('DOMContentLoaded', function () {
             hasilSiswa.innerHTML = '';
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | TIDAK ADA DATA
-            |--------------------------------------------------------------------------
-            */
+            
 
             if (!data.length) {
 
@@ -532,11 +515,7 @@ document.addEventListener('DOMContentLoaded', function () {
             hasilSiswa.classList.remove('d-none');
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | TAMPILKAN HASIL
-            |--------------------------------------------------------------------------
-            */
+            
 
             data.forEach(function (siswa) {
 
@@ -572,11 +551,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | PILIH SISWA
-                |--------------------------------------------------------------------------
-                */
+                
 
                 button.addEventListener('click', function () {
 
@@ -616,11 +591,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | PILIH SISWA
-    |--------------------------------------------------------------------------
-    */
+    
 
     function pilihSiswa(siswa) {
 
@@ -653,11 +624,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | GANTI SISWA
-    |--------------------------------------------------------------------------
-    */
+    
 
     hapusSiswa.addEventListener('click', function () {
 
@@ -680,14 +647,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | ESCAPE HTML
-    |--------------------------------------------------------------------------
-    |
-    | Mencegah karakter dari data siswa langsung menjadi HTML.
-    |
-    */
+    
 
     function escapeHtml(value) {
 

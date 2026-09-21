@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'poppins', sans-serif;
-            color: #212529;
+            color: 
         }
 
         h3 {
@@ -35,7 +35,7 @@
     </div>
 
 
-    {{-- FORM --}}
+    
 
     <div class="card border-0 shadow-sm">
 
@@ -97,7 +97,7 @@
                 <hr class="mb-4">
 
 
-                {{-- TANGGAL --}}
+                
 
                 <div class="mb-4">
 
@@ -172,7 +172,7 @@
                 </div>
 
 
-                {{-- ALASAN --}}
+                
 
                 <div class="mb-4">
 
@@ -209,7 +209,7 @@
                 </div>
 
 
-                {{-- SURAT --}}
+                
 
                 <div class="mb-4">
 
@@ -249,7 +249,7 @@
                 </div>
 
 
-                {{-- TOMBOL --}}
+                
 
                 <div class="d-flex gap-2">
 

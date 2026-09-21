@@ -13,7 +13,7 @@
         }
         @endphp
 
-        {{-- MENU UTAMA --}}
+        
         <div class="menu-title">Menu Utama</div>
 
         <a href="{{ route('wali-kelas.dashboard') }}">
@@ -25,7 +25,7 @@
             Ganti Password
         </a>
 
-        {{-- WALI KELAS --}}
+        
         <div class="menu-title">Wali Kelas</div>
 
         <a href="{{ route('wali-kelas.index') }}">
@@ -53,7 +53,7 @@
         </a>
 
 
-        {{-- GURU MATA PELAJARAN --}}
+        
         @php
         $jadwalSaya = collect();
 
@@ -95,7 +95,7 @@
     </div>
 
 
-    {{-- LOGOUT --}}
+    
     <form action="{{ route('logout') }}" method="POST" class="logout-form">
         @csrf
 

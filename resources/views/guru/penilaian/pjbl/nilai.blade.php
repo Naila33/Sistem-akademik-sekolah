@@ -9,8 +9,8 @@
         }
 
         .page-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -25,12 +25,12 @@
 
         .page-subtitle {
             margin: 0 0 22px;
-            color: #6b7280;
+            color: 
         }
 
         .info-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             padding: 18px 20px;
             margin-bottom: 18px;
@@ -38,12 +38,12 @@
 
         .info-card p {
             margin: 8px 0;
-            color: #374151;
+            color: 
         }
 
         .student-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             padding: 18px 20px;
             margin-bottom: 14px;
@@ -69,15 +69,15 @@
         .nilai-input {
             width: 100px;
             padding: 9px 10px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid 
             border-radius: 8px;
         }
 
         .btn-primary {
             display: inline-block;
             padding: 10px 16px;
-            background: #2449A4;
-            color: #fff;
+            background: 
+            color: 
             border-radius: 8px;
             text-decoration: none;
             border: none;
@@ -89,9 +89,9 @@
             padding: 10px 16px;
             border-radius: 8px;
             text-decoration: none;
-            border: 1px solid #cbd5e1;
-            color: #fff;
-            background: #6c757d;
+            border: 1px solid 
+            color: 
+            background: 
             margin-left: 8px;
         }
 

@@ -6,7 +6,7 @@
 
 <div class="container-fluid py-4">
 
-    {{-- BREADCRUMB --}}
+    
     <div class="mb-4">
 
         <a href="{{ route('admin.penilaian.mapel.index') }}"
@@ -20,7 +20,7 @@
     </div>
 
 
-    {{-- HEADER --}}
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
@@ -45,7 +45,7 @@
     </div>
 
 
-    {{-- SEARCH --}}
+    
     <div class="card border-0 shadow-sm mb-4">
 
         <div class="card-body">
@@ -120,7 +120,7 @@
     </div>
 
 
-    {{-- CARD MAPEL --}}
+    
     <div class="row g-4">
 
         @forelse($mataPelajaran as $mapel)

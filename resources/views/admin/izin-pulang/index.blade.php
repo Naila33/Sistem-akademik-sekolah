@@ -19,7 +19,7 @@
     </div>
 
 
-    {{-- FILTER --}}
+    
 
     <div class="card border-0 shadow-sm mb-4">
 
@@ -93,7 +93,7 @@
     </div>
 
 
-    {{-- DATA --}}
+    
 
     <div id="izinPulangContent">
 

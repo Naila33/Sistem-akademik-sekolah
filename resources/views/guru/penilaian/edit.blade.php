@@ -9,8 +9,8 @@
     <style>
         body {
             margin: 0;
-            background: #f5f6fa;
-            color: #333;
+            background: 
+            color: 
             font-family: Arial, sans-serif;
         }
 
@@ -20,8 +20,8 @@
         }
 
         .card {
-            background: #fff;
-            border: 1px solid #e2e8f0;
+            background: 
+            border: 1px solid 
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
             padding: 22px;
@@ -52,7 +52,7 @@
         }
 
         .text-muted {
-            color: #64748b;
+            color: 
         }
 
         .btn {
@@ -66,13 +66,13 @@
         }
 
         .btn-primary {
-            background: #176b87;
-            color: #fff;
+            background: 
+            color: 
         }
 
         .btn-secondary {
-            background: #6c757d;
-            color: #fff;
+            background: 
+            color: 
         }
 
         .table {
@@ -83,20 +83,20 @@
 
         .table th,
         .table td {
-            border: 1px solid #dee2e6;
+            border: 1px solid 
             padding: 10px 12px;
             text-align: left;
         }
 
         .table th {
-            background: #f1f5f9;
+            background: 
         }
 
         .form-control {
             box-sizing: border-box;
             width: 100%;
             padding: 8px 10px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid 
             border-radius: 6px;
         }
 

@@ -5,22 +5,22 @@
 @push('styles')
     <style>
         body {
-            background: #f4f7fb;
-            color: #1f2937;
+            background: 
+            color: 
             font-family: 'Poppins', sans-serif;
         }
 
         .student-welcome,
         .student-panel {
-            background: #fff;
-            border: 1px solid #e4eaf2;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
         }
 
         .student-welcome {
-            background: linear-gradient(135deg, #2449a4, #3267c7);
-            color: #fff;
+            background: linear-gradient(135deg, 
+            color: 
             padding: 24px;
         }
 
@@ -31,7 +31,7 @@
         }
 
         .student-welcome p {
-            color: #dbeafe;
+            color: 
             margin: 0;
         }
 
@@ -40,7 +40,7 @@
         }
 
         .student-panel h2 {
-            color: #1e293b;
+            color: 
             font-size: 18px;
             font-weight: 600;
             margin: 0 0 18px;
@@ -53,21 +53,21 @@
         }
 
         .biodata-item {
-            background: #f8fafc;
-            border: 1px solid #e7edf5;
+            background: 
+            border: 1px solid 
             border-radius: 8px;
             padding: 12px 14px;
         }
 
         .biodata-label {
-            color: #64748b;
+            color: 
             display: block;
             font-size: 12px;
             margin-bottom: 4px;
         }
 
         .biodata-value {
-            color: #1e293b;
+            color: 
             font-size: 14px;
             font-weight: 600;
         }
@@ -77,24 +77,24 @@
         }
 
         .student-table th {
-            background: #f1f5fb;
-            color: #475569;
+            background: 
+            color: 
             font-size: 12px;
             text-transform: uppercase;
             white-space: nowrap;
         }
 
         .student-table td {
-            color: #334155;
+            color: 
             font-size: 14px;
         }
 
         .student-table tbody tr:hover {
-            background: #f8fbff;
+            background: 
         }
 
         .empty-state {
-            color: #64748b;
+            color: 
             padding: 28px !important;
             text-align: center;
         }

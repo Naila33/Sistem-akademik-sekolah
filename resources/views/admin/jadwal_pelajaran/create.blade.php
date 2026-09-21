@@ -37,7 +37,7 @@
         }
 
         .hapus-baris {
-            color: #b42318;
+            color: 
             border: 0;
             background: transparent;
             cursor: pointer;

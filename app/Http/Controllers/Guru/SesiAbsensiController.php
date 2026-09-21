@@ -23,9 +23,7 @@ class SesiAbsensiController extends Controller
         return $guru;
     }
 
-    /**
-     * Menampilkan daftar jadwal pelajaran untuk absensi.
-     */
+    
     public function index()
     {
         $guru = $this->guruOrFail();
@@ -45,9 +43,7 @@ class SesiAbsensiController extends Controller
         return view('guru.absen.index', compact('jadwal'));
     }
 
-    /**
-     * Menampilkan sesi absensi berdasarkan jadwal.
-     */
+    
     public function show($jadwal)
     {
         $jadwal = Jadwal_pelajaran::with(['jamPelajaran', 'mapel', 'kelas'])->findOrFail($jadwal);
@@ -61,19 +57,17 @@ class SesiAbsensiController extends Controller
         return view('guru.absen.show', compact('jadwal', 'sesi'));
     }
 
-    /**
-     * Membuat / membuka sesi absensi.
-     */
+    
     public function buka($jadwal)
     {
-        // Cari jadwal pelajaran
+        
         $jadwal = Jadwal_pelajaran::findOrFail($jadwal);
 
-        // Cari jam pelajaran berdasarkan jam_pelajaran_id
+        
         $jamPelajaran = JamPelajaran::findOrFail(
             $jadwal->jam_pelajaran_id
         );
-        // Pastikan jam tersedia
+        
         if (!$jamPelajaran->jam_mulai || !$jamPelajaran->jam_selesai) {
             return redirect()->route('absensi.show', ['jadwal' => $jadwal->id])
                 ->with('success', 'Sesi absensi berhasil dibuka.');
@@ -81,17 +75,17 @@ class SesiAbsensiController extends Controller
 
         $sekarang = Carbon::now();
 
-        // Jam mulai
+        
         $jamMulai = Carbon::today()->setTimeFromTimeString(
             $jamPelajaran->jam_mulai
         );
 
-        // Jam selesai
+        
         $jamSelesai = Carbon::today()->setTimeFromTimeString(
             $jamPelajaran->jam_selesai
         );
 
-        // Belum masuk jam pelajaran
+        
         if ($sekarang->lt($jamMulai)) {
             return back()->with(
                 'error',
@@ -99,7 +93,7 @@ class SesiAbsensiController extends Controller
             );
         }
 
-        // Sudah lewat jam pelajaran
+        
         if ($sekarang->gt($jamSelesai)) {
             return back()->with(
                 'error',
@@ -107,7 +101,7 @@ class SesiAbsensiController extends Controller
             );
         }
 
-        // Cek apakah sesi hari ini sudah ada
+        
         $sesi = SesiAbsensi::where('jadwal_pelajaran_id', $jadwal->id)
             ->whereDate('tgl', Carbon::today())
             ->first();
@@ -118,7 +112,7 @@ class SesiAbsensiController extends Controller
                 ->with('success', 'Sesi absensi sudah dibuka.');
         }
 
-        // Generate kode acak
+        
         $token = strtoupper(Str::random(6));
 
         $sesi = SesiAbsensi::create([

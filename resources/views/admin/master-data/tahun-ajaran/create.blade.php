@@ -5,19 +5,19 @@
 @push('styles')
     <style>
         .academic-form {
-            color: #1f2937;
+            color: 
         }
 
         .academic-panel {
-            background: #fff;
-            border: 1px solid #e4eaf2;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
             padding: 24px;
         }
 
         .academic-form h1 {
-            color: #1e293b;
+            color: 
             font-size: 24px;
             font-weight: 600;
             margin: 0 0 6px;
@@ -25,14 +25,14 @@
 
         .academic-subtitle {
             margin: 0 0 20px;
-            color: #6b7280;
+            color: 
         }
 
         .academic-errors {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
+            background: 
+            border: 1px solid 
             border-radius: 8px;
-            color: #b91c1c;
+            color: 
             margin: 0 0 18px;
             padding: 12px 16px;
         }
@@ -47,7 +47,7 @@
         }
 
         .academic-field label {
-            color: #334155;
+            color: 
             display: block;
             font-size: 13px;
             font-weight: 600;
@@ -56,11 +56,11 @@
 
         .academic-field input,
         .academic-field select {
-            background: #fff;
-            border: 1px solid #cbd5e1;
+            background: 
+            border: 1px solid 
             border-radius: 7px;
             box-sizing: border-box;
-            color: #1e293b;
+            color: 
             font: inherit;
             padding: 10px 12px;
             width: 100%;
@@ -68,7 +68,7 @@
 
         .academic-field input:focus,
         .academic-field select:focus {
-            border-color: #2449a4;
+            border-color: 
             box-shadow: 0 0 0 3px rgba(36, 73, 164, 0.12);
             outline: none;
         }
@@ -94,37 +94,37 @@
         }
 
         .academic-save {
-            background: #2449a4;
-            border-color: #2449a4;
-            color: #fff;
+            background: 
+            border-color: 
+            color: 
         }
 
         .academic-save:hover {
-            background: #1d3f8c;
+            background: 
         }
 
         .academic-back {
-            background: #fff;
-            border: 1px solid #94a3b8;
+            background: 
+            border: 1px solid 
             border-radius: 7px;
-            color: #2449a4;
+            color: 
             display: inline-flex;
             padding: 10px 15px;
             text-decoration: none;
         }
 
         .academic-back:hover {
-            background: #eff6ff;
-            border-color: #2449a4;
-            color: #1d3f8c;
+            background: 
+            border-color: 
+            color: 
         }
         .custom-checkbox {
-    width: 18px;                  /* Ukuran kotak sedikit lebih besar */
+    width: 18px;                  
     height: 18px;
-    border: 2px solid #4b5563;    /* Garis pinggir tegas berwarna abu-abu gelap */
-    border-radius: 4px;           /* Sudut agak melengkung */
+    border: 2px solid 
+    border-radius: 4px;           
     cursor: pointer;
-    accent-color: #2563eb;        /* Warna centang saat di-klas (opsional) */
+    accent-color: 
 }
     </style>
 

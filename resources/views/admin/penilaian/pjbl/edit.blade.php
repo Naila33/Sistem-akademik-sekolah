@@ -63,7 +63,7 @@
 
                                 <option value="{{ $item->id }}" {{ $penilaian->pjbl_id == $item->id ? 'selected' : '' }}>
 
-                                    PJBL #{{ $item->id }}
+                                    PJBL 
 
                                     @if($item->kelas)
                                         - {{ $item->kelas->tingkat }}

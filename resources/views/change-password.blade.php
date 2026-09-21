@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'poppins', sans-serif;
-            color: #212529;
+            color: 
         }
 
         h1 {

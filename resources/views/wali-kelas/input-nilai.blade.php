@@ -17,7 +17,7 @@
 
 <div class="card">
 
-    {{-- INFO JADWAL --}}
+    
     <div class="schedule-info">
         <div>
             <strong>Hari</strong>
@@ -154,8 +154,8 @@
     }
 
     .schedule-info div {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
+        background: 
+        border: 1px solid 
         border-radius: 8px;
         padding: 14px;
     }
@@ -163,7 +163,7 @@
     .schedule-info strong {
         display: block;
         font-size: 12px;
-        color: #64748b;
+        color: 
         margin-bottom: 6px;
     }
 
@@ -175,14 +175,14 @@
     .nilai-input {
         width: 100px;
         padding: 8px 10px;
-        border: 1px solid #cbd5e1;
+        border: 1px solid 
         border-radius: 6px;
         font-size: 14px;
     }
 
     .nilai-input:focus {
         outline: none;
-        border-color: #2563eb;
+        border-color: 
     }
 
     .form-actions {
@@ -194,7 +194,7 @@
 
     .empty {
         text-align: center;
-        color: #64748b;
+        color: 
         padding: 30px;
     }
 

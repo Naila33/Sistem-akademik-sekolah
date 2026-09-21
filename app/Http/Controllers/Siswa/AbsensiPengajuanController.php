@@ -12,11 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AbsensiPengajuanController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | SAKIT
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function sakitIndex()
     {
@@ -59,11 +55,7 @@ class AbsensiPengajuanController extends Controller
             ->with('success', 'Pengajuan sakit berhasil dikirim.');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | IZIN KELUAR
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function izinKeluarIndex()
     {
@@ -110,11 +102,7 @@ class AbsensiPengajuanController extends Controller
             ->with('success', 'Pengajuan izin keluar berhasil dikirim.');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | IZIN PULANG
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function izinPulangIndex()
     {
@@ -160,11 +148,7 @@ class AbsensiPengajuanController extends Controller
             ->with('success', 'Pengajuan izin pulang berhasil dikirim.');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | DISPEN
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function dispenIndex()
     {
@@ -212,20 +196,11 @@ class AbsensiPengajuanController extends Controller
             ->with('success', 'Pengajuan dispensasi berhasil dikirim.');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | ID SISWA
-    |--------------------------------------------------------------------------
-    */
+    
 
     private function siswaId()
     {
-        /*
-         * Sesuaikan dengan sistem login siswa kamu.
-         *
-         * Jangan menggunakan users.id langsung karena
-         * users.id bukan datasiswa.id.
-         */
+        
 
         return session('siswa_id');
     }

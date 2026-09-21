@@ -26,7 +26,7 @@
 
         th,
         td {
-            border: 1px solid #555;
+            border: 1px solid 
             padding: 2px;
             text-align: center;
             vertical-align: middle;
@@ -34,17 +34,17 @@
         }
 
         th {
-            background: #e8f0f3;
+            background: 
         }
 
         .kelas {
             width: 72px;
-            background: #f7fafb;
+            background: 
         }
 
         .info {
             width: 38px;
-            background: #f7fafb;
+            background: 
         }
 
         .day {
@@ -53,12 +53,12 @@
 
         .jp {
             font-weight: normal;
-            background: #eef5ed;
+            background: 
         }
 
         .label {
             font-weight: bold;
-            background: #f7fafb;
+            background: 
         }
 
         .mapel {

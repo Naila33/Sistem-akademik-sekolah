@@ -6,7 +6,7 @@
 
     <div class="container-fluid py-4">
 
-        {{-- HEADER --}}
+        
         <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div>
@@ -30,7 +30,7 @@
         </div>
 
 
-        {{-- ALERT ERROR --}}
+        
         @if($errors->any())
 
             <div class="alert alert-danger alert-dismissible fade show">
@@ -58,14 +58,14 @@
         @endif
 
 
-        {{-- FORM --}}
+        
         <form action="{{ route('admin.spmb.update', $calonSiswa->id) }}" method="POST">
 
             @csrf
             @method('PUT')
 
 
-            {{-- ================= DATA PRIBADI ================= --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -82,7 +82,7 @@
                     <div class="row g-3">
 
 
-                        {{-- NO PENDAFTARAN --}}
+                        
 
                         <div class="col-md-6">
 
@@ -102,7 +102,7 @@
                         </div>
 
 
-                        {{-- NAMA LENGKAP --}}
+                        
 
                         <div class="col-md-6">
 
@@ -119,7 +119,7 @@
                         </div>
 
 
-                        {{-- NIK --}}
+                        
 
                         <div class="col-md-4">
 
@@ -136,7 +136,7 @@
                         </div>
 
 
-                        {{-- NISN --}}
+                        
 
                         <div class="col-md-4">
 
@@ -152,7 +152,7 @@
                         </div>
 
 
-                        {{-- JENIS KELAMIN --}}
+                        
 
                         <div class="col-md-4">
 
@@ -190,7 +190,7 @@
                         </div>
 
 
-                        {{-- TEMPAT LAHIR --}}
+                        
 
                         <div class="col-md-6">
 
@@ -207,7 +207,7 @@
                         </div>
 
 
-                        {{-- TANGGAL LAHIR --}}
+                        
 
                         <div class="col-md-6">
 
@@ -226,7 +226,7 @@
                         </div>
 
 
-                        {{-- ASAL SEKOLAH --}}
+                        
 
                         <div class="col-md-6">
 
@@ -243,7 +243,7 @@
                         </div>
 
 
-                        {{-- NO KK --}}
+                        
 
                         <div class="col-md-6">
 
@@ -260,7 +260,7 @@
                         </div>
 
 
-                        {{-- ALAMAT --}}
+                        
 
                         <div class="col-12">
 
@@ -283,7 +283,7 @@
             </div>
 
 
-            {{-- ================= DATA ORANG TUA ================= --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -300,7 +300,7 @@
                     <div class="row g-3">
 
 
-                        {{-- AYAH --}}
+                        
 
                         <div class="col-md-4">
 
@@ -317,7 +317,7 @@
                         </div>
 
 
-                        {{-- IBU --}}
+                        
 
                         <div class="col-md-4">
 
@@ -334,7 +334,7 @@
                         </div>
 
 
-                        {{-- HP ORANG TUA --}}
+                        
 
                         <div class="col-md-4">
 
@@ -357,7 +357,7 @@
             </div>
 
 
-            {{-- ================= DATA SPMB ================= --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -374,7 +374,7 @@
                     <div class="row g-3">
 
 
-                        {{-- JURUSAN --}}
+                        
 
                         <div class="col-md-6">
 
@@ -408,7 +408,7 @@
                         </div>
 
 
-                        {{-- JALUR --}}
+                        
 
                         <div class="col-md-6">
 
@@ -464,7 +464,7 @@
                         </div>
 
 
-                        {{-- STATUS PENERIMAAN --}}
+                        
 
                         <div class="col-md-6">
 
@@ -498,7 +498,7 @@
                         </div>
 
 
-                        {{-- STATUS DAFTAR ULANG --}}
+                        
 
                         <div class="col-md-6">
 
@@ -550,7 +550,7 @@
                         </div>
 
 
-                        {{-- TANGGAL DAFTAR ULANG --}}
+                        
 
                         <div class="col-md-6">
 
@@ -568,7 +568,7 @@
                         </div>
 
 
-                        {{-- CATATAN REVISI --}}
+                        
 
                         <div class="col-md-6">
 
@@ -591,7 +591,7 @@
             </div>
 
 
-            {{-- ================= INFORMASI DOKUMEN ================= --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -640,7 +640,7 @@
             </div>
 
 
-            {{-- ================= BUTTON ================= --}}
+            
 
             <div class="card shadow-sm border-0 mb-5">
 

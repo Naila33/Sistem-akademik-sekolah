@@ -9,7 +9,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 24px;
-            color: #212529;
+            color: 
         }
 
         form {
@@ -44,7 +44,7 @@
 
         .hapus {
             border: 0;
-            background: #c0392b;
+            background: 
             color: white;
             cursor: pointer;
         }

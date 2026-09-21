@@ -6,7 +6,7 @@
 
 <div class="container-fluid py-4">
 
-    {{-- HEADER --}}
+    
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -43,7 +43,7 @@
     </div>
 
 
-    {{-- ALERT --}}
+    
 
     @if(session('success'))
 
@@ -79,13 +79,13 @@
     @endif
 
 
-    {{-- DATA UTAMA --}}
+    
 
     <div class="row g-4">
 
         <div class="col-lg-8">
 
-            {{-- DATA PRIBADI --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -270,7 +270,7 @@
             </div>
 
 
-            {{-- DATA SPMB --}}
+            
 
             <div class="card shadow-sm border-0 mb-4">
 
@@ -417,7 +417,7 @@
         </div>
 
 
-        {{-- SIDEBAR STATUS --}}
+        
 
         <div class="col-lg-4">
 
@@ -517,7 +517,7 @@
     </div>
 
 
-    {{-- DOKUMEN --}}
+    
 
     <div class="card shadow-sm border-0">
 

@@ -6,7 +6,7 @@
 
 <div class="container-fluid py-4">
 
-    {{-- HEADER --}}
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
@@ -27,7 +27,7 @@
     </div>
 
 
-    {{-- ALERT --}}
+    
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show">
             {{ session('success') }}
@@ -51,7 +51,7 @@
     @endif
 
 
-    {{-- FILTER --}}
+    
     <div class="card shadow-sm border-0 mb-4">
 
         <div class="card-body">
@@ -62,7 +62,7 @@
 
                 <div class="row g-3">
 
-                    {{-- PENCARIAN --}}
+                    
                     <div class="col-md-4">
 
                         <label class="form-label">
@@ -90,7 +90,7 @@
                     </div>
 
 
-                    {{-- JURUSAN --}}
+                    
                     <div class="col-md-3">
 
                         <label class="form-label">
@@ -123,7 +123,7 @@
                     </div>
 
 
-                    {{-- JALUR --}}
+                    
                     <div class="col-md-2">
 
                         <label class="form-label">
@@ -163,7 +163,7 @@
                     </div>
 
 
-                    {{-- STATUS --}}
+                    
                     <div class="col-md-3">
 
                         <label class="form-label">
@@ -212,7 +212,7 @@
     </div>
 
 
-    {{-- TABLE --}}
+    
     <div class="card shadow-sm border-0"
          id="spmb-search-results">
 
@@ -394,7 +394,7 @@
         </div>
 
 
-        {{-- PAGINATION --}}
+        
         @if($calonSiswa->hasPages())
 
             <div class="card-footer bg-white">
@@ -485,11 +485,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | LIVE SEARCH
-    |--------------------------------------------------------------------------
-    */
+    
 
     const searchInput =
         document.getElementById('spmbSearch');
@@ -517,11 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | FILTER SELECT
-    |--------------------------------------------------------------------------
-    */
+    
 
     const filterInputs = form.querySelectorAll(
         'select'
@@ -541,11 +533,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | RESET
-    |--------------------------------------------------------------------------
-    */
+    
 
     const resetButton =
         document.getElementById('resetSpmb');
@@ -566,11 +554,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | PAGINATION AJAX
-    |--------------------------------------------------------------------------
-    */
+    
 
     results.addEventListener(
         'click',
@@ -593,11 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | BROWSER BACK / FORWARD
-    |--------------------------------------------------------------------------
-    */
+    
 
     window.addEventListener(
         'popstate',
@@ -611,11 +591,7 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | FORM SUBMIT
-    |--------------------------------------------------------------------------
-    */
+    
 
     form.addEventListener(
         'submit',

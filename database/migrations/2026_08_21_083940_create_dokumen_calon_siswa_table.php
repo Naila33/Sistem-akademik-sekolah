@@ -17,9 +17,9 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            // =========================
-            // JENIS DOKUMEN
-            // =========================
+            
+            
+            
 
             $table->enum('jenis_dokumen', [
                 'SKL / Ijazah',
@@ -33,9 +33,9 @@ return new class extends Migration
                 'Surat Dispensasi'
             ]);
 
-            // =========================
-            // FILE
-            // =========================
+            
+            
+            
 
             $table->string('nama_file')
                 ->nullable();
@@ -49,9 +49,9 @@ return new class extends Migration
             $table->unsignedBigInteger('ukuran_file')
                 ->nullable();
 
-            // =========================
-            // VERIFIKASI
-            // =========================
+            
+            
+            
 
             $table->enum('status', [
                 'Belum Diverifikasi',
@@ -68,8 +68,8 @@ return new class extends Migration
 
             $table->timestamps();
 
-            // Satu calon siswa tidak boleh punya
-            // jenis dokumen yang sama dua kali.
+            
+            
             $table->unique([
                 'calon_siswa_id',
                 'jenis_dokumen'

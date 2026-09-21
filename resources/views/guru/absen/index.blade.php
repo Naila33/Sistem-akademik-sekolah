@@ -6,8 +6,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: #212529;
-            background: #f5f6fa;
+            color: 
+            background: 
         }
         
         .page-wrap {
@@ -15,8 +15,8 @@
         }
 
         .page-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -30,12 +30,12 @@
 
         .page-subtitle {
             margin: 0 0 20px;
-            color: #6b7280;
+            color: 
         }
 
         .table th {
-            background: #f8fafc;
-            color: #475569;
+            background: 
+            color: 
             font-size: 0.82rem;
             vertical-align: middle;
         }
@@ -48,24 +48,24 @@
             display: inline-block;
             padding: 8px 12px;
             border-radius: 8px;
-            background: #2449A4;
+            background: 
             border: none;
-            color: #fff;
+            color: 
             text-decoration: none;
             font-weight: 500;
         }
 
         .btn-primary:hover {
             opacity: 0.95;
-            color: #fff;
+            color: 
             text-decoration: none;
         }
 
         .empty-state {
             padding: 20px;
             border-radius: 10px;
-            background: #f8fafc;
-            color: #64748b;
+            background: 
+            color: 
         }
 
         .fs-12 {

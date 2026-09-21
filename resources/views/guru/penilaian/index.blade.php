@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: #212529;
+            color: 
         }
 
         .page-wrap {
@@ -14,8 +14,8 @@
         }
 
         .page-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
             padding: 24px;
@@ -29,12 +29,12 @@
 
         .page-subtitle {
             margin: 0 0 20px;
-            color: #6b7280;
+            color: 
         }
 
         .table th {
-            background: #f8fafc;
-            color: #475569;
+            background: 
+            color: 
             font-size: 0.82rem;
             vertical-align: middle;
         }
@@ -53,14 +53,14 @@
         }
 
         .btn-primary {
-            background: #2449A4;
-            color: #fff;
+            background: 
+            color: 
         }
 
         .btn-outline-secondary {
-            border: 1px solid #cbd5e1;
-            color: #334155;
-            background: #fff;
+            border: 1px solid 
+            color: 
+            background: 
         }
 
         .btn-primary:hover,
@@ -71,8 +71,8 @@
         .empty-state {
             padding: 20px;
             border-radius: 10px;
-            background: #f8fafc;
-            color: #64748b;
+            background: 
+            color: 
         }
 
         .fs-12 {

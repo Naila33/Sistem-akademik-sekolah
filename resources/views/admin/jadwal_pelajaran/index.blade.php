@@ -12,13 +12,13 @@
             margin: 0;
             margin-left: 250px;
             padding: 60px;
-            color: #212529;
+            color: 
         }
 
         .container {
             background-color: white;
             padding: 24px;
-            border: 1px solid #dfe5e8;
+            border: 1px solid 
             border-radius: 8px;
             overflow-x: auto;
             margin-top: 35px;
@@ -37,12 +37,12 @@
         }
 
         .header p {
-            color: #666;
+            color: 
             margin: 0;
         }
 
         .btn-tambah {
-            background-color: #176b87;
+            background-color: 
             color: white;
             padding: 10px 15px;
             text-decoration: none;
@@ -51,8 +51,8 @@
         }
 
         .success {
-            background-color: #d1e7dd;
-            color: #0f5132;
+            background-color: 
+            color: 
             padding: 10px 15px;
             border-radius: 6px;
             margin-bottom: 20px;
@@ -68,21 +68,21 @@
 
         .filter label {
             display: block;
-            color: #5c6970;
+            color: 
             font-size: 12px;
             margin-bottom: 5px;
         }
 
         .filter select,
         .filter button {
-            border: 1px solid #b7c5ca;
+            border: 1px solid 
             border-radius: 4px;
             padding: 8px 10px;
             background: white;
         }
 
         .filter button {
-            background: #176b87;
+            background: 
             color: white;
             cursor: pointer;
         }
@@ -92,14 +92,14 @@
             margin-left: 6px;
             border-radius: 4px;
             padding: 8px 10px;
-            background: #217346;
+            background: 
             color: white;
             font-size: 13px;
             text-decoration: none;
         }
 
         .download-pdf {
-            background: #b42318;
+            background: 
         }
 
         .legend {
@@ -110,7 +110,7 @@
         }
 
         .legend-item {
-            border: 1px solid #d9e1e5;
+            border: 1px solid 
             border-radius: 3px;
             padding: 4px 7px;
             font-size: 11px;
@@ -125,19 +125,19 @@
 
         th,
         td {
-            border: 1px solid #cbd5da;
+            border: 1px solid 
             padding: 8px;
             vertical-align: top;
         }
 
         th {
-            background-color: #e8f0f3;
+            background-color: 
             text-align: center;
         }
 
         .identity {
             width: 95px;
-            background-color: #f7fafb;
+            background-color: 
             padding: 0;
             text-align: center;
             vertical-align: middle;
@@ -145,7 +145,7 @@
 
         .row-labels {
             width: 55px;
-            background-color: #f7fafb;
+            background-color: 
             padding: 0;
             text-align: center;
             vertical-align: middle;
@@ -157,7 +157,7 @@
         }
 
         .identity span {
-            color: #65747c;
+            color: 
             font-size: 12px;
         }
 
@@ -166,7 +166,7 @@
             min-height: 24px;
             padding: 4px 6px;
             box-sizing: border-box;
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
             text-align: center;
         }
 
@@ -179,7 +179,7 @@
             min-height: 30px;
             align-items: center;
             justify-content: center;
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
             font-size: 11px;
         }
 
@@ -201,7 +201,7 @@
             display: block;
             margin: -8px -8px 8px;
             padding: 4px;
-            border-bottom: 1px solid #cbd5da;
+            border-bottom: 1px solid 
         }
 
         .jp-numbers,
@@ -215,12 +215,12 @@
         .jp-numbers {
             margin-top: 8px;
             padding-top: 4px;
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
         }
 
         .jp-number {
-            border-right: 1px solid #cbd5da;
-            color: #176b87;
+            border-right: 1px solid 
+            color: 
             font-size: 10px;
             font-weight: normal;
             text-align: center;
@@ -244,14 +244,14 @@
         }
 
         .schedule-row+.schedule-row {
-            border-top: 1px solid #cbd5da;
+            border-top: 1px solid 
         }
 
         .schedule-value {
             min-width: 0;
             overflow: hidden;
             padding: 4px 2px;
-            border-right: 1px solid #cbd5da;
+            border-right: 1px solid 
             text-align: center;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -310,19 +310,19 @@
         }
 
         .day-action.edit {
-            background-color: #176b87;
+            background-color: 
         }
 
         .day-action.delete {
-            background-color: #c0392b;
+            background-color: 
         }
 
         .schedule-actions a {
-            background-color: #176b87;
+            background-color: 
         }
 
         .schedule-actions button {
-            background-color: #c0392b;
+            background-color: 
         }
 
         .schedule-value.empty {
@@ -330,8 +330,8 @@
         }
 
         .schedule {
-            border: 1px solid #d9e1e5;
-            background-color: #fffdf2;
+            border: 1px solid 
+            background-color: 
             box-sizing: border-box;
             min-width: 0;
             margin: 0;
@@ -342,22 +342,22 @@
 
         .schedule strong {
             display: block;
-            color: #263238;
+            color: 
             overflow-wrap: anywhere;
             padding: 3px 2px;
         }
 
         .schedule small {
             display: block;
-            color: #000000;
+            color: 
             line-height: 1.35;
             white-space: nowrap;
-            border-top: 1px solid #d9e1e5;
+            border-top: 1px solid 
             padding: 3px 2px;
         }
 
         .schedule .actions {
-            border-top: 1px solid #d9e1e5;
+            border-top: 1px solid 
             padding: 3px 2px;
         }
 
@@ -367,26 +367,26 @@
         }
 
         .empty-cell {
-            color: #a0abb0;
+            color: 
             text-align: center;
             font-size: 12px;
         }
 
         .day-count {
             display: block;
-            color: #65747c;
+            color: 
             font-size: 11px;
             font-weight: normal;
             margin-top: 3px;
         }
 
         .btn-edit {
-            color: #0d6efd;
+            color: 
             text-decoration: none;
         }
 
         .btn-hapus {
-            color: #dc3545;
+            color: 
             background: none;
             border: none;
             padding: 0;

@@ -16,7 +16,7 @@
         </div>
 
 
-        {{-- ERROR VALIDATION --}}
+        
         @if($errors->any())
 
             <div class="alert alert-danger">
@@ -48,7 +48,7 @@
                     @csrf
 
 
-                    {{-- SISWA --}}
+                    
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
@@ -79,7 +79,7 @@
                     </div>
 
 
-                    {{-- PJBL --}}
+                    
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
@@ -116,7 +116,7 @@
                     </div>
 
 
-                    {{-- KELAS --}}
+                    
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
@@ -145,7 +145,7 @@
                     </div>
 
 
-                    {{-- PENGUJI --}}
+                    
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
@@ -177,7 +177,7 @@
                     </div>
 
 
-                    {{-- NILAI --}}
+                    
                     <div class="mb-4">
 
                         <label class="form-label fw-semibold">
@@ -190,7 +190,7 @@
                     </div>
 
 
-                    {{-- BUTTON --}}
+                    
                     <div class="d-flex gap-2">
 
                         <a href="{{ route('admin.penilaian.pjbl.index') }}" class="btn btn-secondary">

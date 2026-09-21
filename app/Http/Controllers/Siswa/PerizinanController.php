@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class PerizinanController extends Controller
 {
-    /**
-     * Menampilkan daftar pengajuan sakit siswa
-     */
+    
     public function sakit()
     {
         $siswa = Auth::user()->siswa;
@@ -26,17 +24,13 @@ class PerizinanController extends Controller
         return view('siswa.perizinan.sakit', compact('dataSakit'));
     }
 
-    /**
-     * Menampilkan form pengajuan sakit
-     */
+    
     public function createSakit()
     {
         return view('siswa.perizinan.sakit-create');
     }
 
-    /**
-     * Menampilkan form edit pengajuan sakit.
-     */
+    
     public function editSakit($id)
     {
         $sakit = $this->pendingSakitForCurrentStudent($id);
@@ -44,9 +38,7 @@ class PerizinanController extends Controller
         return view('siswa.perizinan.sakit-create', compact('sakit'));
     }
 
-    /**
-     * Menyimpan pengajuan sakit
-     */
+    
     public function storeSakit(Request $request)
     {
         $request->validate([
@@ -94,9 +86,7 @@ class PerizinanController extends Controller
             ->with('success', 'Pengajuan sakit berhasil dikirim.');
     }
 
-    /**
-     * Memperbarui pengajuan sakit yang masih menunggu persetujuan.
-     */
+    
     public function updateSakit(Request $request, $id)
     {
         $sakit = $this->pendingSakitForCurrentStudent($id);
@@ -130,9 +120,7 @@ class PerizinanController extends Controller
             ->with('success', 'Pengajuan sakit berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus pengajuan sakit yang masih menunggu persetujuan.
-     */
+    
     public function destroySakit($id)
     {
         $sakit = $this->pendingSakitForCurrentStudent($id);

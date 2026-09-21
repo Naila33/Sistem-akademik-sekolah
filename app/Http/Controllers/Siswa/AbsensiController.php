@@ -10,13 +10,13 @@ use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
-    // Menampilkan halaman absensi siswa
+    
     public function index()
     {
         return view('siswa.absensi.index');
     }
 
-    // Memproses kode absensi
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -31,10 +31,10 @@ class AbsensiController extends Controller
             return back()->with('error', 'Kode absensi tidak ditemukan atau sudah ditutup.');
         }
 
-        // Ambil siswa yang sedang login
+        
         $siswa = auth()->user()->siswa;
 
-        // Cek apakah siswa sudah absen di sesi ini
+        
         $sudahAbsen = Absensi::where('sesi_absensi_id', $sesi->id)
             ->where('siswa_id', $siswa->id)
             ->exists();
@@ -43,12 +43,12 @@ class AbsensiController extends Controller
             return back()->with('error', 'Kamu sudah melakukan absensi.');
         }
 
-        // Waktu sekarang
+        
         $sekarang = Carbon::now();
 
-        // Untuk sementara, status hadir
-        // Nanti kita sambungkan dengan jam mulai jadwal
-        // untuk menentukan hadir / terlambat.
+        
+        
+        
         $status = 'hadir';
 
         Absensi::create([

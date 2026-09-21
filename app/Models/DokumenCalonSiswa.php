@@ -29,11 +29,7 @@ class DokumenCalonSiswa extends Model
         'tanggal_verifikasi' => 'datetime',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELASI CALON SISWA
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function calonSiswa()
     {
@@ -43,11 +39,7 @@ class DokumenCalonSiswa extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELASI VERIFIKATOR
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function verifier()
     {

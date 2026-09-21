@@ -6,8 +6,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: #212529; 
-            background: #f5f6fa;
+            color: 
+            background: 
         }
     </style>
 @endpush
@@ -19,7 +19,7 @@
 
                 <h4 class="mb-3">Absensi Siswa</h4>
 
-                {{-- Informasi Jadwal --}}
+                
                 <div class="mb-4">
                     <p class="mb-1">
                         <strong>Mata Pelajaran:</strong>
@@ -44,7 +44,7 @@
                 </div>
 
 
-                {{-- Pesan Berhasil --}}
+                
                 @if(session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
@@ -52,7 +52,7 @@
                 @endif
 
 
-                {{-- Pesan Error --}}
+                
                 @if(session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
@@ -60,7 +60,7 @@
                 @endif
 
 
-                {{-- Jika sesi sudah dibuka / baru dibuka --}}
+                
                 @if($sesi)
 
                     <div class="text-center my-4 p-3 bg-light rounded">
@@ -77,7 +77,7 @@
                         </p>
                     </div>
 
-                    {{-- Tabel Absensi --}}
+                    
                     <h5 class="mt-4 mb-3">Data Absensi Siswa</h5>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -123,7 +123,7 @@
 
                 @else
 
-                    {{-- Tombol buka absensi --}}
+                    
                     <form action="{{ route('absensi.buka', $jadwal->id) }}" method="POST">
                         @csrf
 

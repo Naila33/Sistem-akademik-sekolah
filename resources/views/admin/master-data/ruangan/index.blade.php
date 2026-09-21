@@ -6,17 +6,17 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            color: #212529;
-            background: #f5f6fa;
+            color: 
+            background: 
         }
 
         .room-page {
-            color: #1f2937;
+            color: 
         }
 
         .room-panel {
-            background: #fff;
-            border: 1px solid #e4eaf2;
+            background: 
+            border: 1px solid 
             border-radius: 12px;
             box-shadow: 0 6px 18px rgba(30, 64, 102, 0.05);
             padding: 24px;
@@ -30,32 +30,32 @@
         }
 
         .room-title {
-            color: #1e293b;
+            color: 
             font-size: 24px;
             font-weight: 600;
             margin: 0;
         }
 
         .room-add {
-            background: #2449a4;
+            background: 
             border-radius: 8px;
-            color: #fff;
+            color: 
             font-size: 14px;
             font-weight: 600;
             padding: 10px 14px;
         }
 
         .room-add:hover {
-            background: #2449a4;
-            color: #fff;
+            background: 
+            color: 
             text-decoration: none;
         }
 
         .room-alert {
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
+            background: 
+            border: 1px solid 
             border-radius: 8px;
-            color: #047857;
+            color: 
             margin-bottom: 18px;
             padding: 11px 14px;
         }
@@ -74,35 +74,35 @@
         .room-table td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid 
         }
 
         .room-table th {
-            background: #f1f5fb;
-            color: #475569;
+            background: 
+            color: 
             font-size: 12px;
             text-transform: uppercase;
             white-space: nowrap;
         }
 
         .room-table td {
-            color: #374151;
+            color: 
             font-size: 14px;
         }
 
         .room-table tbody tr:hover {
-            background: #f8fbff;
+            background: 
         }
 
         .room-code {
-            color: #2449a4;
+            color: 
             font-weight: 600;
         }
 
         .room-status {
-            background: #dcfce7;
+            background: 
             border-radius: 10px;
-            color: #166534;
+            color: 
             display: inline-block;
             font-size: 12px;
             font-weight: 600;
@@ -110,8 +110,8 @@
         }
 
         .room-status.is-inactive {
-            background: #f1f5f9;
-            color: #64748b;
+            background: 
+            color: 
         }
 
         .room-action {
@@ -131,25 +131,25 @@
         }
 
         .room-edit {
-            background: #eff6ff;
-            border-color: #93c5fd !important;
-            color: #1d4ed8;
+            background: 
+            border-color: 
+            color: 
         }
 
         .room-delete {
-            background: #fef2f2;
-            border-color: #fca5a5 !important;
-            color: #b91c1c;
+            background: 
+            border-color: 
+            color: 
         }
 
         .room-edit:hover {
-            background: #dbeafe;
-            color: #1e40af;
+            background: 
+            color: 
         }
 
         .room-delete:hover {
-            background: #fee2e2;
-            color: #991b1b;
+            background: 
+            color: 
         }
 
         .room-pagination {
@@ -175,10 +175,10 @@
 
         .room-pagination .page-link {
             align-items: center;
-            background: #fff;
-            border: 1px solid #cbd5e1;
+            background: 
+            border: 1px solid 
             border-radius: 6px;
-            color: #475569;
+            color: 
             display: flex;
             font-size: 13px;
             height: 34px;
@@ -188,25 +188,25 @@
         }
 
         .room-pagination .page-link:hover {
-            background: #eff6ff;
-            border-color: #93c5fd;
-            color: #1d4ed8;
+            background: 
+            border-color: 
+            color: 
         }
 
         .room-pagination .page-item.active .page-link {
-            background: #2449a4;
-            border-color: #2449a4;
-            color: #fff;
+            background: 
+            border-color: 
+            color: 
         }
 
         .room-pagination .page-item.disabled .page-link {
-            background: #f8fafc;
-            border-color: #e2e8f0;
-            color: #94a3b8;
+            background: 
+            border-color: 
+            color: 
         }
 
         .room-empty {
-            color: #64748b !important;
+            color: 
             padding: 28px !important;
             text-align: center !important;
         }

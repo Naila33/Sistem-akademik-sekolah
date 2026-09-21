@@ -17,17 +17,13 @@ class PjblPenguji extends Model
         'jenis_peguji',
     ];
 
-    /**
-     * Relasi ke PJBL
-     */
+    
     public function pjbl()
     {
         return $this->belongsTo(Pjbl::class, 'pjbl_id');
     }
 
-    /**
-     * Relasi ke Guru
-     */
+    
     public function guru()
     {
         return $this->belongsTo(Guru::class, 'guru_id');

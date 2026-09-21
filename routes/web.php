@@ -32,13 +32,9 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
 
-//login
+
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
@@ -61,7 +57,7 @@ Route::get('/ganti-password', [AuthController::class, 'showChangePassword'])->mi
 
 Route::post('/ganti-password', [AuthController::class, 'changePassword'])->middleware('auth')->name('password.update');
 
-// DASHBOARD & HOME
+
 Route::middleware(['auth'])
     ->prefix('admin')
     ->name('admin.')
@@ -73,7 +69,7 @@ Route::middleware(['auth'])
         ])->name('dashboard');
     });
 
-// ADMIN MASTER DATA ROUTES
+
 Route::get('/admin/ruangan', [RuanganController::class, 'index'])->name('ruangan.index');
 Route::get('/admin/ruangan/create', [RuanganController::class, 'create'])->name('ruangan.create');
 Route::post('/admin/ruangan', [RuanganController::class, 'store'])->name('ruangan.store');
@@ -88,7 +84,7 @@ Route::get('/admin/mata_pelajaran/{id}/edit', [MataPelajaranController::class, '
 Route::put('/admin/mata_pelajaran/{id}', [MataPelajaranController::class, 'update'])->name('mata_pelajaran.update');
 Route::delete('/admin/mata_pelajaran/{id}', [MataPelajaranController::class, 'destroy'])->name('mata_pelajaran.destroy');
 
-// PEMBAGIAN KELAS
+
 Route::get('/admin/pembagian_kelas', [PembagianKelasController::class, 'index'])->name('pembagian_kelas.index');
 Route::get('/admin/pembagian_kelas/create', [PembagianKelasController::class, 'create'])->name('pembagian_kelas.create');
 Route::post('/admin/pembagian_kelas', [PembagianKelasController::class, 'store'])->name('pembagian_kelas.store');
@@ -97,7 +93,7 @@ Route::put('/admin/pembagian_kelas/{id}', [PembagianKelasController::class, 'upd
 Route::delete('/admin/pembagian_kelas/{id}', [PembagianKelasController::class, 'destroy'])->name('pembagian_kelas.destroy');
 Route::post('/admin/pembagian_kelas/import', [PembagianKelasController::class, 'import'])->name('pembagian_kelas.import');
 
-// JADWAL PELAJARAN
+
 Route::get('/admin/jadwal_pelajaran', [JadwalpelajaranController::class, 'index'])->name('admin.jadwal_pelajaran.index');
 Route::get('/admin/jadwal_pelajaran/create', [JadwalpelajaranController::class, 'create'])->name('admin.jadwal_pelajaran.create');
 Route::post('/admin/jadwal_pelajaran', [JadwalpelajaranController::class, 'store'])->name('admin.jadwal_pelajaran.store');
@@ -112,7 +108,7 @@ Route::delete('/admin/jadwal_pelajaran/{id}', [JadwalpelajaranController::class,
 Route::patch('/admin/jadwal-pelajaran/publish', [JadwalPelajaranController::class, 'publish'])
     ->name('admin.jadwal_pelajaran.publish');
 
-// RESOURCE ROUTES
+
 Route::get('/admin/master-data', function () {
     return view('admin.master-data.index');
 })->name('master-data.index');
@@ -125,7 +121,7 @@ Route::resource('admin/master-data/guru', GuruController::class)
     ->names('guru');
 Route::resource('kelas', KelasController::class)->except(['show']);
 
-// WALI KELAS
+
 Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(function () {
     Route::get('/dashboard', [WaliKelasController::class, 'dashboard'])->name('dashboard');
     Route::get('/', [WaliKelasController::class, 'index'])->name('index');
@@ -154,7 +150,7 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::patch('/izin-pulang/{id}/verifikasi', [WaliKelasController::class, 'verifikasiIzinPulang'])->name('izin-pulang.verifikasi');
 });
 
-// SPMB - CALON SISWA
+
 Route::prefix('admin')->group(function () {
     Route::get('/spmb/calon-siswa', [SpmbController::class, 'index'])->name('admin.spmb.index');
     Route::get('/spmb/calon-siswa/create', [SpmbController::class, 'create'])->name('admin.spmb.create');
@@ -167,7 +163,7 @@ Route::prefix('admin')->group(function () {
     Route::put('/spmb/calon-siswa/{id}/verifikasi-daftar-ulang', [SpmbController::class, 'verifikasiDaftarUlang'])->name('admin.spmb.daftar-ulang.verifikasi');
 });
 
-//guru
+
 Route::middleware('auth')->group(function () {
 
     Route::get(
@@ -203,7 +199,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    // PENILAIAN MATA PELAJARAN
+    
 
     Route::get('/penilaian/mapel', [
         \App\Http\Controllers\Admin\PenilaianMapelController::class,
@@ -245,12 +241,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         'destroy'
     ])->name('penilaian.mapel.destroy');
 
-    /*
-    |--------------------------------------------------------------------------
-    | PENILAIAN PJBL
-    |--------------------------------------------------------------------------
-    */
-    // Halaman pilih kelas
+    
+    
     Route::get(
         '/penilaian/pjbl',
         [
@@ -260,7 +252,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.index');
 
 
-    // Halaman PJBL berdasarkan kelas
+    
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}',
         [
@@ -270,7 +262,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.kelas');
 
 
-    // Halaman tabel penilaian
+    
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
@@ -280,7 +272,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.penilaian');
 
 
-    // Tambah
+    
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/create',
         [
@@ -300,7 +292,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.waktu.update');
 
 
-    // Simpan
+    
     Route::post(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}',
         [
@@ -310,7 +302,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.store');
 
 
-    // Edit
+    
     Route::get(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/{id}/edit',
         [
@@ -320,7 +312,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.edit');
 
 
-    // Update
+    
     Route::put(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/{id}',
         [
@@ -330,7 +322,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('penilaian.pjbl.update');
 
 
-    // Hapus
+    
     Route::delete(
         '/penilaian/pjbl/kelas/{kelasId}/pjbl/{pjblId}/{id}',
         [
@@ -339,11 +331,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         ]
     )->name('penilaian.pjbl.destroy');
 
-    /*
-    |--------------------------------------------------------------------------
-    | ABSENSI
-    |--------------------------------------------------------------------------
-    */
+    
 
     Route::get(
         '/absensi',
@@ -356,11 +344,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('absensi.show');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | SAKIT
-    |--------------------------------------------------------------------------
-    */
+    
 
     Route::get(
         '/sakit',
@@ -373,11 +357,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('sakit.show');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | IZIN KELUAR
-    |--------------------------------------------------------------------------
-    */
+    
 
     Route::get(
         '/izin-keluar',
@@ -390,11 +370,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('izin-keluar.show');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | IZIN PULANG
-    |--------------------------------------------------------------------------
-    */
+    
 
     Route::get(
         '/izin-pulang',
@@ -407,11 +383,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     )->name('izin-pulang.show');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | DISPEN
-    |--------------------------------------------------------------------------
-    */
+    
 
     Route::get(
         '/dispen',
@@ -430,11 +402,7 @@ Route::get(
 )->name('penilaian.mapel.index');
 
 
-/*
-|--------------------------------------------------------------------------
-| PILIH MAPEL BERDASARKAN KELAS
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get(
     '/penilaian/mapel/kelas/{kelasId}',
@@ -442,11 +410,7 @@ Route::get(
 )->name('penilaian.mapel.kelas');
 
 
-/*
-|--------------------------------------------------------------------------
-| DATA PENILAIAN BERDASARKAN KELAS + MAPEL
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get(
     '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}',
@@ -454,11 +418,7 @@ Route::get(
 )->name('penilaian.mapel.mapel');
 
 
-/*
-|--------------------------------------------------------------------------
-| TAMBAH PENILAIAN
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get(
     '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/create',
@@ -472,11 +432,7 @@ Route::post(
 )->name('penilaian.mapel.store');
 
 
-/*
-|--------------------------------------------------------------------------
-| EDIT
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get(
     '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}/edit',
@@ -490,11 +446,7 @@ Route::put(
 )->name('penilaian.mapel.update');
 
 
-/*
-|--------------------------------------------------------------------------
-| DELETE
-|--------------------------------------------------------------------------
-*/
+
 
 Route::delete(
     '/penilaian/mapel/kelas/{kelasId}/mapel/{mapelId}/{id}',
@@ -532,7 +484,7 @@ Route::middleware(['auth'])->group(function () {
         [GuruPenilaianPjblController::class, 'simpan']
     )->name('guru.penilaian-pjbl.simpan');
 
-    // ABSENSI GURU
+    
     Route::get(
         '/guru/absen',
         [SesiAbsensiController::class, 'index']
@@ -552,7 +504,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-// Siswa
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/jadwal', [SiswaJadwalPelajaranController::class, 'index'])
         ->name('siswa.jadwal.index');
@@ -567,7 +519,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->prefix('siswa')->name('siswa.')->group(function () {
 
-    // Perizinan sakit
+    
     Route::get('/perizinan/sakit', [PerizinanController::class, 'sakit'])
         ->name('perizinan.sakit');
 

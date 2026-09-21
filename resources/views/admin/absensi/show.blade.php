@@ -25,7 +25,7 @@
 
     <div class="row g-4">
 
-        {{-- SISWA --}}
+        
 
         <div class="col-md-6">
 
@@ -69,7 +69,7 @@
         </div>
 
 
-        {{-- ABSENSI --}}
+        
 
         <div class="col-md-6">
 

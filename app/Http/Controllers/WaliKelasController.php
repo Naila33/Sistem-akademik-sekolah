@@ -45,7 +45,7 @@ class WaliKelasController extends Controller
     {
         $guruId = auth()->user()->guru_id;
 
-        // Kelas yang dia walikan
+        
         $waliKelas = WaliKelas::with([
             'kelas.jurusan',
             'kelas.tahunAjaran'
@@ -53,7 +53,7 @@ class WaliKelasController extends Controller
             ->where('guru_id', $guruId)
             ->get();
 
-        // Jadwal yang dia ajar
+        
         $jadwalMengajar = Jadwal_pelajaran::with([
             'kelas',
             'mataPelajaran'
@@ -74,7 +74,7 @@ class WaliKelasController extends Controller
     {
         $guruId = auth()->user()->guru_id;
 
-        // Hanya wali kelas dari kelas tersebut yang boleh melihat
+        
         $waliKelas = WaliKelas::where('guru_id', $guruId)
             ->where('kelas_id', $kelas->id)
             ->firstOrFail();
@@ -118,7 +118,7 @@ class WaliKelasController extends Controller
             ->orderBy('jam_mulai')
             ->get();
 
-        // Hitung JP mulai dan selesai
+        
         $jpBerjalan = [];
 
         foreach ($jadwalMengajar as $jadwal) {
@@ -148,7 +148,7 @@ class WaliKelasController extends Controller
     {
         $guruId = auth()->user()->guru_id;
 
-        // Pastikan jadwal memang milik guru yang login
+        
         if ($jadwal->guru_id != $guruId) {
             abort(403);
         }
@@ -158,11 +158,7 @@ class WaliKelasController extends Controller
             'mataPelajaran'
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Hitung JP mulai dan selesai
-        |--------------------------------------------------------------------------
-        */
+        
 
         $jadwalSebelumnya = Jadwal_pelajaran::where('guru_id', $guruId)
             ->where('kelas_id', $jadwal->kelas_id)
@@ -182,21 +178,13 @@ class WaliKelasController extends Controller
         $jadwal->jp_selesai =
             $jpBerjalan + (int) $jadwal->jumlah_jp - 1;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Ambil siswa berdasarkan kelas
-        |--------------------------------------------------------------------------
-        */
+        
 
         $siswa = SiswaKelas::with('siswa')
             ->where('kelas_id', $jadwal->kelas_id)
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Ambil nilai harian yang sudah tersimpan
-        |--------------------------------------------------------------------------
-        */
+        
 
         $nilai = PenilaianMapel::where(
             'jadwal_pelajaran_id',
@@ -219,16 +207,12 @@ class WaliKelasController extends Controller
     ) {
         $guruId = auth()->user()->guru_id;
 
-        // Jangan izinkan guru memasukkan nilai ke jadwal guru lain
+        
         if ($jadwal->guru_id != $guruId) {
             abort(403);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Validasi nilai
-        |--------------------------------------------------------------------------
-        */
+        
 
         $request->validate([
             'nilai' => ['required', 'array'],
@@ -240,20 +224,16 @@ class WaliKelasController extends Controller
             ],
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Simpan nilai setiap siswa
-        |--------------------------------------------------------------------------
-        */
+        
 
         foreach ($request->nilai as $siswaId => $nilaiSiswa) {
 
-            // Kalau kosong, jangan disimpan
+            
             if ($nilaiSiswa === null || $nilaiSiswa === '') {
                 continue;
             }
 
-            // Pastikan siswa memang berada di kelas jadwal ini
+            
             $siswaValid = SiswaKelas::where('kelas_id', $jadwal->kelas_id)
                 ->where('siswa_id', $siswaId)
                 ->exists();
@@ -262,11 +242,7 @@ class WaliKelasController extends Controller
                 continue;
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | Update jika sudah ada, buat baru jika belum ada
-            |--------------------------------------------------------------------------
-            */
+            
 
             PenilaianMapel::updateOrCreate(
                 [
@@ -280,11 +256,7 @@ class WaliKelasController extends Controller
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Kembali ke halaman input nilai
-        |--------------------------------------------------------------------------
-        */
+        
 
         return redirect()
             ->route(

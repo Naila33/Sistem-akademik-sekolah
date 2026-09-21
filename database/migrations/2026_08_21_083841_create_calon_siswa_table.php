@@ -12,9 +12,9 @@ return new class extends Migration
 
             $table->id();
 
-            // =========================
-            // DATA PENDAFTARAN
-            // =========================
+            
+            
+            
 
             $table->string('no_pendaftaran')->unique();
             $table->string('pin')->nullable();
@@ -26,9 +26,9 @@ return new class extends Migration
 
             $table->string('jalur_pendaftaran')->nullable();
 
-            // =========================
-            // DATA DIRI
-            // =========================
+            
+            
+            
 
             $table->string('nama_lengkap');
 
@@ -73,9 +73,9 @@ return new class extends Migration
             $table->string('kode_pos', 10)
                 ->nullable();
 
-            // =========================
-            // DATA KONTAK
-            // =========================
+            
+            
+            
 
             $table->string('no_hp')
                 ->nullable();
@@ -83,9 +83,9 @@ return new class extends Migration
             $table->string('email')
                 ->nullable();
 
-            // =========================
-            // DATA ORANG TUA
-            // =========================
+            
+            
+            
 
             $table->string('nama_ayah')
                 ->nullable();
@@ -96,9 +96,9 @@ return new class extends Migration
             $table->string('no_hp_orang_tua')
                 ->nullable();
 
-            // =========================
-            // DATA SEKOLAH ASAL
-            // =========================
+            
+            
+            
 
             $table->string('asal_sekolah')
                 ->nullable();
@@ -106,9 +106,9 @@ return new class extends Migration
             $table->string('npsn_sekolah_asal')
                 ->nullable();
 
-            // =========================
-            // STATUS SPMB
-            // =========================
+            
+            
+            
 
             $table->enum('status', [
                 'Draft',
@@ -124,9 +124,9 @@ return new class extends Migration
             $table->text('catatan_revisi')
                 ->nullable();
 
-            // =========================
-            // DATA DAFTAR ULANG
-            // =========================
+            
+            
+            
 
             $table->timestamp('tanggal_daftar_ulang')
                 ->nullable();

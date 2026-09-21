@@ -91,9 +91,9 @@
         </div>
 
 
-        {{-- ========================================================= --}}
-        {{-- HASIL --}}
-        {{-- ========================================================= --}}
+        
+        
+        
 
         <div class="mb-3">
 
@@ -110,9 +110,9 @@
         </div>
 
 
-        {{-- ========================================================= --}}
-        {{-- CARD KELAS --}}
-        {{-- ========================================================= --}}
+        
+        
+        
 
         <div class="row g-4" id="kelasContainer">
 
@@ -141,7 +141,7 @@
 
                                 <div class="card-body p-4">
 
-                                    {{-- ICON --}}
+                                    
                                     <div class="d-flex justify-content-between align-items-start mb-3">
 
                                         <div class="rounded-circle
@@ -161,7 +161,7 @@
                                     </div>
 
 
-                                    {{-- NAMA KELAS --}}
+                                    
                                     <h5 class="fw-bold text-dark mb-1">
 
                                         {{ $k->tingkat }}
@@ -170,7 +170,7 @@
                                     </h5>
 
 
-                                    {{-- JURUSAN --}}
+                                    
                                     <p class="text-muted mb-3">
 
                                         {{ $k->jurusan?->nama_jurusan ?? 'Umum' }}
@@ -178,7 +178,7 @@
                                     </p>
 
 
-                                    {{-- JUMLAH SISWA --}}
+                                    
                                     <div class="d-flex justify-content-between align-items-center">
 
                                         <small class="text-muted">
@@ -236,9 +236,9 @@
         </div>
 
 
-        {{-- ========================================================= --}}
-        {{-- DATA TIDAK DITEMUKAN --}}
-        {{-- ========================================================= --}}
+        
+        
+        
 
         <div id="kelasEmpty" class="card border-0 shadow-sm mt-4" style="display: none;">
 
@@ -258,9 +258,9 @@
 
         </div>
 
-        {{-- ========================================================= --}}
-        {{-- LIVE SEARCH & FILTER --}}
-        {{-- ========================================================= --}}
+        
+        
+        
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -274,11 +274,7 @@
                 const jumlahKelas = document.getElementById('jumlahKelas');
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | FILTER KELAS
-                |--------------------------------------------------------------------------
-                */
+                
 
                 function filterKelas() {
 
@@ -304,19 +300,19 @@
                         ).toLowerCase();
 
 
-                        // Cek pencarian
+                        
                         const cocokSearch =
                             keyword === '' ||
                             searchText.includes(keyword);
 
 
-                        // Cek jenjang
+                        
                         const cocokTingkat =
                             tingkat === '' ||
                             cardTingkat === tingkat;
 
 
-                        // Tentukan tampil / sembunyi
+                        
                         if (cocokSearch && cocokTingkat) {
 
                             card.style.display = '';
@@ -332,20 +328,12 @@
                     });
 
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | UPDATE JUMLAH
-                    |--------------------------------------------------------------------------
-                    */
+                    
 
                     jumlahKelas.textContent = jumlahTampil;
 
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | PESAN TIDAK DITEMUKAN
-                    |--------------------------------------------------------------------------
-                    */
+                    
 
                     if (jumlahTampil === 0) {
 
@@ -360,11 +348,7 @@
                 }
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | LIVE SEARCH
-                |--------------------------------------------------------------------------
-                */
+                
 
                 searchInput.addEventListener('input', function () {
 
@@ -373,11 +357,7 @@
                 });
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | FILTER JENJANG
-                |--------------------------------------------------------------------------
-                */
+                
 
                 filterTingkat.addEventListener('change', function () {
 
@@ -386,11 +366,7 @@
                 });
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | RESET
-                |--------------------------------------------------------------------------
-                */
+                
 
                 resetButton.addEventListener('click', function () {
 
@@ -405,11 +381,7 @@
                 });
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | JALANKAN SAAT HALAMAN DIBUKA
-                |--------------------------------------------------------------------------
-                */
+                
 
                 filterKelas();
 

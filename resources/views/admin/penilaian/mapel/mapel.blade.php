@@ -6,7 +6,7 @@
 
 <div class="container-fluid py-4">
 
-    {{-- BACK --}}
+    
     <div class="mb-3">
 
         <a href="{{ route(
@@ -23,7 +23,7 @@
     </div>
 
 
-    {{-- HEADER --}}
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
@@ -67,7 +67,7 @@
     </div>
 
 
-    {{-- SUCCESS --}}
+    
     @if(session('success'))
 
         <div class="alert alert-success alert-dismissible fade show">
@@ -86,7 +86,7 @@
     @endif
 
 
-    {{-- FILTER --}}
+    
     <div class="card border-0 shadow-sm mb-4">
 
         <div class="card-body">
@@ -102,7 +102,7 @@
 
                 <div class="row g-3">
 
-                    {{-- SEARCH SISWA --}}
+                    
                     <div class="col-md-5">
 
                         <label class="form-label fw-semibold">
@@ -128,7 +128,7 @@
                     </div>
 
 
-                    {{-- JENIS NILAI --}}
+                    
                     <div class="col-md-3">
 
                         <label class="form-label fw-semibold">
@@ -165,7 +165,7 @@
                     </div>
 
 
-                    {{-- TANGGAL --}}
+                    
                     <div class="col-md-2">
 
                         <label class="form-label fw-semibold">
@@ -180,12 +180,12 @@
                     </div>
 
 
-                    {{-- BUTTON --}}
+                    
 <div class="col-md-4 d-flex align-items-end">
 
     <div class="d-flex gap-2 w-100">
 
-        {{-- TERAPKAN FILTER --}}
+        
         <button type="submit"
                 class="btn btn-success">
 
@@ -195,7 +195,7 @@
         </button>
 
 
-        {{-- RESET --}}
+        
         <a href="{{ route(
             'admin.penilaian.mapel.mapel',
             [
@@ -222,7 +222,7 @@
     </div>
 
 
-    {{-- TABLE --}}
+    
     <div class="card border-0 shadow-sm">
 
         <div class="card-body">

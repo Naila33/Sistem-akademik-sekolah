@@ -115,7 +115,7 @@ class PenilaianController extends Controller
             ->where('guru_id', $guru->id)
             ->firstOrFail();
 
-        // Ambil semua jadwal yang kelas + mapelnya sama
+        
         $jadwalIds = Jadwal_pelajaran::where('guru_id', $guru->id)
             ->where('kelas_id', $jadwal->kelas_id)
             ->where('mata_pelajaran_id', $jadwal->mata_pelajaran_id)

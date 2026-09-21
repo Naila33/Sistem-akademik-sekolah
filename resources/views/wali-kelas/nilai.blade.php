@@ -10,14 +10,14 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 30px;
-            background: #f5f6fa;
-            color: #333;
+            background: 
+            color: 
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
-            background: #fff;
+            background: 
             padding: 25px;
             border-radius: 8px;
         }
@@ -25,8 +25,8 @@
         .btn {
             display: inline-block;
             padding: 8px 12px;
-            background: #64748b;
-            color: #fff;
+            background: 
+            color: 
             text-decoration: none;
             border-radius: 5px;
         }

@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'poppins', sans-serif;
-            color: #212529;
+            color: 
         }
     </style>
 
@@ -37,7 +37,7 @@
                     @endisset
 
 
-                    {{-- Tanggal --}}
+                    
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
@@ -58,7 +58,7 @@
 
 
 
-                    {{-- Alasan --}}
+                    
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
@@ -77,7 +77,7 @@
                     </div>
 
 
-                    {{-- Dokumen --}}
+                    
                     <div class="mb-4">
 
                         <label class="form-label fw-semibold">
@@ -125,7 +125,7 @@
                     </div>
 
 
-                    {{-- Tombol --}}
+                    
                     <div class="d-flex gap-2">
 
                         <a href="{{ route('siswa.perizinan.sakit') }}" class="btn btn-secondary">

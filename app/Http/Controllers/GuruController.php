@@ -12,9 +12,7 @@ use Illuminate\Support\Str;
 
 class GuruController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $gurus = Guru::with('mataPelajaran')->get();
@@ -22,9 +20,7 @@ class GuruController extends Controller
         return view('admin.master-data.guru.index', compact('gurus'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         $mataPelajaran = MataPelajaran::orderBy('nama_mapel')->get();
@@ -32,22 +28,20 @@ class GuruController extends Controller
         return view('admin.master-data.guru.create', compact('mataPelajaran'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
         $data = $request->validate($this->guruRules());
 
         [$guru, $passwordAwal] = DB::transaction(function () use ($data) {
 
-            // Simpan data guru
+            
             $guru = Guru::create($data);
 
-            // Buat password acak
+            
             $passwordAwal = Str::random(8);
 
-            // Buat akun login guru
+            
             User::create([
                 'username' => $guru->nip,
                 'password' => Hash::make($passwordAwal),
@@ -65,17 +59,13 @@ class GuruController extends Controller
             ->with('password_awal', $passwordAwal);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(string $id)
     {
-        //
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(string $id)
     {
         $guru = Guru::findOrFail($id);
@@ -84,9 +74,7 @@ class GuruController extends Controller
         return view('admin.master-data.guru.edit', compact('guru', 'mataPelajaran'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
         $data = $request->validate($this->guruRules($id));
@@ -96,9 +84,7 @@ class GuruController extends Controller
         return redirect()->route('guru.index')->with('success', 'Data guru berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(string $id)
     {
         Guru::findOrFail($id)->delete();
