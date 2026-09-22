@@ -4,6 +4,11 @@
 
 @push('styles')
     <style>
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
         .academic-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;

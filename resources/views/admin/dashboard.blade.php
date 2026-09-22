@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.app')
 
 @section('title', 'Dashboard Admin')
@@ -29,9 +28,6 @@
     <div class="stats-grid">
 
         <div class="stat-card">
-            <div class="stat-icon">
-                <i class="bi bi-people"></i>
-            </div>
 
             <div class="stat-content">
                 <span>Total Siswa</span>
@@ -41,10 +37,7 @@
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon">
-                <i class="bi bi-person-badge"></i>
-            </div>
-
+            
             <div class="stat-content">
                 <span>Total Guru</span>
                 <h2>{{ number_format($totalGuru) }}</h2>
@@ -53,10 +46,7 @@
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon">
-                <i class="bi bi-building"></i>
-            </div>
-
+            
             <div class="stat-content">
                 <span>Total Kelas</span>
                 <h2>{{ number_format($totalKelas) }}</h2>
@@ -65,10 +55,7 @@
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon">
-                <i class="bi bi-book"></i>
-            </div>
-
+            
             <div class="stat-content">
                 <span>Mata Pelajaran</span>
                 <h2>{{ number_format($totalMapel) }}</h2>
@@ -77,10 +64,7 @@
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon">
-                <i class="bi bi-calendar-range"></i>
-            </div>
-
+            
             <div class="stat-content">
                 <span>Tahun Ajaran Aktif</span>
                 <h2>{{ $tahunAjaranAktif }}</h2>
@@ -358,6 +342,10 @@
 @push('styles')
 
 <style>
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
 
 .dashboard {
     width: 100%;
@@ -438,7 +426,7 @@
 
 .stat-content h2 {
     margin: 0 0 3px;
-    font-size: 25px;
+    font-size: 20px;
     color: #1e293b;
 }
 

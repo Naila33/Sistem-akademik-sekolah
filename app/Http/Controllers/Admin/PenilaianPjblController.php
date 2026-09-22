@@ -79,7 +79,7 @@ class PenilaianPjblController extends Controller
 
     public function penilaian(Request $request, $kelasId, $pjblId)
     {
-        $kelas = \App\Models\Kelas::with('jurusan')
+        $kelas = Kelas::with('jurusan')
             ->findOrFail($kelasId);
 
         $pjbl = Pjbl::with([
