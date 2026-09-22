@@ -12,6 +12,16 @@
 <div class="alert alert-success">{{ session('success') }}</div>
 @endif
 
+@if($errors->any())
+<div class="alert alert-danger">
+    <ul class="mb-0 ps-3">
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <div class="card">
     <div class="table-wrapper">
         <table>
@@ -21,6 +31,7 @@
                     <th>Siswa</th>
                     <th>Tanggal</th>
                     <th>Alasan</th>
+                    <th>Dokumen</th>
                     <th>Status</th>
                     <th>Verifikasi</th>
                 </tr>
@@ -35,24 +46,37 @@
                     </td>
                     <td>{{ $item->tanggal?->format('d-m-Y') ?? '-' }}</td>
                     <td>{{ $item->alasan ?? '-' }}</td>
+                    <td>
+                        @if($item->dokumen)
+                            <a href="{{ asset('storage/' . $item->dokumen) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-file-earmark-text me-1"></i>Lihat
+                            </a>
+                        @else
+                            <span class="text-muted">Tidak ada</span>
+                        @endif
+                    </td>
                     <td>{{ ucfirst(str_replace('_', ' ', $item->status_walikelas ?? 'menunggu')) }}</td>
                     <td>
                         <form action="{{ route('wali-kelas.sakit.setujui', $item->id) }}" method="POST" class="d-inline-block">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="btn btn-sm btn-success">Setujui</button>
+                            <button type="submit" class="btn btn-sm btn-success">
+                                <i class="bi bi-check-lg me-1"></i>Setujui
+                            </button>
                         </form>
                         <form action="{{ route('wali-kelas.sakit.tolak', $item->id) }}" method="POST" class="d-inline-block mt-2">
                             @csrf
                             @method('PATCH')
                             <input type="text" name="catatan" class="form-control form-control-sm mb-2" placeholder="Catatan penolakan" required>
-                            <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="bi bi-x-lg me-1"></i>Tolak
+                            </button>
                         </form>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center">Belum ada pengajuan izin tidak masuk siswa.</td>
+                    <td colspan="7" class="text-center">Belum ada pengajuan izin tidak masuk siswa.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -64,7 +88,7 @@
 @push('styles')
 <style>
     .page-header h1 {
-        color: #172554;
+        color: #2449a4;
         font-weight: 700;
     }
 
@@ -86,6 +110,15 @@
     .page-header+.alert+.card table tbody tr:hover td,
     .page-header+.card table tbody tr:hover td {
         background: #f8fbff;
+    }
+
+    .page-header p {
+        color: #64748b;
+    }
+
+    .page-header+.alert+.card,
+    .page-header+.card {
+        overflow: hidden;
     }
 </style>
 @endpush

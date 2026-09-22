@@ -46,9 +46,9 @@
                 Arial,
                 sans-serif;
 
-            background: 
+            background: #f8fafc;
 
-            color: 
+            color: #1e293b;
 
         }
 
@@ -91,7 +91,7 @@
 
             background: white;
 
-            border-bottom: 1px solid 
+            border-bottom: 1px solid #e2e8f0;
 
             display: flex;
 
@@ -119,7 +119,7 @@
 
             font-size: 14px;
 
-            color: 
+            color: #64748b;
 
         }
 
@@ -157,7 +157,7 @@
 
         .page-header p {
 
-            color: 
+            color: #64748b;
 
             font-size: 14px;
 
@@ -200,7 +200,7 @@
 
             padding: 12px 15px;
 
-            border-bottom: 1px solid 
+            border-bottom: 1px solid #e2e8f0;
 
             text-align: left;
 
@@ -211,7 +211,7 @@
 
         th {
 
-            background: 
+            background: #f1f5f9;
 
             font-weight: 600;
 
@@ -262,7 +262,7 @@
 
         .kelas-search .input-group-text {
 
-            background: 
+            background: #eff6ff;
 
         }
 
@@ -276,7 +276,7 @@
 
         .kelas-search .form-control:focus {
 
-            border-color: 
+            border-color: #2449a4;
 
             box-shadow:
                 0 0 0 .2rem rgba(25, 135, 84, .15);
@@ -355,6 +355,61 @@
             transform:
                 scale(1.05);
 
+        }
+
+        .page-header h1 {
+            color: #2449a4;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+
+        .table-wrapper {
+            border-radius: 8px;
+        }
+
+        table th {
+            background: #eff6ff;
+            color: #1e3a8a;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .02em;
+        }
+
+        table tbody tr:hover td {
+            background: #f8fbff;
+        }
+
+        .content .btn-primary {
+            background: #2449a4;
+            border-color: #2449a4;
+        }
+
+        .content .btn-primary:hover {
+            background: #1d3d8b;
+            border-color: #1d3d8b;
+        }
+
+        .content .btn-secondary {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+        .content .form-control:focus,
+        .content .form-select:focus {
+            border-color: #2449a4;
+            box-shadow: 0 0 0 .2rem rgba(36, 73, 164, .15);
         }
 
 

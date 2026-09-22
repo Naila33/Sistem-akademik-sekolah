@@ -12,6 +12,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\JadwalpelajaranController;
 use App\Http\Controllers\Siswa\JadwalPelajaranController as SiswaJadwalPelajaranController;
+use App\Http\Controllers\Siswa\NilaiController as SiswaNilaiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\PenilaianController;
 use App\Http\Controllers\WaliKelasController;
@@ -28,6 +29,8 @@ use App\Http\Controllers\Admin\JamPelajaranController;
 use App\Http\Controllers\Guru\SesiAbsensiController;
 use App\Http\Controllers\Siswa\PerizinanController;
 use App\Http\Controllers\Siswa\DispenController as SiswaDispenController;
+use App\Http\Controllers\Walikelas\SakitController as WaliKelasSakitController;
+use App\Http\Controllers\WaliKelas\PenilaianPjblController as WaliKelasPenilaianPjblController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
@@ -148,6 +151,14 @@ Route::middleware('auth')->prefix('wali-kelas')->name('wali-kelas.')->group(func
     Route::patch('/izin-keluar/{id}/verifikasi', [WaliKelasController::class, 'verifikasiIzinKeluar'])->name('izin-keluar.verifikasi');
     Route::get('/izin-pulang', [WaliKelasController::class, 'izinPulang'])->name('izin-pulang.index');
     Route::patch('/izin-pulang/{id}/verifikasi', [WaliKelasController::class, 'verifikasiIzinPulang'])->name('izin-pulang.verifikasi');
+    Route::get('/izin-tidak-masuk', [WaliKelasSakitController::class, 'index'])->name('sakit.index');
+    Route::patch('/izin-tidak-masuk/{sakit}/setujui', [WaliKelasSakitController::class, 'setujui'])->name('sakit.setujui');
+    Route::patch('/izin-tidak-masuk/{sakit}/tolak', [WaliKelasSakitController::class, 'tolak'])->name('sakit.tolak');
+    Route::get('/penilaian-pjbl', [WaliKelasPenilaianPjblController::class, 'index'])->name('penilaian-pjbl.index');
+    Route::get('/penilaian-pjbl/{pjbl}/nilai', [WaliKelasPenilaianPjblController::class, 'nilai'])->name('penilaian-pjbl.nilai');
+    Route::post('/penilaian-pjbl/{pjbl}/nilai', [WaliKelasPenilaianPjblController::class, 'simpan'])->name('penilaian-pjbl.simpan');
+    Route::get('/penilaian-pjbl/riwayat', [WaliKelasPenilaianPjblController::class, 'riwayat'])->name('penilaian-pjbl.riwayat');
+    Route::get('/penilaian-pjbl/riwayat/{penguji}/detail', [WaliKelasPenilaianPjblController::class, 'riwayatDetail'])->name('penilaian-pjbl.riwayat.detail');
 });
 
 
@@ -513,6 +524,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/jadwal', [SiswaJadwalPelajaranController::class, 'index'])
         ->name('siswa.jadwal.index');
+
+    Route::get('/siswa/nilai', [SiswaNilaiController::class, 'index'])
+        ->name('siswa.nilai.index');
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 <aside class="sidebar">
 
     <div class="sidebar-header">
@@ -5,7 +7,7 @@
         <p>Wali Kelas</p>
     </div>
 
-    <div class="menu">
+    <nav class="menu">
         @php
         $waliKelasPertama = null;
         if (auth()->check() && auth()->user()->guru_id) {
@@ -17,39 +19,42 @@
         <div class="menu-title">Menu Utama</div>
 
         <a href="{{ route('wali-kelas.dashboard') }}">
-            Beranda
+            <i class="bi bi-house-door" aria-hidden="true"></i>
+            <span>Beranda</span>
         </a>
 
         <div class="menu-title">Akun</div>
         <a href="{{ route('password.change') }}">
-            Ganti Password
+            <i class="bi bi-key" aria-hidden="true"></i>
+            <span>Ganti Password</span>
         </a>
 
         
         <div class="menu-title">Wali Kelas</div>
 
         <a href="{{ route('wali-kelas.index') }}">
-            Kelas Saya
+            <i class="bi bi-person-workspace" aria-hidden="true"></i>
+            <span>Kelas Saya</span>
         </a>
 
         <a href="{{ $waliKelasPertama ? route('wali-kelas.siswa', $waliKelasPertama->kelas_id) : '#' }}">
-            Data Siswa
+            <i class="bi bi-people" aria-hidden="true"></i>
+            <span>Data Siswa</span>
         </a>
 
-        <a href="#">
-            Nilai Siswa
-        </a>
-
-        <a href="#">
-            Rapor Siswa
+         <a href="{{ route('wali-kelas.sakit.index') }}">
+            <i class="bi bi-calendar-x" aria-hidden="true"></i>
+            <span>Izin Tidak Masuk Siswa</span>
         </a>
 
         <a href="{{ route('wali-kelas.izin-keluar.index') }}">
-            Izin Keluar Siswa
+            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+            <span>Izin Keluar Siswa</span>
         </a>
 
         <a href="{{ route('wali-kelas.izin-pulang.index') }}">
-            Izin Pulang Siswa
+            <i class="bi bi-box-arrow-in-left" aria-hidden="true"></i>
+            <span>Izin Pulang Siswa</span>
         </a>
 
 
@@ -74,25 +79,18 @@
         <div class="menu-title">Guru Mata Pelajaran</div>
 
         <a href="{{ route('wali-kelas.kelas-mengajar') }}">
-            Kelas Mengajar
+            <i class="bi bi-clipboard2-check" aria-hidden="true"></i>
+            <span>Nilai Harian</span>
         </a>
 
-
-        <a href="{{ route('wali-kelas.kelas-mengajar') }}">
-            Input Nilai
-        </a>
-
-        <a href="{{ route('wali-kelas.kelas-mengajar') }}">
-            Nilai Harian
-        </a>
-
-        <a href="#">
-            Nilai PJBL
+        <a href="{{ route('wali-kelas.penilaian-pjbl.index') }}">
+            <i class="bi bi-kanban" aria-hidden="true"></i>
+            <span>Penilaian PjBL</span>
         </a>
 
         @endif
 
-    </div>
+    </nav>
 
 
     
@@ -100,6 +98,7 @@
         @csrf
 
         <button type="submit">
+            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
             Logout
         </button>
     </form>

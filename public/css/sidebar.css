@@ -11,12 +11,13 @@
     left: 0;
     overflow-y: auto;
     font-family: 'Poppins', sans-serif;
-    
+    z-index: 1000;
+    box-shadow: 3px 0 16px rgba(15, 23, 42, .08);
 }
 
 .sidebar-header {
     padding: 25px 20px;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, .22);
 }
 
 .sidebar-header h2 {
@@ -39,10 +40,10 @@
 
 .menu-title {
     font-size: 13px;
-    color: #94a3b8;
+    color: #A0CAE0;
     padding: 15px 20px 8px;
     text-transform: uppercase;
-    color: #A0CAE0;
+    letter-spacing: .04em;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -66,7 +67,7 @@
 
 .menu a:hover,
 .menu a.active {
-    background: #fffefed6;
+    background: rgba(255, 255, 255, .9);
     color: #2449A4;
 }
 
@@ -92,8 +93,8 @@
 }
 
 .logout-form button:hover {
-    background: #3c73fe;
-    color: #A0CAE0;
+    background: #ffffff;
+    color: #2449A4;
 }
 
 
@@ -127,5 +128,19 @@
 @media (max-width: 768px) {
     .sidebar {
         width: 210px;
+    }
+
+    .sidebar-header h2 {
+        font-size: 19px;
+    }
+
+    .menu a {
+        padding: 11px 16px;
+        font-size: 13px;
+    }
+
+    .menu-title {
+        padding-left: 16px;
+        padding-right: 16px;
     }
 }
